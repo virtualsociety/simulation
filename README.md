@@ -18,7 +18,7 @@ algorithms how the simulation progresses.
 
 ## Horizon Eco System
 
-The followin Metapattern depicts positioning of virtual society in its eco system.
+The following Metapattern depicts the positioning of virtual society in its eco system.
 ![Metapattern](./doc/img/horizon-virtual-society-eco-system.0.0.1-alpha.2.png)
 
 ## Status
