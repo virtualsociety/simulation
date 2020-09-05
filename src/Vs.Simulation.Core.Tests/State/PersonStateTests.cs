@@ -1,5 +1,4 @@
-﻿using Stateless.Graph;
-using Xunit;
+﻿using Xunit;
 
 namespace Vs.Simulation.Core.Tests.State
 {
@@ -18,10 +17,6 @@ namespace Vs.Simulation.Core.Tests.State
             person.Machine.Fire(LifeEventsTriggers.Die);
             Assert.Equal(LifeEvents.Deceased, person.Machine.State);
             Assert.False(person.Machine.CanFire(LifeEventsTriggers.Birth));
-            var s = person.GetDiGraph();
-            StateGraph graph = new StateGraph(person.Machine.GetInfo());
-            // TODO: Create a graph style base for Force Graphs.
-            // graph.ToGraph(GraphStyleBase)
         }
     }
 }
