@@ -15,6 +15,12 @@ namespace Vs.Simulation.Core
     {
         /// <summary>
         /// Person LifeEvent Stream
+        /// <para>+----+---------------------+-------+</para>
+        /// <para>| Id |      DateTime       | State |</para>
+        /// <para>+----+---------------------+-------+</para>
+        /// <para>|  0 | 02/28/2014 18:41:28 | Born  |</para>
+        /// <para>|  1 | 03/28/2014 13:21:04 | Born  |</para>
+        /// <para>+----+---------------------+-------+</para>
         /// </summary>
         public static List<StateEvent<LifeEvents>> _events = new List<StateEvent<LifeEvents>>();
 

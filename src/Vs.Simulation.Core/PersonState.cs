@@ -36,6 +36,8 @@ namespace Vs.Simulation.Core
         public List<PersonObject> Partners { get; set; }
         public List<PersonObject> Sibblings { get; set; }
         public List<PersonObject> Parents { get; set; }
+
+        public double Age => Lifespan.TotalDays / 365;
     }
 
     public enum LifeEvents
