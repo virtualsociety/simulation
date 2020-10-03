@@ -25,8 +25,8 @@ namespace Vs.Simulation.Core.Probabilities
             MaleWeights = AgeDataMale.GetColumn<double>("2020").Values.Select(c => Convert.ToDouble(c)).ToList();
             MaleSource = AgeDataMale.GetColumn<double>("2020").Keys.Select(c => Convert.ToDouble(c)).ToList();
             AgeDataFemale = Frame.ReadCsv("../../../../../doc/data/ages_female.csv");
-            FemaleWeights = AgeDataMale.GetColumn<double>("2020").Values.Select(c => Convert.ToDouble(c)).ToList();
-            FemaleSource = AgeDataMale.GetColumn<double>("2020").Keys.Select(c => Convert.ToDouble(c)).ToList();
+            FemaleWeights = AgeDataFemale.GetColumn<double>("2020").Values.Select(c => Convert.ToDouble(c)).ToList();
+            FemaleSource = AgeDataFemale.GetColumn<double>("2020").Keys.Select(c => Convert.ToDouble(c)).ToList();
         }
     }
 }
