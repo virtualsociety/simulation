@@ -17,7 +17,7 @@ namespace Vs.Simulation.Terminal
         /// <summary>
         /// Simulation time in Days
         /// </summary>
-        private static readonly TimeSpan SimTime = TimeSpan.FromDays(104 * 365);
+        public static readonly TimeSpan SimTime = TimeSpan.FromDays(104 * 365);
 
         /// <summary>
         /// Active object in the simulation, representing the population.
@@ -66,7 +66,7 @@ namespace Vs.Simulation.Terminal
                     var doneIn = Environment.RandNormalPositive(BirthMean, BirthSigma);
                     yield return Environment.Timeout(doneIn);
                     // start a new persons lifecycle and add the person to the list for later reporting.
-                    persons.Add(new PersonObject(i, Environment/*, Environment.RandNormalPositive(TimeSpan.FromDays(57 * 365), TimeSpan.FromDays(57 * 365))*/));
+                    persons.Add(new PersonObject(i, Environment, SimTime));
                     i++;
                 }
             }
@@ -129,7 +129,6 @@ namespace Vs.Simulation.Terminal
             median = Stats.median(frames.GetColumn<double>("Age"));
             env.Log("Saving Females. Median age {0}", median);
             frames.SaveCsv("females.csv");
-            frames.SaveCsv(@"females.csv");
             env.Log("Saving Event Stream");
             // +----+---------------------+-------+
             // | Id |      DateTime       | State |
