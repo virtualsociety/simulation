@@ -33,10 +33,6 @@ namespace Vs.Simulation.Core
         /// </summary>
         public PersonState State { get; private set; }
         public Process LifeCycleProcess { get; private set; }
-        /// <summary>
-        /// The Life Events Process
-        /// </summary>
-        public Process LifeEventsProcess { get; private set; }
         public Process DeathProcess { get; set; }
 
         private Process AdultProcess { get; set; }
@@ -65,23 +61,6 @@ namespace Vs.Simulation.Core
         static void Environment_RunFinished(object sender, EventArgs e)
         {
             _stopped = true;
-        }
-
-        /// <summary>
-        /// The main scheduler for Life events schedules.
-        /// This process runs within the scope of the lifecycle of the person
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerable<Event> LifeEventsSchedules()
-        {
-            // pre-determined life events
-            // #1 schedule adulthood, the subject reaches 18 years (legal age)
-            yield return Environment.Timeout(TimeSpan.FromDays((State.DateOfBirth.AddYears(18).Date - State.DateOfBirth).TotalDays));
-            LifeCycleProcess.Interrupt(LifeEvents.Adult);
-            while (true)
-            {
-                yield return Environment.Timeout(TimeSpan.FromDays(1));
-            }
         }
 
         private IEnumerable<Event> Death()
