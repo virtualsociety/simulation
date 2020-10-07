@@ -21,9 +21,33 @@ algorithms how the simulation progresses.
 The following Metapattern depicts the positioning of virtual society in its eco system.
 ![Metapattern](./doc/img/horizon-virtual-society-eco-system.0.0.1-alpha.2.png)
 
-## Status
+## Status (in active development)
+ 
+* An initial whitepaper about simulation within the government has been published
 
-Currently being set up...
+  *Sjef van Leeuwen, 2020. Virtual Society, Open Social Innovation.*
+  
+  https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Draft%200.5.pdf
+* A research project briefing has been published for the Data Science / Software Engineering Students
+
+  *Dr. Raymond G. Hoogendoorn, Sjef van Leeuwen & Prof. Dr. Lampros Stergioulas, 2020. Research Plan Synthetic Data Generation for Virtual Society*
+  
+  https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Research%20Plan.pdf
+* An internship has started
+* The first DES simulation (this code) for Birth, Adulthood, Death has been moddeled after CBS statistics.
+  
+If you want to read more about DES, this is a great paper to start with.
+
+*Lemmis Park, 1994. Discrete Event Simulation - A First Course - *
+
+https://github.com/virtualsociety/literature/blob/master/Discrete%20Event%20Simulation%20-%20A%20First%20Course%20-%20Lemmis%20Park.pdf
+
+## Roadmap
+
+The first milestone will simulate enough parameters to Simulate a synthetic population for the social domain. (BRP, basis registratie personen) such as:
+    * Partner History
+    * Family Situation (Sibblings / Ages)
+    * Migrations
 
 ## Components
 
