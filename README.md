@@ -23,7 +23,7 @@ The following Metapattern depicts the positioning of virtual society in its eco 
 
 ## Status (in active development)
  
-* An initial whitepaper about simulation within the government has been published
+* An initial whitepaper (in Dutch) about Simulation Driven Development (SDD) within the government has been published
 
   *Sjef van Leeuwen, 2020. Virtual Society, Open Social Innovation.*
   
