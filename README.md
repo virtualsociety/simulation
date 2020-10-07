@@ -108,8 +108,8 @@ https://github.com/mathnet/mathnet-numerics
 
 ### Deedle [![Deedle Nuget](https://buildstats.info/nuget/Deedle)](https://www.nuget.org/packages/Deedle/)
 Deedle implements an efficient and robust frame and series data structures for manipulating with structured data. It supports handling of missing values, aggregations, grouping, joining, statistical functions and more. For frames and series with ordered indices (such as time series), automatic alignment is also available.
-
 <br/>
+https://github.com/fslaborg/Deedle
 
 ### AdminLTE for Blazor [![nuget](https://img.shields.io/nuget/v/Blazorized.AdminLte)](https://www.nuget.org/packages/Blazorized.AdminLte/) [![.NET Core](https://github.com/sjefvanleeuwen/blazor-adminlte/workflows/.NET%20Core/badge.svg)](https://github.com/sjefvanleeuwen/blazor-adminlte/actions)
 ADMINLTE for Blazor is a collection of reusable components, with which you can easily develop digital services as a designer or developer. Think of buttons, form elements and page templates. This project adapts ADMINLTE 3 so the components can be used from dotnet core Blazor.
