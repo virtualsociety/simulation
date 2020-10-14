@@ -21,9 +21,33 @@ algorithms how the simulation progresses.
 The following Metapattern depicts the positioning of virtual society in its eco system.
 ![Metapattern](./doc/img/horizon-virtual-society-eco-system.0.0.1-alpha.2.png)
 
-## Status
+## Status (in active development)
+ 
+* An initial whitepaper (in Dutch) about Simulation Driven Development (SDD) within the government has been published
 
-Currently being set up...
+  *Sjef van Leeuwen, 2020. Virtual Society, Open Social Innovation.*
+  
+  https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Draft%200.5.pdf
+* A research project briefing has been published for the Data Science / Software Engineering Students
+
+  *Dr. Raymond G. Hoogendoorn, Sjef van Leeuwen & Prof. Dr. Lampros Stergioulas, 2020. Research Plan Synthetic Data Generation for Virtual Society*
+  
+  https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Research%20Plan.pdf
+* An internship has started
+* The first DES simulation (this code) for Birth, Adulthood, Death has been moddeled after CBS statistics.
+  
+If you want to read more about DES, this is a great paper to start with.
+
+*Lemmis Park, 1994. Discrete Event Simulation - A First Course - *
+
+https://github.com/virtualsociety/literature/blob/master/Discrete%20Event%20Simulation%20-%20A%20First%20Course%20-%20Lemmis%20Park.pdf
+
+## Roadmap
+
+The first milestone will simulate enough parameters to Simulate a synthetic population for the social domain. (BRP, basis registratie personen) such as:
+    * Partner History
+    * Family Situation (Sibblings / Ages)
+    * Migrations
 
 ## Components
 
@@ -84,8 +108,8 @@ https://github.com/mathnet/mathnet-numerics
 
 ### Deedle [![Deedle Nuget](https://buildstats.info/nuget/Deedle)](https://www.nuget.org/packages/Deedle/)
 Deedle implements an efficient and robust frame and series data structures for manipulating with structured data. It supports handling of missing values, aggregations, grouping, joining, statistical functions and more. For frames and series with ordered indices (such as time series), automatic alignment is also available.
-
 <br/>
+https://github.com/fslaborg/Deedle
 
 ### AdminLTE for Blazor [![nuget](https://img.shields.io/nuget/v/Blazorized.AdminLte)](https://www.nuget.org/packages/Blazorized.AdminLte/) [![.NET Core](https://github.com/sjefvanleeuwen/blazor-adminlte/workflows/.NET%20Core/badge.svg)](https://github.com/sjefvanleeuwen/blazor-adminlte/actions)
 ADMINLTE for Blazor is a collection of reusable components, with which you can easily develop digital services as a designer or developer. Think of buttons, form elements and page templates. This project adapts ADMINLTE 3 so the components can be used from dotnet core Blazor.
