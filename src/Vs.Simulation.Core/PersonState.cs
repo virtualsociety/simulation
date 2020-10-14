@@ -33,7 +33,7 @@ namespace Vs.Simulation.Core
         public DateTime DateOfBirth { get; set; }
         public DateTime DateOfDeath { get; set; }
         public TimeSpan Lifespan { get; set; }
-        public List<PersonObject> Partners { get; set; }
+        public List<PersonObject> Partners { get; set; } = new List<PersonObject>();
         public List<PersonObject> Sibblings { get; set; }
         public List<PersonObject> Parents { get; set; }
 

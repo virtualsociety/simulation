@@ -16,7 +16,7 @@ namespace Vs.Simulation.Terminal
         /// <summary>
         /// Simulation time in Days
         /// </summary>
-        public static readonly TimeSpan SimTime = TimeSpan.FromDays(104 * 365);
+        public static readonly TimeSpan SimTime = TimeSpan.FromDays(99 * 365);
 
         /// <summary>
         /// Active object in the simulation, representing the population.
@@ -26,7 +26,7 @@ namespace Vs.Simulation.Terminal
         {
             // Setup and start the simulation
             // Create an environment and start the setup process
-            var start = new DateTime(2020-104, 2, 1);
+            var start = new DateTime(2020-99, 2, 1);
             var env = new SimSharp.Simulation(start, rseed);
             env.Log("== Population ==");
             var population = new Population(env, "Virtual Society", SimTime);

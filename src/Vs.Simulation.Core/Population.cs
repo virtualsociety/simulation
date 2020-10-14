@@ -10,7 +10,7 @@ namespace Vs.Simulation.Core
         /// <summary>
         /// Avg. processing time in minutes
         /// </summary>
-        private static readonly TimeSpan BirthMean = TimeSpan.FromMinutes(400);
+        private static readonly TimeSpan BirthMean = TimeSpan.FromMinutes(4000);
         /// <summary>
         /// Sigma of processing time
         /// </summary>

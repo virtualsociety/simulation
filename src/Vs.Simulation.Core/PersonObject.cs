@@ -1,6 +1,7 @@
 ﻿using SimSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Vs.Simulation.Core.Probabilities;
 
 namespace Vs.Simulation.Core
@@ -104,6 +105,36 @@ namespace Vs.Simulation.Core
             }
         }
 
+        private IEnumerable<Event> Marriage()
+        {
+            var m = Environment.RandChoice(MaritalStatus.Source, MaritalStatus.Weights);
+            switch (m)
+            {
+                //case PartnerType.Single:
+                //    yield return Environment.Timeout(TimeSpan.FromSeconds(0));
+                //    break;
+                case PartnerType.Married:
+                case PartnerType.Partnership:
+                    // Schedule marriage within lifespan
+                    //yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandNormal(State.Lifespan.Days,0)));
+                    yield return Environment.Timeout(TimeSpan.FromDays(100));
+                    // Transition state into married
+                    if (!State.Machine.IsInState(LifeEvents.Married))
+                    {
+                        State.Machine.Fire(LifeEventsTriggers.Mary);
+                        // Find a partner (simple no age probability same sex marriage selection, only mary adults, assume FIFO)
+                        // TODO: Optimize Object Queries by indexing them. List is too slow.
+                        var partner = Population.Persons.First(p => p.State.Machine.State == LifeEvents.Adult);
+                        partner.State.Machine.Fire(LifeEventsTriggers.Mary);
+                        partner.State.Partners.Add(this);
+                        State.Partners.Add(partner);
+                        _events.Add(new StateEvent<LifeEvents>(Id, Environment.Now, State.Machine.State));
+                        _events.Add(new StateEvent<LifeEvents>(partner.Id, Environment.Now, partner.State.Machine.State));
+                    }
+                    break;
+            }
+        }
+
         private IEnumerable<Event> Adult()
         {
             // #1 schedule adulthood, the subject reaches 18 years (legal age)
@@ -111,8 +142,10 @@ namespace Vs.Simulation.Core
             // the subject should not be deceased
             if (!State.Machine.IsInState(LifeEvents.Deceased))
             {
+                Environment.Process(Marriage());
                 State.Machine.Fire(LifeEventsTriggers.Adulthood);
                 _events.Add(new StateEvent<LifeEvents>(Id, Environment.Now, State.Machine.State));
+                // Schedule for marrital status
             }
         }
     }
