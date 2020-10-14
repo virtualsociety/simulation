@@ -43,7 +43,7 @@ namespace Vs.Simulation.Terminal
             /// <summary>
             /// Population containing all person simulation subjects and their state.
             /// </summary>
-            public List<PersonObject> persons { get; private set; } = new List<PersonObject>();
+            public static List<PersonObject> Persons { get; private set; } = new List<PersonObject>();
             
             public Population(SimSharp.Simulation env, string name)
               : base(env)
@@ -66,7 +66,7 @@ namespace Vs.Simulation.Terminal
                     var doneIn = Environment.RandNormalPositive(BirthMean, BirthSigma);
                     yield return Environment.Timeout(doneIn);
                     // start a new persons lifecycle and add the person to the list for later reporting.
-                    persons.Add(new PersonObject(i, Environment, SimTime));
+                    Persons.Add(new PersonObject(i, Environment, SimTime));
                     i++;
                 }
             }
@@ -85,13 +85,13 @@ namespace Vs.Simulation.Terminal
             var perf = DateTime.UtcNow - startPerf;
             // Analyis / results
             env.Log("Population results after {0} days.", (env.Now - start).TotalDays);
-            env.Log("Population {0} has {1} babies born.", population.Name, population.persons.Count);
+            env.Log("Population {0} has {1} babies born.", population.Name, Population.Persons.Count);
             env.Log(string.Empty);
             env.Log("Processed {0} events in {1} seconds ({2} events/s).", env.ProcessedEvents, perf.TotalSeconds, (env.ProcessedEvents / perf.TotalSeconds));
             env.Log("Preparing statistics");
             // Create data frames for reporting to csv for tooling such as excel.
             env.Log("Selecting Males");
-            var males = from p in population.persons
+            var males = from p in Population.Persons
                         where p.State.Sex == SexType.Male
                         select new
                         {
@@ -103,7 +103,7 @@ namespace Vs.Simulation.Terminal
                         };
             env.Log("Males {0}", males.Count());
             env.Log("Selecting Females");
-            var females = from p in population.persons
+            var females = from p in Population.Persons
                         where p.State.Sex == SexType.Female
                         select new
                         {
