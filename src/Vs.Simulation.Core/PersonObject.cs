@@ -125,7 +125,7 @@ namespace Vs.Simulation.Core
                     //yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandNormal(State.Lifespan.Days,0)));
                     yield return Environment.Timeout(TimeSpan.FromDays(100));
                     // Transition state into married
-                    if (Person.LifeEvent ==LifeEvents.Married)
+                    if (Person.LifeEvent == LifeEvents.Adult)
                     {
                         State.Machine.Fire(LifeEventsTriggers.Mary);
                         Person.LifeEvent = LifeEvents.Married;
@@ -147,10 +147,10 @@ namespace Vs.Simulation.Core
             // #1 schedule adulthood, the subject reaches 18 years (legal age)
             yield return Environment.Timeout(TimeSpan.FromDays((Person.DateOfBirth.AddYears(18).Date - Person.DateOfBirth).TotalDays));
             // the subject should not be deceased
-            if (Person.LifeEvent == LifeEvents.Deceased)
+            if (Person.LifeEvent != LifeEvents.Deceased)
             {
                 Environment.Process(Marriage());
-                //State.Machine.Fire(LifeEventsTriggers.Adulthood);
+                State.Machine.Fire(LifeEventsTriggers.Adulthood);
                 Person.LifeEvent = LifeEvents.Adult;
                 _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
                 Population.Db.People.Update(this.Person);
