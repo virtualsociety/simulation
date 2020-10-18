@@ -13,6 +13,7 @@
     <PackageReference Include="SimSharp" Version="3.3.2" />
     <PackageReference Include="Stateless" Version="5.1.3" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="Vs.Graph" Version="0.0.1" />
   </ItemGroup>
 
   <ItemGroup>
