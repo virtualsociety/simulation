@@ -29,15 +29,9 @@ namespace Vs.Simulation.Core
             Machine.Activate();
         }
 
-        public SexType Sex { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public DateTime DateOfDeath { get; set; }
-        public TimeSpan Lifespan { get; set; }
         public List<PersonObject> Partners { get; set; } = new List<PersonObject>();
         public List<PersonObject> Sibblings { get; set; }
         public List<PersonObject> Parents { get; set; }
-
-        public double Age => Lifespan.TotalDays / 365;
     }
 
     public enum LifeEvents

@@ -2,15 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Vs.Simulation.Core.Database;
 
 namespace Vs.Simulation.Core
 {
     public class Population : ActiveObject<SimSharp.Simulation>
     {
         /// <summary>
+        /// Population Database containing all person simulation subjects and their state.
+        /// </summary>
+        public static PopulationDb Db { get; private set; }
+
+        /// <summary>
         /// Avg. processing time in minutes
         /// </summary>
-        private static readonly TimeSpan BirthMean = TimeSpan.FromMinutes(4000);
+        private static readonly TimeSpan BirthMean = TimeSpan.FromMinutes(40000);
         /// <summary>
         /// Sigma of processing time
         /// </summary>
@@ -33,6 +39,7 @@ namespace Vs.Simulation.Core
         public Population(SimSharp.Simulation env, string name, TimeSpan simTime)
           : base(env)
         {
+            Db = new PopulationDb();
             Name = name;
             SimTime = simTime;
             // Start the birth process

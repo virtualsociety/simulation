@@ -13,6 +13,11 @@ namespace Vs.Simulation.Core
     public class PersonObject : ActiveObject<SimSharp.Simulation>
     {
         /// <summary>
+        /// Person Entity for table storage
+        /// </summary>
+        public PersonEntity Person { get; set; } = new PersonEntity();
+
+        /// <summary>
         /// Person LifeEvent Stream
         /// <para>+----+---------------------+-------+</para>
         /// <para>| Id |      DateTime       | State |</para>
@@ -23,10 +28,6 @@ namespace Vs.Simulation.Core
         /// </summary>
         public static List<StateEvent<LifeEvents>> _events = new List<StateEvent<LifeEvents>>();
 
-        /// <summary>
-        /// Person unique identifier
-        /// </summary>
-        public int Id { get; set; }
         public TimeSpan SimTime { get; }
 
         /// <summary>
@@ -40,20 +41,20 @@ namespace Vs.Simulation.Core
 
         public PersonObject(int id, SimSharp.Simulation environment, TimeSpan simTime) : base(environment)
         {
-            Id = id;
+            Person.Id = id;
             SimTime = simTime;
-            State = new PersonState(LifeEvents.Born)
-            {
-                Sex = environment.RandChoice(Sex.Source, Sex.Weights),
-                DateOfBirth = environment.Now,
-            };
-            _events.Add(new StateEvent<LifeEvents>(Id, Environment.Now, State.Machine.State));
+            State = new PersonState(LifeEvents.Born);
+            Person.Sex = environment.RandChoice(Sex.Source, Sex.Weights);
+            Person.DateOfBirth = environment.Now;
+            _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
             if (!finnishHandle)
             {
                 finnishHandle = true;
                 Environment.RunFinished += Environment_RunFinished;
             }
             LifeCycleProcess = Environment.Process(LifeCycle());
+            Population.Db.People.Insert(this.Person);
+
         }
 
         static bool finnishHandle;
@@ -66,19 +67,24 @@ namespace Vs.Simulation.Core
 
         private IEnumerable<Event> Death()
         {
-            if (State.Sex == SexType.Male)
+            if (Person.Sex == SexType.Male)
             {
-                State.Lifespan = TimeSpan.FromDays(1+ Environment.RandChoice(Age.MaleSource, Age.MaleWeights) * 365);
+                Person.Lifespan = TimeSpan.FromDays(1+ Environment.RandChoice(Age.MaleSource, Age.MaleWeights) * 365);
             }
             else
             {
-                State.Lifespan = TimeSpan.FromDays(1+ Environment.RandChoice(Age.FemaleSource, Age.FemaleWeights) * 365);
+                Person.Lifespan = TimeSpan.FromDays(1+ Environment.RandChoice(Age.FemaleSource, Age.FemaleWeights) * 365);
             }
-            yield return Environment.Timeout(State.Lifespan);
+            Population.Db.People.Update(this.Person);
+
+            yield return Environment.Timeout(Person.Lifespan);
             LifeCycleProcess.Interrupt();
             State.Machine.Fire(LifeEventsTriggers.Die);
-            _events.Add(new StateEvent<LifeEvents>(Id, Environment.Now, State.Machine.State));
-            State.DateOfDeath = Environment.Now;
+            Person.LifeEvent = LifeEvents.Deceased;
+            _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
+            Person.DateOfDeath = Environment.Now;
+            Population.Db.People.Update(this.Person);
+
         }
 
         /// <summary>
@@ -119,17 +125,18 @@ namespace Vs.Simulation.Core
                     //yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandNormal(State.Lifespan.Days,0)));
                     yield return Environment.Timeout(TimeSpan.FromDays(100));
                     // Transition state into married
-                    if (!State.Machine.IsInState(LifeEvents.Married))
+                    if (Person.LifeEvent ==LifeEvents.Married)
                     {
                         State.Machine.Fire(LifeEventsTriggers.Mary);
-                        // Find a partner (simple no age probability same sex marriage selection, only mary adults, assume FIFO)
-                        // TODO: Optimize Object Queries by indexing them. List is too slow.
-                        var partner = Population.Persons.First(p => p.State.Machine.State == LifeEvents.Adult);
-                        partner.State.Machine.Fire(LifeEventsTriggers.Mary);
-                        partner.State.Partners.Add(this);
-                        State.Partners.Add(partner);
-                        _events.Add(new StateEvent<LifeEvents>(Id, Environment.Now, State.Machine.State));
-                        _events.Add(new StateEvent<LifeEvents>(partner.Id, Environment.Now, partner.State.Machine.State));
+                        Person.LifeEvent = LifeEvents.Married;
+                        var partner = Population.Db.People.First(p => p.LifeEvent == LifeEvents.Adult);
+                        partner.LifeEvent = LifeEvents.Married;
+                        //partner.reference.State.Partners.Add(this);
+                        //State.Partners.Add(partner.reference);
+                        _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, Person.LifeEvent));
+                        _events.Add(new StateEvent<LifeEvents>(partner.Id, Environment.Now, partner.LifeEvent));
+                        Population.Db.People.Update(partner);
+                        Population.Db.People.Update(this.Person);
                     }
                     break;
             }
@@ -138,13 +145,15 @@ namespace Vs.Simulation.Core
         private IEnumerable<Event> Adult()
         {
             // #1 schedule adulthood, the subject reaches 18 years (legal age)
-            yield return Environment.Timeout(TimeSpan.FromDays((State.DateOfBirth.AddYears(18).Date - State.DateOfBirth).TotalDays));
+            yield return Environment.Timeout(TimeSpan.FromDays((Person.DateOfBirth.AddYears(18).Date - Person.DateOfBirth).TotalDays));
             // the subject should not be deceased
-            if (!State.Machine.IsInState(LifeEvents.Deceased))
+            if (Person.LifeEvent == LifeEvents.Deceased)
             {
                 Environment.Process(Marriage());
-                State.Machine.Fire(LifeEventsTriggers.Adulthood);
-                _events.Add(new StateEvent<LifeEvents>(Id, Environment.Now, State.Machine.State));
+                //State.Machine.Fire(LifeEventsTriggers.Adulthood);
+                Person.LifeEvent = LifeEvents.Adult;
+                _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
+                Population.Db.People.Update(this.Person);
                 // Schedule for marrital status
             }
         }
