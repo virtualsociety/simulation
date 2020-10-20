@@ -10,7 +10,7 @@ namespace Vs.Simulation.Core.Probabilities
         /// <summary>
         /// Weight distribution of the probability
         /// </summary>
-        public static List<double> Weights { get; private set; } = new List<double> { 1, 1, 1 };
+        public static List<double> Weights { get; set; } = new List<double> { 1, 1, 1 };
         /// <summary>
         /// A list of sources to select a sample from
         /// </summary>
