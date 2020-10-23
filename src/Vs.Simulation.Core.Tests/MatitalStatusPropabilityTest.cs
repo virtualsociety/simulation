@@ -6,10 +6,24 @@ using Vs.Simulation.Core;
 using Vs.Simulation.Core.Probabilities;
 using Deedle;
 using System.Linq;
+using System.IO;
+using System.Globalization;
 
 namespace Vs.Simulation.Core.Tests
 {
-    
+    public class MaritalStatusPropability
+    {
+        public int Year { get; set; }
+        public int Singles { get; set; }
+        public int Married { get; set; }
+        public int Partnership { get; set; }
+
+    }
+
+    public class MaritalStatusPropabilityCollection:List<MaritalStatusPropability> 
+    {
+
+    }
 
     public class MatitalStatusPropabilityTest
     {
@@ -26,27 +40,36 @@ namespace Vs.Simulation.Core.Tests
         [Fact]
         public static void ReadFile() 
         {
-            //Arrange
-             Frame<int, string> frame;
-             List<double> weights;
-             List<double> source;
-
-            // Act
+            // Arrange
+            Frame<int, string> frame;
+            List<double> weights;
+            var collection = new MaritalStatusPropabilityCollection();
             frame =  Frame.ReadCsv("../../../../../doc/data/marital_status.csv");
-            weights = frame.GetColumn<double>("2019").Values.Select(c => Convert.ToDouble(c)).Take(3).ToList();
-            MaritalStatus.Weights = weights;
-            // source = frame.GetColumn<double>("2019").Keys.Select(c => Convert.ToString(c)).ToList();
 
             var env = new SimSharp.ThreadSafeSimulation(42);
-            var people = new List<PartnerType>();
-            for (int i = 0; i < 250;i++) {
-                people.Add(env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights));
+
+            // Act
+            for (int j = 1950; j < 2020; j++)
+            { 
+                var people = new List<PartnerType>();
+                IList<int> specifiedMartialStatus = new List<int>();
+
+                weights = frame.GetColumn<double>(Convert.ToString(j)).Values.Select(c => Convert.ToDouble(c)).Take(3).ToList();
+                MaritalStatus.Weights = weights;
+                for (int i = 0; i < 100000; i++)
+                {
+                    people.Add(env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights));
+                }
+                collection.Add(new MaritalStatusPropability()
+                {
+                    Singles = people.Where(p => p == PartnerType.Single).Count(),
+                    Married = people.Where(p => p == PartnerType.Married).Count(),
+                    Partnership = people.Where(p => p == PartnerType.Partnership).Count(),
+                    Year = j
+                });
             }
-
-            // Assert
-            var singles = people.Where(p => p == PartnerType.Single).Count();
-            Assert.Equal(114, singles);
-
+            var export = Frame.FromRecords(collection);
+            export.SaveCsv("../../../../../doc/data/maritalStatusWeights.csv");
         }
-    }
+    } 
 }
