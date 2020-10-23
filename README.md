@@ -15,6 +15,10 @@ Simulations are a replication (digital twin) of reality. Simulation is a dynamic
 we achieve the aforementioned based on life events. This simulation model determines through the use of rules derived from
 algorithms how the simulation progresses.
 
+## Virtual Society Trailer Video
+
+Click here for an introduction video
+[![](http://img.youtube.com/vi/vjhgozdOHu8/0.jpg)](http://www.youtube.com/watch?v=vjhgozdOHu8 "Virtual Society Trailer")
 
 ## Horizon Eco System
 
