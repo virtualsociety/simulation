@@ -52,7 +52,6 @@ namespace Vs.Simulation.Core.Tests
             for (int j = 1950; j < 2020; j++)
             { 
                 var people = new List<PartnerType>();
-                IList<int> specifiedMartialStatus = new List<int>();
 
                 weights = frame.GetColumn<double>(Convert.ToString(j)).Values.Select(c => Convert.ToDouble(c)).Take(3).ToList();
                 MaritalStatus.Weights = weights;
