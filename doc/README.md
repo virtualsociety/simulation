@@ -1,13 +1,13 @@
 # Marital Status
 
-## What is Martial Status?
+## What is Marital Status?
 
 A person is qualified to have a marital status when they are over the legal age of 18. 
 Under marital status we have 3 distinct categories. A person can be single, married or in a registerd partnership.
 A person can never have more than 1 status. 
 
 
-## How is the Martial Status chosen?
+## How is the Marital Status chosen?
 
 With information provided by the goverment about the numbers of people being wed in the past 70 years,
 we decide to put those numbers in a weight list and have a RandChoice function run over the weight list
