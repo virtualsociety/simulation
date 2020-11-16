@@ -9,7 +9,7 @@ namespace Vs.Simulation.Core.Probabilities
     {
         public static IList<double> DurationSource = new List<double>
         {
-            1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+            1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21
         };
         public static IList<double> DurationWeights = new List<double>
         {
@@ -26,6 +26,7 @@ namespace Vs.Simulation.Core.Probabilities
             68675,
             70258,
             71995,
+            73884,
             75886,
             77895,
             79887,

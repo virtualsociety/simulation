@@ -4,7 +4,6 @@ using System.Text;
 using Xunit;
 using Deedle;
 using Vs.Simulation.Core.Probabilities;
-using static Vs.Simulation.Core.Probabilities.MaritalDuration;
 using System.Linq;
 
 namespace Vs.Simulation.Core.Tests
@@ -12,18 +11,13 @@ namespace Vs.Simulation.Core.Tests
     public class MaritalDurationPropability 
     {
         public double Duration { get; set; }
-        public int MarriedCouples { get; set; }
+        public int MarriedDurationCouples { get; set; }
     }
-
     public class MaritalDurationCollection : List<MaritalDurationPropability> 
     {
-
     }
-
     public class MaritalDurationTest
     {
-       
-
         [Fact]
         public static void MaritalDuration1() 
         {
@@ -36,16 +30,13 @@ namespace Vs.Simulation.Core.Tests
             {
                 coupleList.Add(env.RandChoice(MaritalDuration.DurationSource, MaritalDuration.DurationWeights));
             }
-
-            for (double i = 1; i < 21; i++) {
+            for (double i = 1; i < 22; i++) {
                 collection.Add(new MaritalDurationPropability()
                 {
                     Duration = i,
-                    MarriedCouples = coupleList.Where(d => d == i).Count()
+                    MarriedDurationCouples = coupleList.Where(d => d == i).Count()
                 });
             }
-
-
             var export = Frame.FromRecords(collection);
             export.SaveCsv("../../../../../doc/data/maritalDurationList.csv");
             

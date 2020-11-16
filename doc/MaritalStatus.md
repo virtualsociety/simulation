@@ -7,7 +7,7 @@ Under marital status we have 3 distinct categories. A person can be single, marr
 A person can never have more than 1 status. 
 
 
-## How is the Marital Status chosen?
+## How is the Marital Status chosen?  
 
 With information provided by the goverment about the numbers of people being wed in the past 70 years,
 we decide to put those numbers in a weight list and have a RandChoice function run over the weight list
