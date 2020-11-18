@@ -32,7 +32,7 @@ not the amount of citizens that were getting married or are registering for a pa
 
 ![alt text](./img/Graph_Simulated_Marital_Status.png)
 
-As you can see most citizens that are simulated are single. This is because a huge amount of people are most liekly
+As you can see most citizens that are simulated are single. This is because a huge amount of people are most likely
 already in a relationship but have not chosen to register for a partnership. This data is soley based on the amount
 of people that marry and/or get registrated for a partnersip per year.
 

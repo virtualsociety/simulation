@@ -8,12 +8,12 @@ using System.Linq;
 
 namespace Vs.Simulation.Core.Tests
 {
-    public class MaritalDurationPropability 
+    public class MaritalDurationProbability 
     {
         public double Duration { get; set; }
         public int MarriedDurationCouples { get; set; }
     }
-    public class MaritalDurationCollection : List<MaritalDurationPropability> 
+    public class MaritalDurationCollection : List<MaritalDurationProbability> 
     {
     }
     public class MaritalDurationTest
@@ -31,7 +31,7 @@ namespace Vs.Simulation.Core.Tests
                 coupleList.Add(env.RandChoice(MaritalDuration.DurationSource, MaritalDuration.DurationWeights));
             }
             for (double i = 1; i < 22; i++) {
-                collection.Add(new MaritalDurationPropability()
+                collection.Add(new MaritalDurationProbability()
                 {
                     Duration = i,
                     MarriedDurationCouples = coupleList.Where(d => d == i).Count()

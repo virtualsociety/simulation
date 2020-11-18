@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace Vs.Simulation.Core.Tests
 {
-    public class MaritalStatusPropability
+    public class MaritalStatusProbability
     {
         public int Year { get; set; }
         public int Singles { get; set; }
@@ -20,12 +20,12 @@ namespace Vs.Simulation.Core.Tests
 
     }
 
-    public class MaritalStatusPropabilityCollection:List<MaritalStatusPropability> 
+    public class MaritalStatusProbabilityCollection:List<MaritalStatusProbability> 
     {
 
     }
 
-    public class MatitalStatusPropabilityTest
+    public class MatitalStatusProbabilityTest
     {
   
         [Fact]
@@ -43,7 +43,7 @@ namespace Vs.Simulation.Core.Tests
             // Arrange
             Frame<int, string> frame;
             List<double> weights;
-            var collection = new MaritalStatusPropabilityCollection();
+            var collection = new MaritalStatusProbabilityCollection();
             frame =  Frame.ReadCsv("../../../../../doc/data/marital_status.csv");
 
             var env = new SimSharp.ThreadSafeSimulation(42);
@@ -59,7 +59,7 @@ namespace Vs.Simulation.Core.Tests
                 {
                     people.Add(env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights));
                 }
-                collection.Add(new MaritalStatusPropability()
+                collection.Add(new MaritalStatusProbability()
                 {
                     Singles = people.Where(p => p == PartnerType.Single).Count(),
                     Married = people.Where(p => p == PartnerType.Married).Count(),

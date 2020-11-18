@@ -40,7 +40,9 @@ The following Metapattern depicts the positioning of virtual society in its eco 
   https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Research%20Plan.pdf
 * An internship has started
 * The first DES simulation (this code) for Birth, Adulthood, Death has been moddeled after CBS statistics.
-* [Marital Status](./doc/MaritalStatus.md) Probabilities have been modeled.
+* [Marital Status](./doc/MaritalStatus.md) probabilities have been modeled.
+* [Marital Duration](./doc/MaritalDuration.md) probabilties have been modeld.
+* [Marital Age Probability](./doc/MaritalAgeProbability.md) probabilities have been modeld.
   
 If you want to read more about DES, this is a great paper to start with.
 
