@@ -20,7 +20,7 @@ and for what amount of time they are married per year.
 
 ## Graph simulated data
 
-![Graph Simulated Martial Durations](./img/Graph_Simulated_MaritalDuration.png)
+![Graph Simulated Martial Durations](./img/Graph_Simulated_MarriageDuration.png)
 
 We used the data to determine how long couples stay married. It does not show for each year how many couples
 remain being married, it shows just the duration of the marriage of each married couple. That explains
