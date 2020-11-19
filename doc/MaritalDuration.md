@@ -12,9 +12,9 @@ they would stay together.
 
 ## What data is used?
 
-We used the following table provided by the CBS with the data of how many couples are still married
-and for what amount of time they are married per year.
-[Bestaande huwelijken naar huwelijksduur, 1 januari](https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37492/table?ts=1604302253141)
+We used the following table provided by the CBS with the data of how many couples celebrate their
+marriage anniversary. We took the data of the couples that celebrated their anniversary in 2019.
+[Bestaande huwelijken naar huwelijksduur, 1 januari](https://opendata.cbs.nl/#/CBS/nl/dataset/37492/table?dl=29174)
 
 
 
@@ -24,18 +24,33 @@ and for what amount of time they are married per year.
 
 We used the data to determine how long couples stay married. It does not show for each year how many couples
 remain being married, it shows just the duration of the marriage of each married couple. That explains
-the huge leap in the amount of people later in the years.
+the huge decrease later in the years. 
+
+You can see that alot of marriages stop after 53 years or longer. This is due to the fact that
+at this point in their lifes it is only a matter of fact before they meet their ends.
+
+## Is the data similar?
+![alt text](./img/Graph_CBSvsSimulated_MartitalDuration.png)
+
+On the left side you can see the data graph made with CBS data. While on the right side you can see the simulated data
+As you can see the form of the 2 graphs are very similar, the only big difference is the amount of people used
+in the simulation.
+
+We ran this code under 1 million different couples where in reality there are multiple couples who undergo this
+duration. We do not know wheter the data used by CBS contains registerd partnerships as we have not found any
+data where the duration of a partnership is mentioned.
+asd
 
 ## Code Showcase
 
 
 ```csharp
-for (int i = 0; i < 10000; i++) 
+for (int i = 0; i < 1000000; i++) 
             {
                 coupleList.Add(env.RandChoice(MaritalDuration.DurationSource, MaritalDuration.DurationWeights));
             }
 
-            for (double i = 1; i < 21; i++) {
+            for (double i = 1; i < 72; i++) {
                 collection.Add(new MaritalDurationPropability()
                 {
                     Duration = i,

@@ -26,11 +26,11 @@ namespace Vs.Simulation.Core.Tests
             var collection = new MaritalDurationCollection();
             var coupleList = new List<double>();
             //Act
-            for (int i = 0; i < 10000; i++) 
+            for (int i = 0; i < 1000000; i++) 
             {
                 coupleList.Add(env.RandChoice(MaritalDuration.DurationSource, MaritalDuration.DurationWeights));
             }
-            for (double i = 1; i < 22; i++) {
+            for (double i = 1; i < 72; i++) {
                 collection.Add(new MaritalDurationProbability()
                 {
                     Duration = i,
