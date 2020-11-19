@@ -38,6 +38,13 @@ In this graph there is also 'missing' information. This is because we decided
 that one first has to become married before they divorce or become a widow/widower. In
 this graph the only thing you see is when they decide to tie the knot.
 
+#### A graph inculding the dicorcés/divorcées
+![alt text](./img/SimulatedMaritalAge_Graph.png)
+
+In the Graph above you see that the peak in Marital Age is lower around the 54 year old age
+range. This is because we added the cases of divorced citizens into this one so that
+we could have a more acurate representation.
+
 ### Is the data similar?
 
 ![alt text](./img/MarriageVsSingle_CBS-Simulated_Graphs.png)
@@ -50,33 +57,46 @@ As you can see the graphs are almost identical in form. The only difference is
 that because we only took the status of being married or being single, the graph contains
 people who originally belong under the status of divorcé/dicorcée or widow/widower.
 
+
+#### Graphs inculding dicorcés/divorcées
+![alt text](./img/GraphCBSvsSimulated_MaritalAge.png)
+
+In this image on the left table you can see the data that we took from CBS, inculding the dicorcés/divorcées.
+As you can see compared to the image above, the peak is alot lower. And when compared to 
+the new data side by side you can see that the images look almost identical to eachother.
+
+The reason we think that the images are fully correct is because we left out our widows/widowers,
+because that is based on a life event which is not really a predicatable event.
+
 ### Code Showcase
 ```csharp
 for (int i = 18; i < 100; i++) 
             {
-                womenList.Add(i, new List<PartnerType>());
-                menList.Add(i, new List<PartnerType>());
+                womenList.Add(i, new List<PartnerTypeAge>());
+                menList.Add(i, new List<PartnerTypeAge>());
 
                 for (int j = 0; j < femaleAge[i]; j++) 
                 {
-                    weights = frame.GetColumn<double>(Convert.ToString(i)).Values.Select(c => Convert.ToDouble(c)).Skip(2).Take(2).ToList();
-                    MaritalStatus.Weights = weights;
-                    womenList[i].Add(env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights));
+                    weights = frame.GetColumn<double>(Convert.ToString(i)).Values.Select(c => Convert.ToDouble(c)).Skip(3).Take(3).ToList();
+                    MaritalStatusAge.Weights = weights;
+                    womenList[i].Add(env.RandChoice(MaritalStatusAge.Source, MaritalStatusAge.Weights));
                 }
 
                 for (int j = 0; j < maleAge[i]; j++) 
                 {
-                    weights = frame.GetColumn<double>(Convert.ToString(i)).Values.Select(c => Convert.ToDouble(c)).Take(2).ToList();
-                    MaritalStatus.Weights = weights;
-                    menList[i].Add(env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights));
+                    weights = frame.GetColumn<double>(Convert.ToString(i)).Values.Select(c => Convert.ToDouble(c)).Take(3).ToList();
+                    MaritalStatusAge.Weights = weights;
+                    menList[i].Add(env.RandChoice(MaritalStatusAge.Source, MaritalStatusAge.Weights));
                 }
 
                 collection.Add(new MaritalAgeProbability()
                 {
-                    SingleWomen = womenList[i].Where(p => p == PartnerType.Single).Count(),
-                    MarriedWomen = womenList[i].Where(p => p == PartnerType.Married).Count(),
-                    SingleMen = menList[i].Where(p => p == PartnerType.Single).Count(),
-                    MarriedMen = menList[i].Where(p => p == PartnerType.Married).Count(),
+                    SingleWomen = womenList[i].Where(p => p == PartnerTypeAge.Single).Count(),
+                    MarriedWomen = womenList[i].Where(p => p == PartnerTypeAge.Married).Count(),
+                    DivorcedWomen = womenList[i].Where(p => p == PartnerTypeAge.Divorced).Count(),
+                    SingleMen = menList[i].Where(p => p == PartnerTypeAge.Single).Count(),
+                    MarriedMen = menList[i].Where(p => p == PartnerTypeAge.Married).Count(),
+                    DivorcedMen = menList[i].Where(p => p == PartnerTypeAge.Divorced).Count(),
                     Age = i
                 });
             }
@@ -84,7 +104,7 @@ for (int i = 18; i < 100; i++)
 
 In the code above you can see that we started with a for loop, we did this because
 we knew that we were only after the data of age 18 to 99, as that were the ages we had data for.
-Continuing, you can see that we added a new "List(PartnerType)" to womenList and menList,
+Continuing, you can see that we added a new "List(PartnerTypeAge)" to womenList and menList,
 because these 2 values are dictionaries.
 
 You can see that are 2 different loops within the bigger for loops. This is so that

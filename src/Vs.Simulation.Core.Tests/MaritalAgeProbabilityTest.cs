@@ -13,8 +13,10 @@ namespace Vs.Simulation.Core.Tests
         public int Age { get; set; }
         public int SingleWomen { get; set; }
         public int MarriedWomen { get; set; }
+        public int DivorcedWomen { get; set; }
         public int SingleMen { get; set; }
         public int MarriedMen { get; set; }
+        public int DivorcedMen { get; set; }
     }
 
     public class MaritalAgePropabilityCollection : List<MaritalAgeProbability>
@@ -31,9 +33,6 @@ namespace Vs.Simulation.Core.Tests
     //    }
     //}
 
-
-
-
     public class MaritalAgeProbabilityTest
     {   
         [Fact]
@@ -45,40 +44,42 @@ namespace Vs.Simulation.Core.Tests
             frame = Frame.ReadCsv("../../../../../doc/data/MaritalAgeWeights.csv");
             List<double> weights;
             Random rnd = new Random(42);
-            var womenList = new Dictionary<int,List<PartnerType>>();
-            var menList = new Dictionary<int, List<PartnerType>>();
+            var womenList = new Dictionary<int,List<PartnerTypeAge>>();
+            var menList = new Dictionary<int, List<PartnerTypeAge>>();
             var collection = new MaritalAgePropabilityCollection();
-            var womenStatus = new List<PartnerType>();
-            var menStatus = new List<PartnerType>();
+            var womenStatus = new List<PartnerTypeAge>();
+            var menStatus = new List<PartnerTypeAge>();
             var femaleAge = Age.FemaleWeights;
             var maleAge = Age.MaleWeights;
 
             //Act
             for (int i = 18; i < 100; i++) 
             {
-                womenList.Add(i, new List<PartnerType>());
-                menList.Add(i, new List<PartnerType>());
+                womenList.Add(i, new List<PartnerTypeAge>());
+                menList.Add(i, new List<PartnerTypeAge>());
 
                 for (int j = 0; j < femaleAge[i]; j++) 
                 {
-                    weights = frame.GetColumn<double>(Convert.ToString(i)).Values.Select(c => Convert.ToDouble(c)).Skip(2).Take(2).ToList();
-                    MaritalStatus.Weights = weights;
-                    womenList[i].Add(env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights));
+                    weights = frame.GetColumn<double>(Convert.ToString(i)).Values.Select(c => Convert.ToDouble(c)).Skip(3).Take(3).ToList();
+                    MaritalStatusAge.Weights = weights;
+                    womenList[i].Add(env.RandChoice(MaritalStatusAge.Source, MaritalStatusAge.Weights));
                 }
 
                 for (int j = 0; j < maleAge[i]; j++) 
                 {
-                    weights = frame.GetColumn<double>(Convert.ToString(i)).Values.Select(c => Convert.ToDouble(c)).Take(2).ToList();
-                    MaritalStatus.Weights = weights;
-                    menList[i].Add(env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights));
+                    weights = frame.GetColumn<double>(Convert.ToString(i)).Values.Select(c => Convert.ToDouble(c)).Take(3).ToList();
+                    MaritalStatusAge.Weights = weights;
+                    menList[i].Add(env.RandChoice(MaritalStatusAge.Source, MaritalStatusAge.Weights));
                 }
 
                 collection.Add(new MaritalAgeProbability()
                 {
-                    SingleWomen = womenList[i].Where(p => p == PartnerType.Single).Count(),
-                    MarriedWomen = womenList[i].Where(p => p == PartnerType.Married).Count(),
-                    SingleMen = menList[i].Where(p => p == PartnerType.Single).Count(),
-                    MarriedMen = menList[i].Where(p => p == PartnerType.Married).Count(),
+                    SingleWomen = womenList[i].Where(p => p == PartnerTypeAge.Single).Count(),
+                    MarriedWomen = womenList[i].Where(p => p == PartnerTypeAge.Married).Count(),
+                    DivorcedWomen = womenList[i].Where(p => p == PartnerTypeAge.Divorced).Count(),
+                    SingleMen = menList[i].Where(p => p == PartnerTypeAge.Single).Count(),
+                    MarriedMen = menList[i].Where(p => p == PartnerTypeAge.Married).Count(),
+                    DivorcedMen = menList[i].Where(p => p == PartnerTypeAge.Divorced).Count(),
                     Age = i
                 });
             }
