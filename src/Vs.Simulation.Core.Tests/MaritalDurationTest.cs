@@ -25,6 +25,7 @@ namespace Vs.Simulation.Core.Tests
             var env = new SimSharp.ThreadSafeSimulation(42);
             var collection = new MaritalDurationCollection();
             var coupleList = new List<double>();
+
             //Act
             for (int i = 0; i < 1000000; i++) 
             {
@@ -39,7 +40,20 @@ namespace Vs.Simulation.Core.Tests
             }
             var export = Frame.FromRecords(collection);
             export.SaveCsv("../../../../../doc/data/maritalDurationList.csv");
-            
+
+            //Assert
+            int actualDuration5 = coupleList.Where(d => d == 5).Count();
+            int expectedDuration5 = 18577;
+            int actualDuration54 = coupleList.Where(d => d == 54).Count();
+            int expectedDuration54 = 10693;
+            int actualDuration31 = coupleList.Where(d => d == 31).Count();
+            int expectedDuration31 = 16488;
+
+            Assert.Equal(expectedDuration5, actualDuration5);
+            Assert.Equal(expectedDuration31, actualDuration31);
+            Assert.Equal(expectedDuration54, actualDuration54);
+
+
         }
     }
 }

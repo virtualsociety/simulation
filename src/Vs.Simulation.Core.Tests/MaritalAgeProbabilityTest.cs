@@ -47,8 +47,6 @@ namespace Vs.Simulation.Core.Tests
             var womenList = new Dictionary<int,List<PartnerTypeAge>>();
             var menList = new Dictionary<int, List<PartnerTypeAge>>();
             var collection = new MaritalAgePropabilityCollection();
-            var womenStatus = new List<PartnerTypeAge>();
-            var menStatus = new List<PartnerTypeAge>();
             var femaleAge = Age.FemaleWeights;
             var maleAge = Age.MaleWeights;
 
@@ -85,6 +83,36 @@ namespace Vs.Simulation.Core.Tests
             }
             var export = Frame.FromRecords(collection);
             export.SaveCsv("../../../../../doc/data/maritalAgeProbability.csv");
+
+
+            //Assert
+            int expectedSingleW = 42679;
+            int actualSingleW = womenList[36].Where(p => p == PartnerTypeAge.Single).Count();
+
+            int expectedMarriedW = 92;
+            int actualMarriedW = womenList[18].Where(p => p == PartnerTypeAge.Married).Count();
+
+            int expectedDivorcedW = 741;
+            int actualDivorcedW = womenList[98].Where(p => p == PartnerTypeAge.Divorced).Count();
+
+            int expectedSingleM = 9900;
+            int actualSingleM = menList[67].Where(p => p == PartnerTypeAge.Single).Count();
+
+            int expectedMarriedM = 81637;
+            int actualMarriedM = menList[57].Where(p => p == PartnerTypeAge.Married).Count();
+
+            int expectedDivorcedM = 1603;
+            int actualDivorcedM = menList[30].Where(p => p == PartnerTypeAge.Divorced).Count();
+
+            Assert.Equal(expectedSingleW, actualSingleW);
+            Assert.Equal(expectedMarriedW, actualMarriedW);
+            Assert.Equal(expectedDivorcedW, actualDivorcedW);
+
+            Assert.Equal(expectedSingleM, actualSingleM);
+            Assert.Equal(expectedMarriedM, actualMarriedM);
+            Assert.Equal(expectedDivorcedM, actualDivorcedM);
+
+
         }
     }
 }
