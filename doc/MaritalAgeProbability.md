@@ -37,7 +37,7 @@ You can also see that the amount of single woman is at it's highest the minute t
 In this graph there is also 'missing' information. This is because we decided
 that one first has to become married before they divorce or become a widow/widower. In
 this graph the only thing you see is when they decide to tie the knot.
-
+ 
 #### A graph inculding the dicorcés/divorcées
 ![alt text](./img/SimulatedMaritalAge_Graph.png)
 
