@@ -45,6 +45,7 @@ namespace Vs.Simulation.Core.Probabilities
     {
         Single,
         Married,
-        Partnership
+        Partnership,
+
     }
 }
