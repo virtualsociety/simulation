@@ -19,21 +19,21 @@ namespace Vs.Simulation.Core.Probabilities
         
     }
 
-
+    //MaritalStatus propabilities, for now equally distributed. Weights are being changed in the tests.
+    //The difference between maritalStatus and Marital Status Age is that one provides partnership as chance in general.
+    //Where Marital Status Age provides those statuses with Age as the main variable.
     public static class MaritalStatusAge
     {
-        /// <summary>
-        /// Weight distribution of the probability
-        /// </summary>
+        
+        // Weight distribution of the probability
         public static List<double> Weights { get; set; } = new List<double> { 1, 1, 1 };
-        /// <summary>
         /// A list of sources to select a sample from
-        /// </summary>
+        
         public static List<PartnerTypeAge> Source { get; private set; } = new List<PartnerTypeAge> { PartnerTypeAge.Single, PartnerTypeAge.Married, PartnerTypeAge.Divorced };
 
 
     }
-
+    //PartnertypeAge is for MaritalStatusAge. Divorce is here included as there are no weights for partnerships.
     public enum PartnerTypeAge
     {
         Single,
