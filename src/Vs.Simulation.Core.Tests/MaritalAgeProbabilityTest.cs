@@ -5,14 +5,14 @@ using System.Text;
 using Xunit;
 using System.Linq;
 using Vs.Simulation.Core.Probabilities;
+using Xunit.Extensions.Ordering;
 
 namespace Vs.Simulation.Core.Tests
 {
-
     public class MaritalAgeProbabilityTest
-    {   
-        [Fact]
-        public static void MaritalAgePropability1() 
+    {
+        [Fact, Order(1)]
+        public void MaritalAgePropability()
         {
             //Arrange
             var env = new SimSharp.ThreadSafeSimulation(42);
@@ -29,7 +29,7 @@ namespace Vs.Simulation.Core.Tests
             //Act
             //In here we decide what marital status someone has at a certain age.
             //In our case it goes from 18 to 99 years old.
-            for (int i = 18; i < 100; i++) 
+            for (int i = 18; i < 100; i++)
             {
                 //We made a dictionary for both men and women.
                 womenList.Add(i, new Dictionary<PartnerType, int>());
@@ -48,14 +48,14 @@ namespace Vs.Simulation.Core.Tests
                 //Female age is all the predictated ages of females in 2020.
                 //This can be found in the probability class "Age".
                 //First they get the weights from their age group. And with those weights deciding the results in a randomchoice, they get put into their dictionary.
-                for (int j = 0; j < femaleAge[i]; j++) 
+                for (int j = 0; j < femaleAge[i]; j++)
                 {
                     MaritalStatus.Weights = femaleWeights;
                     womenList[i][env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights)]++;
                 }
 
                 //The exact same happens as stated above in women.
-                for (int j = 0; j < maleAge[i]; j++) 
+                for (int j = 0; j < maleAge[i]; j++)
                 {
                     MaritalStatus.Weights = maleWeights;
                     menList[i][env.RandChoice(MaritalStatus.Source, MaritalStatus.Weights)]++;
@@ -82,31 +82,102 @@ namespace Vs.Simulation.Core.Tests
             //We asserted a few ages to see if the test would keep on the same results as before.
             //For women we used ages 18, 36 and 98 as for men we used 30, 57 and 67.
             Assert.Equal(42679, womenList[36][PartnerType.Single]);
-/*
-            int expectedMarriedW = 92;
-            int actualMarriedW = womenList[18].Where(p => p == PartnerTypeAge.Married).Count();
+            /*
+                        int expectedMarriedW = 92;
+                        int actualMarriedW = womenList[18].Where(p => p == PartnerTypeAge.Married).Count();
 
-            int expectedDivorcedW = 741;
-            int actualDivorcedW = womenList[98].Where(p => p == PartnerTypeAge.Divorced).Count();
+                        int expectedDivorcedW = 741;
+                        int actualDivorcedW = womenList[98].Where(p => p == PartnerTypeAge.Divorced).Count();
 
-            int expectedSingleM = 9900;
-            int actualSingleM = menList[67].Where(p => p == PartnerTypeAge.Single).Count();
+                        int expectedSingleM = 9900;
+                        int actualSingleM = menList[67].Where(p => p == PartnerTypeAge.Single).Count();
 
-            int expectedMarriedM = 81637;
-            int actualMarriedM = menList[57].Where(p => p == PartnerTypeAge.Married).Count();
+                        int expectedMarriedM = 81637;
+                        int actualMarriedM = menList[57].Where(p => p == PartnerTypeAge.Married).Count();
 
-            int expectedDivorcedM = 1603;
-            int actualDivorcedM = menList[30].Where(p => p == PartnerTypeAge.Divorced).Count();
+                        int expectedDivorcedM = 1603;
+                        int actualDivorcedM = menList[30].Where(p => p == PartnerTypeAge.Divorced).Count();
 
 
-            Assert.Equal(expectedMarriedW, actualMarriedW);
-            Assert.Equal(expectedDivorcedW, actualDivorcedW);
+                        Assert.Equal(expectedMarriedW, actualMarriedW);
+                        Assert.Equal(expectedDivorcedW, actualDivorcedW);
 
-            Assert.Equal(expectedSingleM, actualSingleM);
-            Assert.Equal(expectedMarriedM, actualMarriedM);
-            Assert.Equal(expectedDivorcedM, actualDivorcedM);
-*/
+                        Assert.Equal(expectedSingleM, actualSingleM);
+                        Assert.Equal(expectedMarriedM, actualMarriedM);
+                        Assert.Equal(expectedDivorcedM, actualDivorcedM);
+            */
 
+        }
+        [Fact, Order(2)]
+        public void ChildrenProbabilities()
+        {
+            //Arrange
+            var env = new SimSharp.ThreadSafeSimulation(42);
+            Frame<int, string> frame;
+            frame = Frame.ReadCsv($"{Global.GetDataFolder()}maritalAgeProbability.csv");
+            var womenAges = frame.GetColumn<double>("MarriedWomen").Values.Select(c => Convert.ToDouble(c)).ToList();
+            Frame<int, string> MotherData = Frame.ReadCsv("../../../../../doc/data/motherbirthing_ages.csv");
+            List<double> weights;
+            List<double> childChoice;
+            var childAmount = new Dictionary<int, List<double>>();
+
+            var collection = new ChildrenProbabilityCollection();
+            var collectionNew = new ChildrenProbabilityCollection();
+
+            //Act
+            //Here the mothers are randomly assigned to a designated amount of children.
+            //The reults are first put in a list and after that they get sorted.
+            for (int i = 0; i < 32; i++)
+            {
+                childAmount.Add(i, new List<double>());
+                childChoice = new List<double>();
+                int age = i + 18;
+                for (int j = 0; j < womenAges[i]; j++)
+                {
+                    weights = MotherData.GetColumn<double>(Convert.ToString(age)).Values.Select(c => Convert.ToDouble(c)).ToList();
+                    Children.WeightGetChildren = weights;
+                    childChoice.Add(env.RandChoice(Children.SourceGetChildren, Children.WeightGetChildren));
+                }
+
+                var children = childChoice.Where(p => p == 1).Count();
+                //childAmount = new List<double>();
+
+                for (int j = 0; j < children; j++)
+                {
+                    childAmount[i].Add(env.RandChoice(Children.SourceAmountChildren, Children.WeightsAmountChildren));
+                }
+
+                //Here they are getting sorted and added to a new collection
+                collectionNew.Add(new ChildrenProbability()
+                {
+                    Age = age,
+                    childrenAmount = { }
+                    //WomenNoChildren = childChoice.Where(p => p == 0).Count(),
+                    //MotherOfOneAgeFirstBorn = childAmount[i].Where(p => p == 1).Count(),
+                    //MotherOfTwoAgeFirtBorn = childAmount[i].Where(p => p == 2).Count(),
+                    //MotherOfThreeAgeFirstBorn = childAmount[i].Where(p => p == 3).Count(),
+                    //BirthingMothersTotal = children
+                });
+
+            }
+
+            //Both collections get exported out
+            var exportNew = Frame.FromRecords(collectionNew);
+            var export = Frame.FromRecords(collection);
+            exportNew.SaveCsv($"{Global.GetDataFolder()}childrenProbabilityDifferent.csv");
+
+            //Assert
+            int expectedFirstChildren34 = 2564;
+            int actualFirstChildren34 = childAmount[16].Where(p => p == 1).Count();
+            Assert.Equal(expectedFirstChildren34, actualFirstChildren34);
+
+            int expectedSecondChildren18 = 6;
+            int actualSecondChildren18 = childAmount[0].Where(p => p == 2).Count();
+            Assert.Equal(expectedSecondChildren18, actualSecondChildren18);
+
+            int expectedThirdChildren43 = 73;
+            int actualThirdChildren43 = childAmount[25].Where(p => p == 3).Count();
+            Assert.Equal(expectedThirdChildren43, actualThirdChildren43);
         }
     }
 }
