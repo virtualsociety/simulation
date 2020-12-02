@@ -64,7 +64,7 @@ namespace Vs.Simulation.Core.Tests
 
             //Collection is exported into a CSV file saved in the location below.
             var export = Frame.FromRecords(collection);
-            export.SaveCsv("../../../../../doc/data/maritalDurationList.csv");
+            export.SaveCsv($"{Global.GetDataFolder()}maritalDurationList.csv");
 
             
             //Assert

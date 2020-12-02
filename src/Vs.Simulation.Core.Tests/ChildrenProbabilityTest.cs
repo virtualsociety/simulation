@@ -82,7 +82,7 @@ namespace Vs.Simulation.Core.Tests
             //Both collections get exported out
             var exportNew = Frame.FromRecords(collectionNew);
             var export = Frame.FromRecords(collection);
-            exportNew.SaveCsv("../../../../../doc/data/childrenProbabilityDifferent.csv");
+            exportNew.SaveCsv($"{Global.GetDataFolder()}childrenProbabilityDifferent.csv");
 
             //Assert
             int expectedFirstChildren34 = 2564;

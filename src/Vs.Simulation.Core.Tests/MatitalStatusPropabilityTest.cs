@@ -73,7 +73,7 @@ namespace Vs.Simulation.Core.Tests
             }
             //This gets exported into a CSV file which can be located as stated below.
             var export = Frame.FromRecords(collection);
-            export.SaveCsv("../../../../../doc/data/maritalStatusWeights.csv");
+            export.SaveCsv($"{Global.GetDataFolder()}maritalStatusWeights.csv");
         }
     } 
 }

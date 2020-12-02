@@ -76,7 +76,7 @@ namespace Vs.Simulation.Core.Tests
             }
             //Putting the collection into a CSV which can be found in the location stated below.
             var export = Frame.FromRecords(collection);
-            export.SaveCsv("../../../../../doc/data/maritalAgeProbability.csv");
+            export.SaveCsv($"{Global.GetDataFolder()}maritalAgeProbability.csv");
 
             //Assert
             //We asserted a few ages to see if the test would keep on the same results as before.
