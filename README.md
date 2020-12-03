@@ -43,6 +43,7 @@ The following Meta pattern depicts the positioning of virtual society in its Eco
 * [Marital Status](./doc/MaritalStatus.md) probabilities have been modeled.
 * [Marital Duration](./doc/MaritalDuration.md) probabilities have been modeled.
 * [Marital Age Probability](./doc/MaritalAgeProbability.md) probabilities have been modeled.
+* [Children Probability](./doc/ChildrenProbability.md) probabilities have been modeled.
   
 If you want to read more about DES, this is a great paper to start with.
 
