@@ -7,7 +7,7 @@ namespace Vs.Simulation.Core.Tests
     {
         public int Age { get; set; }
 
-        public  int[][][] childrenAmount { get; set; }
+        public  int[][][][] childrenAmount { get; set; }
         //public int WomenNoChildren { get; set; }
         //public int MotherOfOneAgeFirstBorn { get; set; }
         //public int MotherOfTwoAgeFirtBorn { get; set; }

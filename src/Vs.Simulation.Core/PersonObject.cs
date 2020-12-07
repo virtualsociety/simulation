@@ -7,7 +7,7 @@ using Vs.Simulation.Core.Probabilities;
 namespace Vs.Simulation.Core
 {
     /// <summary>
-    /// A person visits serveral life events, as set forward in the Person State Machine.
+    /// A person visits several life events, as set forward in the Person State Machine.
     /// Instantiating a person object marks its birth and death.
     /// </summary>
     public class PersonObject : ActiveObject<SimSharp.Simulation>
@@ -88,8 +88,8 @@ namespace Vs.Simulation.Core
         }
 
         /// <summary>
-        /// The lifecycle of the person runs until age of death has been reached.
-        /// It gets interupted now and then by the Life Events Process.
+        /// The life cycle of the person runs until age of death has been reached.
+        /// It gets interrupted now and then by the Life Events Process.
         /// </summary>
         /// <returns></returns>
         private IEnumerable<Event> LifeCycle()
@@ -101,9 +101,9 @@ namespace Vs.Simulation.Core
             bool stopped = false;
             while (!stopped && !_stopped)
             {
-                // lifecycle process hearbeat
+                // life cycle process heartbeat
 
-                // Angel of Death interrupts thhe lifecycle
+                // Angel of Death interrupts the life cycle
                 if (LifeCycleProcess.HandleFault())
                 {
                     stopped = true;
@@ -111,7 +111,7 @@ namespace Vs.Simulation.Core
             }
         }
 
-        private IEnumerable<Event> Marriage()
+        private IEnumerable<Event> Marriage(SexType sex)
         {
             var m = Environment.RandChoice(MaritalStatus.Source, MaritalStatus.Weights);
             switch (m)
@@ -123,7 +123,15 @@ namespace Vs.Simulation.Core
                 case PartnerType.Partnership:
                     // Schedule marriage within lifespan
                     //yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandNormal(State.Lifespan.Days,0)));
-                    yield return Environment.Timeout(TimeSpan.FromDays(100));
+                    if (sex == SexType.Female) 
+                    { 
+                    yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandChoice(MaritalStatus.SourceMaritalAge, MaritalStatus.FemaleWeightsMaritalAge) * 365));
+                    }
+                    if (sex == SexType.Male)
+                    {
+                        yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandChoice(MaritalStatus.SourceMaritalAge, MaritalStatus.MaleWeightsMaritalAge) * 365));
+                    }
+
                     // Transition state into married
                     if (Person.LifeEvent == LifeEvents.Adult)
                     {
@@ -149,12 +157,12 @@ namespace Vs.Simulation.Core
             // the subject should not be deceased
             if (Person.LifeEvent != LifeEvents.Deceased)
             {
-                Environment.Process(Marriage());
+                Environment.Process(Marriage(Person.Sex));
                 State.Machine.Fire(LifeEventsTriggers.Adulthood);
                 Person.LifeEvent = LifeEvents.Adult;
                 _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
                 Population.Db.People.Update(this.Person);
-                // Schedule for marrital status
+                // Schedule for marital status
             }
         }
     }

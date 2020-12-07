@@ -115,3 +115,18 @@ At the end you can see that we start to split the data up and count them. We cou
 of women who are either married or still single and the same goes for the men. Once this has
 happend for all ages we exported the collection into a CSV file and with the
 results in that file we made the Graphs you have seen earlier.
+
+## Simulation Run First Results
+![alt text](./img/SimulationResults_TestRun_MarriedPerYear.png)
+
+In the graph above you can see 2 different tables. The table on the left shows
+the data that has been generated where the weights are 1:1:1, and on the other side we have
+weights that are 1873469:166220:1. With both graphs you can see that the first
+married pairs are only started to form after a few years. 
+
+The first people born in the simulation are all born in 1920, while in both graphs
+the first married couples appear only by 1949/1951. This means that once they enter
+adulthood they do not immediately go and get coupled up to get married.
+
+This is proof to show that the Age Weights work properly in the simulation. This
+means that we can rely properly on the MaritalAgeProbability numbers.

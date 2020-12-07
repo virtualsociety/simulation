@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Deedle;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Vs.Simulation.Core.Probabilities
 {
@@ -7,19 +10,37 @@ namespace Vs.Simulation.Core.Probabilities
     /// </summary>
     public static class MaritalStatus
     {
+        
+
+
+
         /// <summary>
         /// Weight distribution of the probability
         /// </summary>
-        public static List<double> Weights { get; set; } = new List<double> { 1, 1, 1 };
+        public static List<double> Weights { get; set; } = new List<double> { 1873469, 166220, 1 };
         /// <summary>
         /// A list of sources to select a sample from
         /// </summary>
         public static List<PartnerType> Source { get; private set; } = new List<PartnerType> { PartnerType.Single, PartnerType.Married, PartnerType.Partnership };
 
+        private static Frame<int, string> MaritalAgeData;
+        public static IList<double> SourceMaritalAge;
+        public static IList<double> FemaleWeightsMaritalAge;
+        public static IList<double> MaleWeightsMaritalAge;
         
+
+        static MaritalStatus()
+        {
+            MaritalAgeData = Frame.ReadCsv("../../../../../doc/data/NewMaritalAgeWeights.csv");
+            FemaleWeightsMaritalAge = MaritalAgeData.GetColumn<double>("MarriedWomen").Values.Select(c => Convert.ToDouble(c)).ToList();
+            MaleWeightsMaritalAge = MaritalAgeData.GetColumn<double>("MarriedMen").Values.Select(c => Convert.ToDouble(c)).ToList();
+            SourceMaritalAge = MaritalAgeData.GetColumn<double>("MarriedWomen").Keys.Select(c => Convert.ToDouble(c)).ToList();
+
+        }
+
     }
 
-    //MaritalStatus propabilities, for now equally distributed. Weights are being changed in the tests.
+    //MaritalStatus probabilities, for now equally distributed. Weights are being changed in the tests.
     //The difference between maritalStatus and Marital Status Age is that one provides partnership as chance in general.
     //Where Marital Status Age provides those statuses with Age as the main variable.
     public static class MaritalStatusAge
