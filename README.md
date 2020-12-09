@@ -26,6 +26,30 @@ Click here for an introduction video
 The following Meta pattern depicts the positioning of virtual society in its Eco system.
 ![Metapattern](./doc/img/horizon-virtual-society-eco-system.0.0.1-alpha.2.png)
 
+
+##  BPMN Model of DES Simulation
+The DES Simulation BPMN model depicts the overall simulation process of a synthetic population.
+The simulation persists life events in comma delimited file and reports to the terminal.
+
+![alt text](./doc/img/simulation.svg)
+
+## BPMN Model of DES Person Life Cycle Simulation
+This model depicts the process of how the first prototype of our simulation
+is supposed to work. Once the simulation starts, it will first run through birth
+probabilities to check if there are children that are going to be born.
+Once those children are born they will go through an age process while there is a
+timer ticking by. This means that they could die any moment after the aging
+progress has started.
+
+Once they reach adulthood they can qualify for marriage probability where it will be decided
+whether they will they will get married or stay single. All married wives have the probability
+to get a child. From there on the subprocess birth will start. Which is not the fully same
+as the first child birth process but it is very similar to each other.
+
+![alt text](./doc/img/lifecycle.svg)
+
+
+
 ## Status (in active development)
  
 * An initial whitepaper (in Dutch) about Simulation Driven Development (SDD) within the government has been published
@@ -94,6 +118,7 @@ public PersonState(LifeEvents initialState) : base(initialState)
     Machine.Activate();
 }
 ```
+
 ![States](./doc/img/animation.gif)
 
 Stateless is extended so the states and triggers / flow can be easily visualized in Force Directed Graphs using force graph.
@@ -129,20 +154,3 @@ https://github.com/sjefvanleeuwen/blazor-adminlte
 Plug-ins integration project for Blazorized AdminLte, contains external blazorized components such as BlazorTable for AdminLte. ADMINLTE for Blazor is a collection of reusable components, with which you can easily develop digital services as a designer or developer. Think of buttons, form elements and page templates. This project uses Blazorized ADMINLTE 3 so the plugins are tested against the ADMINLTE layouts and interactions.
 <br />
 https://github.com/sjefvanleeuwen/blazorized-adminlte-plugins
-
-
-
-## BPMN Model of virtual Society
-![alt text](./doc/img/lifecycle.svg)
-
-In model above you can see the process of how the first prototype of our simulation
-is supposed to work. Once the program starts, it will first run through birth
-probabilities to check if there are children that are going to be born.
-Once those children are born they will go through an age process while there is a
-timer ticking by. This means that they could die any moment after the aging
-progress has started.
-
-Once they reach adulthood they can qualify for marriage probability where it will be decided
-whether they will they will get married or stay single. All married wives have the probability
-to get a child. From there on the subprocess birth will start. Which is not the fully same
-as the first child birth process but it is very similar to each other.
