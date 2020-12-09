@@ -129,3 +129,20 @@ https://github.com/sjefvanleeuwen/blazor-adminlte
 Plug-ins integration project for Blazorized AdminLte, contains external blazorized components such as BlazorTable for AdminLte. ADMINLTE for Blazor is a collection of reusable components, with which you can easily develop digital services as a designer or developer. Think of buttons, form elements and page templates. This project uses Blazorized ADMINLTE 3 so the plugins are tested against the ADMINLTE layouts and interactions.
 <br />
 https://github.com/sjefvanleeuwen/blazorized-adminlte-plugins
+
+
+
+## BPMN Model of virtual Society
+![alt text](./doc/img/lifecycle.svg)
+
+In model above you can see the process of how the first prototype of our simulation
+is supposed to work. Once the program starts, it will first run through birth
+probabilities to check if there are children that are going to be born.
+Once those children are born they will go through an age process while there is a
+timer ticking by. This means that they could die any moment after the aging
+progress has started.
+
+Once they reach adulthood they can qualify for marriage probability where it will be decided
+whether they will they will get married or stay single. All married wives have the probability
+to get a child. From there on the subprocess birth will start. Which is not the fully same
+as the first child birth process but it is very similar to each other.
