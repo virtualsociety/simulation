@@ -43,7 +43,9 @@ namespace Vs.Simulation.Core
             Name = name;
             SimTime = simTime;
             // Start the birth process
-            Process = Environment.Process(BirthProcess());
+            //Process = Environment.Process(BirthProcess());
+            Process = Environment.Process(WarmupProcess());
+            //Process = Environment.Process(BirthProcess());
         }
 
         /// <summary>
@@ -67,15 +69,16 @@ namespace Vs.Simulation.Core
         private IEnumerable<Event> WarmupProcess() 
         {
             int i = 0;
-            while (true)
-            {
-                // Start creating a new baby.
-                
-                yield return Environment.Timeout(TimeSpan.Zero);
-                // start a new persons lifecycle and add the person to the list for later reporting.
-                Persons.Add(new PersonObject(i, Environment, SimTime));
-                i++;
-            }
+            //while (true)
+           // {
+                while (i < 4000)
+                {
+                    yield return Environment.Timeout(TimeSpan.FromSeconds(1));
+                    // start a new persons lifecycle and add the person to the list for later reporting.
+                    Persons.Add(new PersonObject(i, Environment, SimTime));
+                    i++;
+                }
+           // }
         }
     }
 }

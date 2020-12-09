@@ -16,7 +16,7 @@ namespace Vs.Simulation.Terminal
         /// <summary>
         /// Simulation time in Days
         /// </summary>
-        public static readonly TimeSpan SimTime = TimeSpan.FromDays(68 * 365);
+        public static readonly TimeSpan SimTime = TimeSpan.FromDays(69 * 365);
 
         /// <summary>
         /// Active object in the simulation, representing the population.

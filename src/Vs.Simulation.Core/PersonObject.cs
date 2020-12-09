@@ -66,7 +66,7 @@ namespace Vs.Simulation.Core
             Person.Sex = environment.RandChoice(Sex.Source, Sex.Weights);
             setAge();
             Person.DateOfBirth = environment.Now - Person.Lifespan;
-            _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
+            _events.Add(new StateEvent<LifeEvents>(Person.Id, Person.DateOfBirth, State.Machine.State));
             if (!finnishHandle)
             {
                 finnishHandle = true;
@@ -228,7 +228,7 @@ namespace Vs.Simulation.Core
 
         private void SetAdulthood() 
         {
-            if (Person.LifeEvent != LifeEvents.Deceased)
+            if (Person.LifeEvent != LifeEvents.Deceased && Person.LifeEvent != LifeEvents.Adult)
             {
                 State.Machine.Fire(LifeEventsTriggers.Adulthood);
                 Person.LifeEvent = LifeEvents.Adult;
