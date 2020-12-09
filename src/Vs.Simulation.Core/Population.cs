@@ -63,5 +63,19 @@ namespace Vs.Simulation.Core
                 i++;
             }
         }
+
+        private IEnumerable<Event> WarmupProcess() 
+        {
+            int i = 0;
+            while (true)
+            {
+                // Start creating a new baby.
+                
+                yield return Environment.Timeout(TimeSpan.Zero);
+                // start a new persons lifecycle and add the person to the list for later reporting.
+                Persons.Add(new PersonObject(i, Environment, SimTime));
+                i++;
+            }
+        }
     }
 }
