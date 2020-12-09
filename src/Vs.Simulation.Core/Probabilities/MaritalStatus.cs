@@ -10,14 +10,16 @@ namespace Vs.Simulation.Core.Probabilities
     /// </summary>
     public static class MaritalStatus
     {
-        
+       //public static double Singles { get; set; }
+       //public static double Married { get; set; }
+       //public static double Partnerships { get; set; }
 
 
 
         /// <summary>
         /// Weight distribution of the probability
         /// </summary>
-        public static List<double> Weights { get; set; } = new List<double> { 1873469, 166220, 1 };
+        public static List<double> Weights { get; set; } = new List<double> { 1, 1, 1 };
         /// <summary>
         /// A list of sources to select a sample from
         /// </summary>
@@ -27,7 +29,12 @@ namespace Vs.Simulation.Core.Probabilities
         public static IList<double> SourceMaritalAge;
         public static IList<double> FemaleWeightsMaritalAge;
         public static IList<double> MaleWeightsMaritalAge;
-        
+
+        private static Frame<int, string>MaritalStatusData;
+        public static IList<double> WeightsSingles;
+        public static IList<double> WeightsMarried;
+        public static IList<double> WeightsPartnership;
+
 
         static MaritalStatus()
         {
@@ -36,6 +43,11 @@ namespace Vs.Simulation.Core.Probabilities
             MaleWeightsMaritalAge = MaritalAgeData.GetColumn<double>("MarriedMen").Values.Select(c => Convert.ToDouble(c)).ToList();
             SourceMaritalAge = MaritalAgeData.GetColumn<double>("MarriedWomen").Keys.Select(c => Convert.ToDouble(c)).ToList();
 
+
+            MaritalStatusData = Frame.ReadCsv("../../../../../doc/data/marital_status.csv");
+            WeightsSingles = MaritalStatusData.GetColumn<double>("Ongehuwden").Values.Select(c => Convert.ToDouble(c)).ToList();
+            WeightsMarried = MaritalStatusData.GetColumn<double>("Gehuwden").Values.Select(c => Convert.ToDouble(c)).ToList();
+            WeightsPartnership = MaritalStatusData.GetColumn<double>("Partnerschappen").Values.Select(c => Convert.ToDouble(c)).ToList();
         }
 
     }
