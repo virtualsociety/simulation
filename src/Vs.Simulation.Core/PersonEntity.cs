@@ -1,9 +1,10 @@
 ﻿using System;
+using Vs.Simulation.Core.Database;
 using Vs.Simulation.Core.Probabilities;
 
 namespace Vs.Simulation.Core
 {
-    public class PersonEntity
+    public class PersonEntity : IIdentifiable
     {
         public int Id { get; set; }
         public DateTime DateOfBirth { get; set; }
