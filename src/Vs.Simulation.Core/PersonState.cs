@@ -54,11 +54,11 @@ namespace Vs.Simulation.Core
 
     public class StateEvent<T>
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime DateTime { get; set; }
         public T State { get; set; }
 
-        public StateEvent(int id, DateTime dataTime, T state)
+        public StateEvent(long id, DateTime dataTime, T state)
         {
             Id = id;
             DateTime = dataTime;

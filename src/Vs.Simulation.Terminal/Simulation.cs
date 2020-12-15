@@ -33,7 +33,7 @@ namespace Vs.Simulation.Terminal
             var startPerf = DateTime.UtcNow.AddYears(-1);
             env.Run(SimTime);
             var perf = DateTime.UtcNow.AddYears(-1) - startPerf;
-            // Analyis / results
+            // Analysis / results
             env.Log("Population results after {0} days.", (env.Now - start).TotalDays);
             env.Log("Population {0} has {1} babies born.", population.Name, Population.Db.People.Count);
             env.Log(string.Empty);
@@ -42,7 +42,7 @@ namespace Vs.Simulation.Terminal
             // Create data frames for reporting to csv for tooling such as excel.
             env.Log("Selecting Males");
             var males = from p in Population.Db.People
-                        where p.Sex == SexType.Male
+                        where p.Gender == GenderType.Male
                         select new
                         {
                             p.Id,
@@ -54,7 +54,7 @@ namespace Vs.Simulation.Terminal
             env.Log("Males {0}", males.Count());
             env.Log("Selecting Females");
             var females = from p in Population.Db.People
-                        where p.Sex == SexType.Female
+                        where p.Gender == GenderType.Female
                         select new
                         {
                             p.Id,

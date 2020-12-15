@@ -7,7 +7,7 @@ namespace Vs.Simulation.Core.Probabilities
     /// and scientific literature often cite a sex ratio at conception of 1.27, or 127 boys for every 100 girls.
     /// https://www.cbs.nl/nl-nl/visualisaties/bevolkingspiramide
     /// </summary>
-    public static class Sex
+    public static class Gender
     {
         /// <summary>
         /// Weight distribution of the probability
@@ -16,14 +16,14 @@ namespace Vs.Simulation.Core.Probabilities
         /// <summary>
         /// A list of sources to select a sample from
         /// </summary>
-        public static List<SexType> Source { get; private set; } = new List<SexType> { SexType.Male, SexType.Female };
+        public static List<GenderType> Source { get; private set; } = new List<GenderType> { GenderType.Male, GenderType.Female };
 
     }
 
     /// <summary>
     /// Sex types
     /// </summary>
-    public enum SexType {
+    public enum GenderType {
             Male,
             Female
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Vs.Simulation.Core.Database;
 
 namespace Vs.Simulation.Core
@@ -28,13 +29,21 @@ namespace Vs.Simulation.Core
         public TimeSpan SimTime { get; }
 
         /// <summary>
-        /// The main process thread of the simulation, which can be interupted.
+        /// The main process thread of the simulation, which can be interrupted.
         /// </summary>
         public Process Process { get; private set; }
         /// <summary>
         /// Population containing all person simulation subjects and their state.
         /// </summary>
         public static List<PersonObject> Persons { get; private set; } = new List<PersonObject>();
+
+        private static long _counter = 0;
+
+        public static long Counter() 
+        {
+
+            return Interlocked.Increment(ref _counter);
+        }
 
         public Population(SimSharp.Simulation env, string name, TimeSpan simTime)
           : base(env)
@@ -60,7 +69,7 @@ namespace Vs.Simulation.Core
                 // Start creating a new baby.
                 var doneIn = Environment.RandNormalPositive(BirthMean, BirthSigma);
                 yield return Environment.Timeout(doneIn);
-                // start a new persons lifecycle and add the person to the list for later reporting.
+                // start a new persons life cycle and add the person to the list for later reporting.
                 Persons.Add(new PersonObject(i, Environment, SimTime));
                 i++;
             }
@@ -71,14 +80,23 @@ namespace Vs.Simulation.Core
             int i = 0;
             //while (true)
            // {
-                while (i < 4000)
+                while (i < 1000)
                 {
                     yield return Environment.Timeout(TimeSpan.FromSeconds(1));
-                    // start a new persons lifecycle and add the person to the list for later reporting.
+                    // start a new persons life cycle and add the person to the list for later reporting.
                     Persons.Add(new PersonObject(i, Environment, SimTime));
                     i++;
                 }
            // }
         }
+
+        //int i = 166558;
+        //public IEnumerable<Event> BirthSubProcess() 
+        //{
+        //
+        //    Persons.Add(new PersonObject(i, Environment, SimTime));
+        //    i++;
+        //    yield return Environment.Timeout(TimeSpan.FromDays(2 * 365));
+        //}
     }
 }

@@ -6,9 +6,9 @@ namespace Vs.Simulation.Core
 {
     public class PersonEntity : IIdentifiable
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public SexType Sex { get; set; }
+        public GenderType Gender { get; set; }
         public LifeEvents LifeEvent { get; set; }
 
         public DateTime DateOfDeath { get; set; }
