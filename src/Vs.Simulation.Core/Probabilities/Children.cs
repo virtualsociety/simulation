@@ -20,6 +20,7 @@ namespace Vs.Simulation.Core.Probabilities
         public static IList<double> AgeBirthMotherWeights;
         public static IList<double> AgeNotABirthMothersWeights;
         private static Frame<int, string> MotherData;
+       
         static Children()
         {
             MotherData = Frame.ReadCsv("../../../../../doc/data/motherbirthing_ages.csv");

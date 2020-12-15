@@ -39,64 +39,39 @@ namespace Vs.Simulation.Core
 
         private static long _counter = 0;
 
+        /// <summary>
+        /// Thread safe counter for person id's.
+        /// </summary>
+        /// <returns></returns>
         public static long Counter() 
         {
 
             return Interlocked.Increment(ref _counter);
         }
 
+        /// <summary>
+        /// Creates a new population initiating a warm up process, which then transitions into pseudo real time simulation.
+        /// </summary>
+        /// <param name="env"></param>
+        /// <param name="name"></param>
+        /// <param name="simTime"></param>
         public Population(SimSharp.Simulation env, string name, TimeSpan simTime)
           : base(env)
         {
             Db = new PopulationDb();
             Name = name;
             SimTime = simTime;
-            // Start the birth process
-            //Process = Environment.Process(BirthProcess());
             Process = Environment.Process(WarmupProcess());
-            //Process = Environment.Process(BirthProcess());
         }
 
-        /// <summary>
-        ///  Produce babies as long as the simulation runs.
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerable<Event> BirthProcess()
+        private IEnumerable<Event> WarmupProcess()
         {
-            int i = 0;
-            while (true)
+            while (_counter < 1000)
             {
-                // Start creating a new baby.
-                var doneIn = Environment.RandNormalPositive(BirthMean, BirthSigma);
-                yield return Environment.Timeout(doneIn);
+                yield return Environment.Timeout(TimeSpan.FromSeconds(1));
                 // start a new persons life cycle and add the person to the list for later reporting.
-                Persons.Add(new PersonObject(i, Environment, SimTime));
-                i++;
+                Persons.Add(new PersonObject(Counter(), Environment, SimTime));
             }
         }
-
-        private IEnumerable<Event> WarmupProcess() 
-        {
-            int i = 0;
-            //while (true)
-           // {
-                while (i < 1000)
-                {
-                    yield return Environment.Timeout(TimeSpan.FromSeconds(1));
-                    // start a new persons life cycle and add the person to the list for later reporting.
-                    Persons.Add(new PersonObject(i, Environment, SimTime));
-                    i++;
-                }
-           // }
-        }
-
-        //int i = 166558;
-        //public IEnumerable<Event> BirthSubProcess() 
-        //{
-        //
-        //    Persons.Add(new PersonObject(i, Environment, SimTime));
-        //    i++;
-        //    yield return Environment.Timeout(TimeSpan.FromDays(2 * 365));
-        //}
     }
 }

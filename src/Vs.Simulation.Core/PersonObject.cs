@@ -39,24 +39,7 @@ namespace Vs.Simulation.Core
         public Process DeathProcess { get; set; }
 
         private Process AdultProcess { get; set; }
-
-        //public PersonObject(int id, SimSharp.Simulation environment, TimeSpan simTime) : base(environment)
-        //{
-        //    Person.Id = id;
-        //    SimTime = simTime;
-        //    State = new PersonState(LifeEvents.Born);
-        //    Person.Sex = environment.RandChoice(Sex.Source, Sex.Weights);
-        //    Person.DateOfBirth = environment.Now;
-        //    _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
-        //    if (!finnishHandle)
-        //    {
-        //        finnishHandle = true;
-        //        Environment.RunFinished += Environment_RunFinished;
-        //    }
-        //    LifeCycleProcess = Environment.Process(LifeCycle());
-        //    Population.Db.People.Insert(this.Person);
-        //
-        //}
+        private Process BirthProcess { get; set; }
 
         public PersonObject(long id, SimSharp.Simulation environment, TimeSpan simTime) : base(environment)
         {
@@ -78,7 +61,6 @@ namespace Vs.Simulation.Core
        
         }
 
-
         static bool finnishHandle;
         static bool _stopped;
 
@@ -98,21 +80,6 @@ namespace Vs.Simulation.Core
             {
                 Person.Lifespan = TimeSpan.FromDays(1 + Environment.RandChoice(Age.FemaleSource, Age.FemaleWeights) * 365);
             }
-        }
-
-        private IEnumerable<Event> Death()
-        {
-            setAge();
-            Population.Db.People.Update(this.Person);
-
-            yield return Environment.Timeout(Person.Lifespan);
-            LifeCycleProcess.Interrupt();
-            State.Machine.Fire(LifeEventsTriggers.Die);
-            Person.LifeEvent = LifeEvents.Deceased;
-            _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
-            Person.DateOfDeath = Environment.Now;
-            Population.Db.People.Update(this.Person);
-
         }
 
         /// <summary>
@@ -149,6 +116,56 @@ namespace Vs.Simulation.Core
             }
         }
 
+        /// <summary>
+        /// Schedule and evaluate addult-hood and marriage process
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<Event> Adult()
+        {
+            // #1 schedule adulthood, the subject reaches 18 years (legal age)
+            yield return Environment.Timeout(TimeSpan.FromDays((Person.DateOfBirth.AddYears(18).Date - Person.DateOfBirth).TotalDays));
+            // the subject should not be deceased
+            SetAdulthood();
+            EvaluateMarriageProcess();
+        }
+
+        private void SetAdulthood()
+        {
+            if (Person.LifeEvent != LifeEvents.Deceased && Person.LifeEvent != LifeEvents.Adult)
+            {
+                State.Machine.Fire(LifeEventsTriggers.Adulthood);
+                Person.LifeEvent = LifeEvents.Adult;
+                _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
+                Population.Db.People.Update(this.Person);
+            }
+
+        }
+
+        private void EvaluateMarriageProcess()
+        {
+            if (Person.LifeEvent != LifeEvents.Deceased)
+            {
+                //Schedule for a Marriage
+                Environment.Process(Marriage());
+
+            }
+        }
+
+
+        private IEnumerable<Event> Death()
+        {
+            setAge();
+            Population.Db.People.Update(this.Person);
+
+            yield return Environment.Timeout(Person.Lifespan);
+            LifeCycleProcess.Interrupt();
+            State.Machine.Fire(LifeEventsTriggers.Die);
+            Person.LifeEvent = LifeEvents.Deceased;
+            _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
+            Person.DateOfDeath = Environment.Now;
+            Population.Db.People.Update(this.Person);
+        }
+
         private IEnumerable<Event> Marriage()
         {
             int year = Environment.Now.Year;
@@ -161,27 +178,25 @@ namespace Vs.Simulation.Core
             var m = Environment.RandChoice(MaritalStatus.Source, MaritalStatus.Weights);
             switch (m)
             {
-                //case PartnerType.Single:
-                //    yield return Environment.Timeout(TimeSpan.FromSeconds(0));
-                //    break;
                 case PartnerType.Married:
                 case PartnerType.Partnership:
-                    // Schedule marriage within lifespan
-                    //yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandNormal(State.Lifespan.Days,0)));
+
                     if (Person.Gender == GenderType.Female) 
-                    { 
+                    {
+                        // Schedule marriage within lifespan
                         yield return Environment.Timeout(TimeSpan.FromDays(
                             Environment.RandChoice(MaritalStatus.SourceMaritalAge,
                             MaritalStatus.FemaleWeightsMaritalAge) * 365));
-                        
+                        // For woman we Schedule Births
+                        Environment.Process(ChildBirth());
                     }
                     if (Person.Gender == GenderType.Male)
                     {
+                        // Schedule marriage within lifespan
                         yield return Environment.Timeout(TimeSpan.FromDays(
-                            Environment.RandChoice(MaritalStatus.SourceMaritalAge,
+                        Environment.RandChoice(MaritalStatus.SourceMaritalAge,
                             MaritalStatus.MaleWeightsMaritalAge) * 365));
                     }
-
                     // Transition state into married
                     if (Person.LifeEvent == LifeEvents.Adult)
                     {
@@ -200,64 +215,28 @@ namespace Vs.Simulation.Core
             }
         }
 
-        private IEnumerable<Event> Adult()
-        {
-            // #1 schedule adulthood, the subject reaches 18 years (legal age)
-            yield return Environment.Timeout(TimeSpan.FromDays((Person.DateOfBirth.AddYears(18).Date - Person.DateOfBirth).TotalDays));
-            // the subject should not be deceased
-            SetAdulthood();
-            EvaluateMarriageProcess();
-            
-        }
-
-        private void EvaluateMarriageProcess() 
-        {
-            if (Person.LifeEvent != LifeEvents.Deceased)
-            {
-                //Schedule for a Marriage
-                Environment.Process(Marriage());
-
-            }
-        }
-
-        private void SetAdulthood() 
-        {
-            if (Person.LifeEvent != LifeEvents.Deceased && Person.LifeEvent != LifeEvents.Adult)
-            {
-                State.Machine.Fire(LifeEventsTriggers.Adulthood);
-                Person.LifeEvent = LifeEvents.Adult;
-                _events.Add(new StateEvent<LifeEvents>(Person.Id, Environment.Now, State.Machine.State));
-                Population.Db.People.Update(this.Person);
-            }
-            
-        }
-
-        
         private IEnumerable<Event> ChildBirth()
         {
-            if (Person.Gender == GenderType.Female)
+            int ageIndex = (Person.Lifespan.Days - (18 * 365)) / 365;
+            List<double> weights = new List<double>();
+            weights.Add(Children.AgeNotABirthMothersWeights[ageIndex]);
+            weights.Add(Children.AgeBirthMotherWeights[ageIndex]);
+            Children.WeightGetChildren = weights;
+            var childrenChance = Environment.RandChoice(Children.SourceGetChildren, Children.SourceGetChildren);
+            
+            if (childrenChance == 1)
             {
-                int ageIndex = (Person.Lifespan.Days - (18 * 365)) / 365;
-                List<double> weights = new List<double>();
-                weights.Add(Children.AgeNotABirthMothersWeights[ageIndex]);
-                weights.Add(Children.AgeBirthMotherWeights[ageIndex]);
-                Children.WeightGetChildren = weights;
-                var childrenChance = Environment.RandChoice(Children.SourceGetChildren, Children.SourceGetChildren);
-
-                if (childrenChance == 1)
+                var childAmount = Environment.RandChoice(Children.SourceAmountChildren, Children.WeightsAmountChildren);
+            
+                for (int i = 0; i < childAmount; i++) 
                 {
-                    var childAmount = Environment.RandChoice(Children.SourceAmountChildren, Children.WeightsAmountChildren);
-
-                    for (int i = 0; i < childAmount; i++) 
-                    {
-                        Population.Persons.Add(new PersonObject(Population.Counter(), Environment, SimTime));
-                        yield return Environment.Timeout(new TimeSpan(2 * 365));
-                    }
+                    var child = new PersonObject(Population.Counter(), Environment, SimTime);
+                    child.State.Parents.Add(this);
+                    Population.Persons.Add(child);
+                    State.Sibblings.Add(child);
+                    yield return Environment.Timeout(new TimeSpan(2 * 365));
                 }
-
-
             }
-           
         }
     }
 }
