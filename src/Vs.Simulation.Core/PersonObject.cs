@@ -91,7 +91,7 @@ namespace Vs.Simulation.Core
         {
             //To DO: Check Age, some may already be an adult due to warm up process
             //Schedule: Marriage Process instead
-            if (Person.Age > 18) 
+            if (Person.SimulationAge > 18) 
             {
                 EvaluateMarriageProcess();
             }
@@ -123,7 +123,8 @@ namespace Vs.Simulation.Core
         private IEnumerable<Event> Adult()
         {
             // #1 schedule adulthood, the subject reaches 18 years (legal age)
-            yield return Environment.Timeout(TimeSpan.FromDays((Person.DateOfBirth.AddYears(18).Date - Person.DateOfBirth).TotalDays));
+            yield return Environment.Timeout(TimeSpan.FromDays(18*365));
+            //yield return Environment.Timeout(TimeSpan.FromDays((Person.DateOfBirth.AddYears(18).Date - Person.DateOfBirth).TotalDays));
             // the subject should not be deceased
             SetAdulthood();
             EvaluateMarriageProcess();
@@ -188,7 +189,7 @@ namespace Vs.Simulation.Core
                             Environment.RandChoice(MaritalStatus.SourceMaritalAge,
                             MaritalStatus.FemaleWeightsMaritalAge) * 365));
                         // For woman we Schedule Births
-                        if (Person.Age < 49)
+                        if (Person.SimulationAge < 49)
                         {
                             Environment.Process(ChildBirth());
                         }
@@ -222,11 +223,9 @@ namespace Vs.Simulation.Core
         {
             if (Person.LifeEvent != LifeEvents.Deceased)
             {
-                int ageIndex = (Person.Lifespan.Days - (18 * 365)) / 365;
                 List<double> weights = new List<double>();
-
-                weights.Add(Children.AgeBirthMotherWeights[ageIndex]);
-                weights.Add(Children.AgeNotABirthMothersWeights[ageIndex]);
+                weights.Add(Children.AgeBirthMotherWeights[(int)Person.SimulationAge-18]);
+                weights.Add(Children.AgeNotABirthMothersWeights[(int)Person.SimulationAge - 18]);
                 Children.WeightGetChildren = weights;
                 var childrenChance = Environment.RandChoice(Children.SourceGetChildren, Children.SourceGetChildren);
 

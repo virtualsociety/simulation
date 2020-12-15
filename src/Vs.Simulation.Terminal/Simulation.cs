@@ -29,7 +29,7 @@ namespace Vs.Simulation.Terminal
             var start = new DateTime(1950, 2, 1);
             var env = new SimSharp.ThreadSafeSimulation(start, rseed);
             env.Log("== Population ==");
-            var population = new Population(env, "Virtual Society", SimTime);
+            var population = new Population(env, "Virtual Society", SimTime, 3200);
             var startPerf = DateTime.UtcNow.AddYears(-1);
             env.Run(SimTime);
             var perf = DateTime.UtcNow.AddYears(-1) - startPerf;

@@ -22,11 +22,15 @@ namespace Vs.Simulation.Core
         /// Sigma of processing time
         /// </summary>
         private static readonly TimeSpan BirthSigma = TimeSpan.FromMinutes(1);
+
+        public static SimSharp.Simulation Env { get; private set; }
+
         /// <summary>
         /// Name of the simulation
         /// </summary>
         public string Name { get; private set; }
         public TimeSpan SimTime { get; }
+        public int Size { get; }
 
         /// <summary>
         /// The main process thread of the simulation, which can be interrupted.
@@ -55,18 +59,20 @@ namespace Vs.Simulation.Core
         /// <param name="env"></param>
         /// <param name="name"></param>
         /// <param name="simTime"></param>
-        public Population(SimSharp.Simulation env, string name, TimeSpan simTime)
+        public Population(SimSharp.Simulation env, string name, TimeSpan simTime, int size)
           : base(env)
         {
             Db = new PopulationDb();
+            Env = env;
             Name = name;
             SimTime = simTime;
+            Size = size;
             Process = Environment.Process(WarmupProcess());
         }
 
         private IEnumerable<Event> WarmupProcess()
         {
-            while (_counter < 1000)
+            while (_counter < Size)
             {
                 yield return Environment.Timeout(TimeSpan.FromSeconds(1));
                 // start a new persons life cycle and add the person to the list for later reporting.

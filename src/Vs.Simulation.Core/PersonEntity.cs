@@ -14,12 +14,29 @@ namespace Vs.Simulation.Core
         public DateTime DateOfDeath { get; set; }
         public TimeSpan Lifespan { get; set; }
 
-        public double Age
+        /// <summary>
+        /// Use during simulation evaluates constantly based on simulation time.
+        /// </summary>
+        public double SimulationAge
         {
             get
             {
-                return Lifespan.Days / 365;
+                return (Population.Env.Now - DateOfBirth).TotalDays / 365;
             }
+            set
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Use for Reporting, this is a static age defined by lifespan.
+        /// </summary>
+        public double Age { 
+            get
+            {
+                return Lifespan.Days / 365;
+            } 
             set
             {
 
