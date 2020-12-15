@@ -30,8 +30,8 @@ namespace Vs.Simulation.Core
         }
 
         public List<PersonObject> Partners { get; set; } = new List<PersonObject>();
-        public List<PersonObject> Sibblings { get; set; }
-        public List<PersonObject> Parents { get; set; }
+        public List<PersonObject> Sibblings { get; set; } = new List<PersonObject>();
+        public List<PersonObject> Parents { get; set; } = new List<PersonObject>();
     }
 
     public enum LifeEvents

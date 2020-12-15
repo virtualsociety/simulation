@@ -188,7 +188,10 @@ namespace Vs.Simulation.Core
                             Environment.RandChoice(MaritalStatus.SourceMaritalAge,
                             MaritalStatus.FemaleWeightsMaritalAge) * 365));
                         // For woman we Schedule Births
-                        Environment.Process(ChildBirth());
+                        if (Person.Age < 49)
+                        {
+                            Environment.Process(ChildBirth());
+                        }
                     }
                     if (Person.Gender == GenderType.Male)
                     {
@@ -217,25 +220,28 @@ namespace Vs.Simulation.Core
 
         private IEnumerable<Event> ChildBirth()
         {
-            int ageIndex = (Person.Lifespan.Days - (18 * 365)) / 365;
-            List<double> weights = new List<double>();
-            
-            weights.Add(Children.AgeBirthMotherWeights[ageIndex]);
-            weights.Add(Children.AgeNotABirthMothersWeights[ageIndex]);
-            Children.WeightGetChildren = weights;
-            var childrenChance = Environment.RandChoice(Children.SourceGetChildren, Children.SourceGetChildren);
-            
-            if (childrenChance == 1)
+            if (Person.LifeEvent != LifeEvents.Deceased)
             {
-                var childAmount = Environment.RandChoice(Children.SourceAmountChildren, Children.WeightsAmountChildren);
-            
-                for (int i = 0; i < childAmount; i++) 
+                int ageIndex = (Person.Lifespan.Days - (18 * 365)) / 365;
+                List<double> weights = new List<double>();
+
+                weights.Add(Children.AgeBirthMotherWeights[ageIndex]);
+                weights.Add(Children.AgeNotABirthMothersWeights[ageIndex]);
+                Children.WeightGetChildren = weights;
+                var childrenChance = Environment.RandChoice(Children.SourceGetChildren, Children.SourceGetChildren);
+
+                if (childrenChance == 1)
                 {
-                    var child = new PersonObject(Population.Counter(), Environment, SimTime);
-                    child.State.Parents.Add(this);
-                    Population.Persons.Add(child);
-                    State.Sibblings.Add(child);
-                    yield return Environment.Timeout(new TimeSpan(2 * 365));
+                    var childAmount = Environment.RandChoice(Children.SourceAmountChildren, Children.WeightsAmountChildren);
+
+                    for (int i = 0; i < childAmount; i++)
+                    {
+                        var child = new PersonObject(Population.Counter(), Environment, SimTime);
+                        child.State.Parents.Add(this);
+                        Population.Persons.Add(child);
+                        State.Sibblings.Add(child);
+                        yield return Environment.Timeout(new TimeSpan(2 * 365));
+                    }
                 }
             }
         }
