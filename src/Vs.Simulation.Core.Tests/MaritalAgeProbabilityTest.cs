@@ -7,6 +7,7 @@ using System.Linq;
 using Vs.Simulation.Core.Probabilities;
 using Xunit.Extensions.Ordering;
 
+
 namespace Vs.Simulation.Core.Tests
 {
     public class MaritalAgeProbabilityTest
@@ -82,30 +83,12 @@ namespace Vs.Simulation.Core.Tests
             //We asserted a few ages to see if the test would keep on the same results as before.
             //For women we used ages 18, 36 and 98 as for men we used 30, 57 and 67.
             Assert.Equal(42679, womenList[36][PartnerType.Single]);
-            /*
-                        int expectedMarriedW = 92;
-                        int actualMarriedW = womenList[18].Where(p => p == PartnerTypeAge.Married).Count();
-
-                        int expectedDivorcedW = 741;
-                        int actualDivorcedW = womenList[98].Where(p => p == PartnerTypeAge.Divorced).Count();
-
-                        int expectedSingleM = 9900;
-                        int actualSingleM = menList[67].Where(p => p == PartnerTypeAge.Single).Count();
-
-                        int expectedMarriedM = 81637;
-                        int actualMarriedM = menList[57].Where(p => p == PartnerTypeAge.Married).Count();
-
-                        int expectedDivorcedM = 1603;
-                        int actualDivorcedM = menList[30].Where(p => p == PartnerTypeAge.Divorced).Count();
-
-
-                        Assert.Equal(expectedMarriedW, actualMarriedW);
-                        Assert.Equal(expectedDivorcedW, actualDivorcedW);
-
-                        Assert.Equal(expectedSingleM, actualSingleM);
-                        Assert.Equal(expectedMarriedM, actualMarriedM);
-                        Assert.Equal(expectedDivorcedM, actualDivorcedM);
-            */
+            Assert.Equal(92, womenList[18][PartnerType.Married]);
+            Assert.Equal(741, womenList[98][PartnerType.Partnership]);
+            Assert.Equal(9900, menList[67][PartnerType.Single]);
+            Assert.Equal(81637, menList[57][PartnerType.Married]);
+            Assert.Equal(1603, menList[30][PartnerType.Partnership]);
+     
 
         }
         [Fact, Order(2)]
@@ -119,8 +102,7 @@ namespace Vs.Simulation.Core.Tests
             Frame<int, string> MotherData = Frame.ReadCsv("../../../../../doc/data/motherbirthing_ages.csv");
             List<double> weights;
             List<double> childChoice;
-            var childAmount = new Dictionary<int, List<double>>();
-
+            var childAmount = new Dictionary<int, List<double>>(); 
             var collection = new ChildrenProbabilityCollection();
             var collectionNew = new ChildrenProbabilityCollection();
 
@@ -132,9 +114,9 @@ namespace Vs.Simulation.Core.Tests
                 childAmount.Add(i, new List<double>());
                 childChoice = new List<double>();
                 int age = i + 18;
+                weights = MotherData.GetColumn<double>(Convert.ToString(age)).Values.Select(c => Convert.ToDouble(c)).ToList();
                 for (int j = 0; j < womenAges[i]; j++)
                 {
-                    weights = MotherData.GetColumn<double>(Convert.ToString(age)).Values.Select(c => Convert.ToDouble(c)).ToList();
                     Children.WeightGetChildren = weights;
                     childChoice.Add(env.RandChoice(Children.SourceGetChildren, Children.WeightGetChildren));
                 }

@@ -49,7 +49,7 @@ namespace Vs.Simulation.Core.Tests
             //The married couples are randomly assigned into a marital duration list, using the duration weights given in the "MaritalDuration" class
             for (int i = 0; i < 3217582; i++) 
             {
-                coupleList.Add(env.RandChoice(MaritalDuration.DurationSource, MaritalDuration.DurationWeights));
+                coupleList.Add(env.RandChoice(DivorceProbability.DivorceRateSource, DivorceProbability.DivorceRateWeights));
             }
             //The couples are sorted into a collection based on their i variable. 
             // i is in this case the years someone is married, the duration.
