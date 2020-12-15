@@ -219,8 +219,9 @@ namespace Vs.Simulation.Core
         {
             int ageIndex = (Person.Lifespan.Days - (18 * 365)) / 365;
             List<double> weights = new List<double>();
-            weights.Add(Children.AgeNotABirthMothersWeights[ageIndex]);
+            
             weights.Add(Children.AgeBirthMotherWeights[ageIndex]);
+            weights.Add(Children.AgeNotABirthMothersWeights[ageIndex]);
             Children.WeightGetChildren = weights;
             var childrenChance = Environment.RandChoice(Children.SourceGetChildren, Children.SourceGetChildren);
             
