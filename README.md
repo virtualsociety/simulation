@@ -68,7 +68,9 @@ as the first child birth process but it is very similar to each other.
 * [Marital Duration](./doc/MaritalDuration.md) probabilities have been modeled.
 * [Marital Age Probability](./doc/MaritalAgeProbability.md) probabilities have been modeled.
 * [Children Probability](./doc/ChildrenProbability.md) probabilities have been modeled.
-  
+* As an alternative to DES, we have modeled a Agent Based Simulation as wel (ABM) and can be found [here](https://github.com/virtualsociety/simulation-abm)
+
+
 If you want to read more about DES, this is a great paper to start with.
 
 *Lemmis Park, 1994. Discrete Event Simulation - A First Course - *
