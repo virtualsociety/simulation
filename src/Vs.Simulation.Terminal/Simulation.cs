@@ -29,7 +29,7 @@ namespace Vs.Simulation.Terminal
             var start = new DateTime(1950, 2, 1);
             var env = new SimSharp.ThreadSafeSimulation(start, rseed);
             env.Log("== Population ==");
-            var population = new Population(env, "Virtual Society", SimTime, 3200);
+            var population = new Population(env, "Virtual Society", SimTime, 160000);
             var startPerf = DateTime.UtcNow.AddYears(-1);
             env.Run(SimTime);
             var perf = DateTime.UtcNow.AddYears(-1) - startPerf;
@@ -77,16 +77,14 @@ namespace Vs.Simulation.Terminal
             //var children = (from p in Population.Db.People where p.Gender == GenderType.Female select p).Sum(p => p.Children);
 
             var childFrame = Frame.FromRecords(parents);
+            childFrame.SaveCsv("parents.csv");
             var childMedian = Stats.median(childFrame.GetColumn<double>("Children"));
             var births = (from p in Population.Persons where p.Person.Gender == GenderType.Female select p).Sum(p => p.State.Sibblings.Count); 
             
             env.Log("Amount of Parents: {0}", parents.Count());
             env.Log("Children born {0}", births);
             env.Log("Median child per parent: {0}", childMedian);
-
-            
-
-            
+            //childFrame.SaveCsv("");
 
             // +----+---------------------+---------------------+-----------+-----+
             // | Id |     DateOfBirth     |     DateOfDeath     | TotalDays | Age |
@@ -102,6 +100,31 @@ namespace Vs.Simulation.Terminal
             median = Stats.median(frames.GetColumn<double>("Age"));
             env.Log("Saving Females. Median age {0}", median);
             frames.SaveCsv("females.csv");
+
+            var marriedMales = from n in PersonObject._events
+                               join p in males on n.Id equals p.Id
+                               where n.State == LifeEvents.Married
+                               select new { n.Id, n.State, n.DateTime, p.DateOfBirth };
+
+            var marriedMenPerYear = from n in marriedMales
+                                 group n by n.DateTime.Year into Year
+                                 let count = Year.Count()
+                                 select new { Year.Key, count };
+
+            var marriedFemales = from n in PersonObject._events
+                               join p in females on n.Id equals p.Id
+                               where n.State == LifeEvents.Married
+                               select new { n.Id ,n.State, n.DateTime, p.DateOfBirth };
+
+            var marriedWomenPerYear = from n in marriedMales
+                                      group n by n.DateTime.Year into Year
+                                      let count = Year.Count()
+                                      select new { Year.Key, count };
+
+            env.Log("Married Men: {0}", marriedMales.Count());
+            env.Log("Married Women: {0}", marriedFemales.Count());
+            Frame.FromRecords(marriedMenPerYear).SaveCsv("MarriedMales.csv");
+            Frame.FromRecords(marriedWomenPerYear).SaveCsv("MarriedFemales.csv");
             env.Log("Saving Event Stream");
             // +----+---------------------+-------+
             // | Id |      DateTime       | State |

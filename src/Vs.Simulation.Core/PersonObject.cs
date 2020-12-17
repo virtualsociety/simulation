@@ -239,21 +239,11 @@ namespace Vs.Simulation.Core
                         var child = new PersonObject(Population.Counter(), Environment, SimTime);
                         child.State.Parents.Add(this);
                         Population.Persons.Add(child);
-                        lock (Person) {
-                            Person.Children++;
-                        }
-                        
+                        Person.Children++;
                         State.Sibblings.Add(child);
-                        
-                        
                     }
                 }
             }
-        }
-
-        public static void getListSize() 
-        {
-
         }
     }
 }
