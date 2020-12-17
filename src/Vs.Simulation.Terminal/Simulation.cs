@@ -61,10 +61,33 @@ namespace Vs.Simulation.Terminal
                             p.DateOfBirth,
                             p.DateOfDeath,
                             p.Lifespan.TotalDays,
-                            p.Age
+                            p.Age,
+                            p.Children
                         };
             env.Log("Females {0}", females.Count());
             env.Log("Ratio Males/Females {0}",(double) males.Count() / females.Count());
+
+            var parents = from p in females
+                          where p.Children > 0
+                          select new
+                          {
+                              p.Id,
+                              p.Children
+                          };
+            //var children = (from p in Population.Db.People where p.Gender == GenderType.Female select p).Sum(p => p.Children);
+
+            var childFrame = Frame.FromRecords(parents);
+            var childMedian = Stats.median(childFrame.GetColumn<double>("Children"));
+            var births = (from p in Population.Persons where p.Person.Gender == GenderType.Female select p).Sum(p => p.State.Sibblings.Count); 
+            
+            env.Log("Amount of Parents: {0}", parents.Count());
+            env.Log("Children born {0}", births);
+            env.Log("Median child per parent: {0}", childMedian);
+
+            
+
+            
+
             // +----+---------------------+---------------------+-----------+-----+
             // | Id |     DateOfBirth     |     DateOfDeath     | TotalDays | Age |
             // +----+---------------------+---------------------+-----------+-----+

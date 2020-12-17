@@ -235,14 +235,25 @@ namespace Vs.Simulation.Core
 
                     for (int i = 0; i < childAmount; i++)
                     {
+                        yield return Environment.Timeout(new TimeSpan(2 * 365));
                         var child = new PersonObject(Population.Counter(), Environment, SimTime);
                         child.State.Parents.Add(this);
                         Population.Persons.Add(child);
+                        lock (Person) {
+                            Person.Children++;
+                        }
+                        
                         State.Sibblings.Add(child);
-                        yield return Environment.Timeout(new TimeSpan(2 * 365));
+                        
+                        
                     }
                 }
             }
+        }
+
+        public static void getListSize() 
+        {
+
         }
     }
 }

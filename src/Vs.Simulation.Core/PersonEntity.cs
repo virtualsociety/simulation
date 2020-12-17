@@ -10,9 +10,9 @@ namespace Vs.Simulation.Core
         public DateTime DateOfBirth { get; set; }
         public GenderType Gender { get; set; }
         public LifeEvents LifeEvent { get; set; }
-
         public DateTime DateOfDeath { get; set; }
         public TimeSpan Lifespan { get; set; }
+        public int Children { get; set; } = 0;
 
         /// <summary>
         /// Use during simulation evaluates constantly based on simulation time.

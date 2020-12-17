@@ -22,6 +22,7 @@ namespace Vs.Simulation.Core.Database
             var bornIndex = people.CreateIndex(new RedBlackTreeIndexFactory(),p => p.DateOfBirth);
             var partnerIndex = people.CreateIndex(new RedBlackTreeIndexFactory(), p => p.LifeEvent);
             var sexIndex = people.CreateIndex(new RedBlackTreeIndexFactory(), p => p.Gender);
+            var childrenIndex = people.CreateIndex(new RedBlackTreeIndexFactory(), p => p.Children);
             People = people;
 
           //  var predicates = base.Tables.Create<Predicate<PersonEntity, PersonEntity>, int>(p => p.Object.Id);
