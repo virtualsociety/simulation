@@ -15,6 +15,39 @@ Simulations are a replication (digital twin) of reality. Simulation is a dynamic
 we achieve the aforementioned based on life events. This simulation model determines through the use of rules derived from
 algorithms how the simulation progresses.
 
+## Status (in active development)
+ 
+* An initial whitepaper (in Dutch) about Simulation Driven Development (SDD) within the government has been published
+
+  *Sjef van Leeuwen, 2020. Virtual Society, Open Social Innovation.*
+  
+  https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Draft%200.5.pdf
+* A research project briefing has been published for the Data Science / Software Engineering Students
+
+  *Dr. Raymond G. Hoogendoorn, Sjef van Leeuwen & Prof. Dr. Lampros Stergioulas, 2020. Research Plan Synthetic Data Generation for Virtual Society*
+  
+  https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Research%20Plan.pdf
+* An internship has started
+* The first DES simulation (this code) for Birth, Adulthood, Death has been modeled after CBS statistics.
+* [Marital Status](./doc/MaritalStatus.md) probabilities have been modeled.
+* [Marital Duration](./doc/MaritalDuration.md) probabilities have been modeled.
+* [Marital Age Probability](./doc/MaritalAgeProbability.md) probabilities have been modeled.
+* [Children Probability](./doc/ChildrenProbability.md) probabilities have been modeled.
+* As an alternative to DES, we have modeled a Agent Based Simulation as wel (ABM) and can be found [here](https://github.com/virtualsociety/simulation-abm)
+
+If you want to read more about DES, this is a great paper to start with.
+
+*Lemmis Park, 1994. Discrete Event Simulation - A First Course - *
+
+https://github.com/virtualsociety/literature/blob/master/Discrete%20Event%20Simulation%20-%20A%20First%20Course%20-%20Lemmis%20Park.pdf
+
+## Road map
+
+The first milestone will simulate enough parameters to Simulate a synthetic population for the social domain. (BRP, basis registratie personen) such as:
+    * Partner History
+    * Family Situation (Siblings / Ages)
+    * Migrations
+
 ## Virtual Society Trailer Video
 
 Click here for an introduction video
@@ -48,41 +81,15 @@ as the first child birth process but it is very similar to each other.
 
 ![alt text](./doc/img/lifecycle.svg)
 
+## Early Screenshots
 
+![loading](./doc/img/ui/loading.png)
 
-## Status (in active development)
- 
-* An initial whitepaper (in Dutch) about Simulation Driven Development (SDD) within the government has been published
+Virtual Society Simulation terminal loading probabilities.
 
-  *Sjef van Leeuwen, 2020. Virtual Society, Open Social Innovation.*
-  
-  https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Draft%200.5.pdf
-* A research project briefing has been published for the Data Science / Software Engineering Students
+![loading](./doc/img/ui/execute-simulation.png)
 
-  *Dr. Raymond G. Hoogendoorn, Sjef van Leeuwen & Prof. Dr. Lampros Stergioulas, 2020. Research Plan Synthetic Data Generation for Virtual Society*
-  
-  https://github.com/virtualsociety/literature/blob/master/Virtual%20Society%20Research%20Plan.pdf
-* An internship has started
-* The first DES simulation (this code) for Birth, Adulthood, Death has been modeled after CBS statistics.
-* [Marital Status](./doc/MaritalStatus.md) probabilities have been modeled.
-* [Marital Duration](./doc/MaritalDuration.md) probabilities have been modeled.
-* [Marital Age Probability](./doc/MaritalAgeProbability.md) probabilities have been modeled.
-* [Children Probability](./doc/ChildrenProbability.md) probabilities have been modeled.
-* As an alternative to DES, we have modeled a Agent Based Simulation as wel (ABM) and can be found [here](https://github.com/virtualsociety/simulation-abm)
-
-
-If you want to read more about DES, this is a great paper to start with.
-
-*Lemmis Park, 1994. Discrete Event Simulation - A First Course - *
-
-https://github.com/virtualsociety/literature/blob/master/Discrete%20Event%20Simulation%20-%20A%20First%20Course%20-%20Lemmis%20Park.pdf
-
-## Road map
-
-The first milestone will simulate enough parameters to Simulate a synthetic population for the social domain. (BRP, basis registratie personen) such as:
-    * Partner History
-    * Family Situation (Siblings / Ages)
-    * Migrations
+Virtual Society Simulation terminal running simulation at 400.000+ events / sec.
 
 ## Components
 
