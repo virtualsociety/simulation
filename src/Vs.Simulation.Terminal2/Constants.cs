@@ -5,7 +5,7 @@
         public const bool gender_female = true;
         public const bool gender_male = false;
         public const byte idx_gender_female = 1;
-        public const byte idx_gender_male = 0;
+        public const byte idx_gender_male = 0; 
         
         public static int idx_gender = 0;
         public static int idx_married = 1;

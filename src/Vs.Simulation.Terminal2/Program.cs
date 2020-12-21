@@ -82,6 +82,10 @@ namespace Vs.Simulation.Terminal2
             Console.Write("Age Probabilities...");
             Probabilities.Age.Init();
             Console.WriteLine("Loaded");
+            Console.SetCursorPosition(71, 13);
+            Console.Write("ChildBirth Probabilities...");
+            Probabilities.Children.Init();
+            Console.WriteLine("Loaded");
 
             Console.CursorVisible = false;
             Console.BackgroundColor = ConsoleColor.DarkBlue;

@@ -149,6 +149,45 @@ namespace Vs.Simulation.Terminal2
                         Object = partner._data.Id 
                     });
                     Statistics.Couples++;
+
+                    double hasChildren = 0;
+                    if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 50)
+                    {
+                        hasChildren = Environment.RandChoice(Children.MotherChildSource, Children.MotherWeights[(int)SimulationAge]);
+                        if (hasChildren == 1)
+                        {
+                            //ChildBirth();
+                        }
+                    }
+                    else if((int)partner.SimulationAge < 50)
+                    {
+                        hasChildren = Environment.RandChoice(Children.MotherChildSource, Children.MotherWeights[(int)partner.SimulationAge]);
+                        if (hasChildren == 1)
+                        {
+                            //partner.ChildBirth();
+                        }
+                    }
+
+                    
+                    
+                }
+
+            }
+
+           //public IEnumerable<Event> ChildBirth() 
+           //{
+           //    
+           //}
+
+            public double SimulationAge
+            {
+                get
+                {
+                    return (Environment.Now - _data.Dob).TotalDays / 365;
+                }
+                set
+                {
+
                 }
             }
         }
