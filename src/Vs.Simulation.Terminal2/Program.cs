@@ -86,6 +86,10 @@ namespace Vs.Simulation.Terminal2
             Console.Write("ChildBirth Probabilities...");
             Probabilities.Children.Init();
             Console.WriteLine("Loaded");
+            Console.SetCursorPosition(71, 14);
+            Console.Write("Marriage Probabilities...");
+            Probabilities.MaritalStatus.Init();
+            Console.WriteLine("Loaded");
 
             Console.CursorVisible = false;
             Console.BackgroundColor = ConsoleColor.DarkBlue;
@@ -119,7 +123,7 @@ namespace Vs.Simulation.Terminal2
                                       \/               \/        time\/machine \/ 0.1  \/");
 
             var startDate = new DateTime(1950, 1, 1);
-            endDate = DateTime.Now;
+            endDate = new DateTime(2020, 1, 1).AddDays(-1);
             Console.ForegroundColor = ConsoleColor.White;
             var env = new SimSharp.Simulation(new DateTime(1950,1,1),42);
             var People = new People(env);
@@ -160,6 +164,7 @@ namespace Vs.Simulation.Terminal2
             Console.WriteLine($"         People: {Statistics.People.ToString("#,#", CultureInfo.InvariantCulture)}");
             Console.WriteLine($" Reach Maturity: {((double)Statistics.ReachMaturity / (double)Statistics.People).ToString("P")}");
             Console.WriteLine($"        Couples: {Statistics.Couples}");
+            Console.WriteLine($"        Couples: {Statistics.Children}");
             Console.WriteLine($"   Stack Errors: {Statistics.StackErrors}");
             Console.WriteLine($"     Events/sec: {((int)(env.ProcessedEvents / perf.TotalSeconds)).ToString("#,#", CultureInfo.InvariantCulture)}");
             Console.WriteLine($"   Total Events: {env.ProcessedEvents.ToString("#,#", CultureInfo.InvariantCulture)}");

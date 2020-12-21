@@ -113,18 +113,23 @@ namespace Vs.Simulation.Terminal2
                     // put this person in the unmarried queue
                     Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(this);
                     // determine if this person will ever initiate a marriage process.
-                    var status = Environment.RandChoice(Core.Probabilities.MaritalStatus.Source, Core.Probabilities.MaritalStatus.Weights);
-                    if (status != Core.Probabilities.PartnerType.Single)
+                    var status = Environment.RandChoice(MaritalStatus.MaritalStatusSource,
+                        MaritalStatus.MaritalStatusWeights[Environment.Now.Year - 1950]);
+                    if (status != Constants.marital_single)
                     {
-                        Environment.Process(Marry());
+                        // only people who do not stay single in their life cycle will be scheduled to marry.
+                        var maritalAge = TimeSpan.FromDays(Environment.RandChoice(MaritalStatus.MaritalAgeSource,
+                            MaritalStatus.MaritalAgeWeights[Convert.ToByte(_data.Flags[Constants.idx_gender])])) * 365;
+                        if (maritalAge < _data.End)
+                            Environment.Process(Marry(maritalAge));
                     }
                 }
             }
 
-            private IEnumerable<Event> Marry()
+            private IEnumerable<Event> Marry(TimeSpan when)
             {
                 // We need to schedule a marriage now
-                yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandNormal(10 * 365, 1)));
+                yield return Environment.Timeout(when);
                 if (!_data.Flags[Constants.idx_married]) // Otherwise married by another person within this timespan.
                 {
                     Person partner = null;
@@ -151,17 +156,17 @@ namespace Vs.Simulation.Terminal2
                     Statistics.Couples++;
 
                     double hasChildren = 0;
-                    if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 50)
+                    if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 49)
                     {
-                        hasChildren = Environment.RandChoice(Children.MotherChildSource, Children.MotherWeights[(int)SimulationAge]);
+                        hasChildren = Environment.RandChoice(Children.MotherChildSource, Children.MotherWeights[(int)SimulationAge-18]);
                         if (hasChildren == 1)
                         {
                             //ChildBirth();
                         }
                     }
-                    else if((int)partner.SimulationAge < 50)
+                    else if((int)partner.SimulationAge < 49)
                     {
-                        hasChildren = Environment.RandChoice(Children.MotherChildSource, Children.MotherWeights[(int)partner.SimulationAge]);
+                        hasChildren = Environment.RandChoice(Children.MotherChildSource, Children.MotherWeights[(int)partner.SimulationAge-18]);
                         if (hasChildren == 1)
                         {
                             //partner.ChildBirth();
