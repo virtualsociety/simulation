@@ -89,6 +89,7 @@ namespace Vs.Simulation.Terminal2
                     _data.parents = parents;
                     Statistics.Children++;
                 }
+                _data.children = new List<Person>();
                 _data.Flags = new BitArray(2);
 
                 _data.Id = Global._counter++;
@@ -171,13 +172,17 @@ namespace Vs.Simulation.Terminal2
                         Object = partner._data.Id 
                     });
                     Statistics.Couples++;
-                    IEnumerable<TimeSpan> children = null;
+
+                    //ToDo: Check divorce date naming,
+                    var marriageDuration = Environment.Now + new TimeSpan((long)Environment.RandChoice(MaritalDuration.Source,
+                           MaritalDuration.Weights) * 365);
+
                     if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 49)
                     {
                         if (Environment.RandChoice(
                             Children.MotherChildSource, Children.MotherWeights[(int)SimulationAge - 18]) == 1)
                         {
-                            DetermineNumberOfChildren();
+                            DetermineNumberOfChildren(marriageDuration);
                         }
                     }
                     else if((int)partner.SimulationAge < 49)
@@ -185,21 +190,22 @@ namespace Vs.Simulation.Terminal2
                         if (Environment.RandChoice(
                             Children.MotherChildSource, Children.MotherWeights[(int)partner.SimulationAge - 18]) == 1)
                         {
-                            partner.DetermineNumberOfChildren();
+                            partner.DetermineNumberOfChildren(marriageDuration);
                         }
                     }
                 }
             }
 
-            private void DetermineNumberOfChildren()
+            private void DetermineNumberOfChildren(DateTime marriageDuration)
             {
                 List<TimeSpan> birthSchedules = new List<TimeSpan>();
                 for (int i = 0;i< Environment.RandChoice(Children.SourceAmountChildren, Children.WeightsAmountChildren); i++)
                 {
-                    // Todo: get actual timespan from probabilities labor
-                    // Todo: timespan within marriage duration?
-                    var labourSchedule = TimeSpan.FromDays((1+i) * 2 * 365);
-                    if (Environment.Now.Add(labourSchedule) > _data.Dod) // todo: also within timespan marriage duration.
+                    // ToDo: get actual timespan from probabilities labor
+                    var labourSchedule = TimeSpan.FromDays((1 + i) * 2 * 365);
+
+                    // Determines wheter the parents has not died and is within marriage duration
+                    if (Environment.Now.Add(labourSchedule) > _data.Dod && Environment.Now.Add(labourSchedule) > marriageDuration)
                         break;
                     birthSchedules.Add(labourSchedule);
                 }
@@ -217,8 +223,12 @@ namespace Vs.Simulation.Terminal2
                 {
                     yield return Environment.Timeout(schedule);
                     /* create new person and assign parents */
-                    var child = new Person(Environment, new List<Person>() { this, this._data.partners[0].Object });
-                    // TODO: assign child to father
+                    var child = new Person(Environment, new List<Person>() { this, this._data.partners.Last().Object });
+
+                    //Assigns the child to the parents of the child
+                    var father = this._data.partners.Last().Object;
+                    this._data.children.Add(child);
+                    father._data.children.Add(child);
                 }
             }
 
@@ -227,11 +237,12 @@ namespace Vs.Simulation.Terminal2
                 yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandChoice(MaritalDuration.Source,
                            MaritalDuration.Weights)) * 365);
 
-            //    if(_data.Flags == )
+                if (Environment.Now < _data.Dod) 
+                {
+
+                }
 
             }
-
-
 
             public double SimulationAge
             {
