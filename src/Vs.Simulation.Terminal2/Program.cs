@@ -172,7 +172,7 @@ namespace Vs.Simulation.Terminal2
                 {
                     Console.SetCursorPosition(12, 26);
                     Console.Write($"Age {j} ");
-                    var f = e.Select(p=>p._data.Dob.Year == j+i).Count();
+                    var f = (from p in e where p._data.Dob.Year == (j + i) select p).Count();
                 }
             }
             // TODO: Check query on validity and Save to Data Frame and CSV.
