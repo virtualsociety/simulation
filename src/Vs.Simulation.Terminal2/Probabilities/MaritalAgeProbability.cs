@@ -1,4 +1,4 @@
-﻿namespace Vs.Simulation.Core.Probabilities
+﻿namespace Vs.Simulation.Terminal2.Probabilities
 {
     public class MaritalAgeProbability
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Vs.Simulation.Core.Probabilities
+namespace Vs.Simulation.Terminal2.Probabilities
 {
     public class PartnershipDuration
     {

@@ -8,6 +8,7 @@
         public const int marital_single = 0;
         public const int marital_married = 1;
         public const int marital_partner = 2;
+        public const int marital_divorced = 3;
 
         public const byte idx_gender_female = 1;
         public const byte idx_gender_male = 0; 

@@ -126,6 +126,8 @@ namespace Vs.Simulation.Terminal2
                 }
             }
 
+            
+
             private IEnumerable<Event> Marry(TimeSpan when)
             {
                 // We need to schedule a marriage now
@@ -155,6 +157,9 @@ namespace Vs.Simulation.Terminal2
                     });
                     Statistics.Couples++;
 
+                    
+
+
                     double hasChildren = 0;
                     if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 49)
                     {
@@ -179,10 +184,20 @@ namespace Vs.Simulation.Terminal2
 
             }
 
-           //public IEnumerable<Event> ChildBirth() 
-           //{
-           //    
-           //}
+            private IEnumerable<Event> Divorcing()
+            {
+
+                yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandChoice(Divorce.DivorceRateSource,
+                           Divorce.DivorceRateWeights)) * 365);
+
+                if(_data.Flags == )
+
+            }
+
+            //public IEnumerable<Event> ChildBirth() 
+            //{
+            //    
+            //}
 
             public double SimulationAge
             {

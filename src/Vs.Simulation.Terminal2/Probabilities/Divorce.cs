@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Deedle;
 
-namespace Vs.Simulation.Core.Probabilities
+namespace Vs.Simulation.Terminal2.Probabilities
 {
-    public class DivorceProbability
+    public class Divorce
     {
         //In here you can find the weights for MaritalDuration. With duration we mean duration in years. So each source number represent a year.
         public static IList<double> DivorceRateSource = new List<double>
@@ -90,7 +90,7 @@ namespace Vs.Simulation.Core.Probabilities
             422,
         };
 
-        static DivorceProbability()
+        static Divorce()
         {
            
 

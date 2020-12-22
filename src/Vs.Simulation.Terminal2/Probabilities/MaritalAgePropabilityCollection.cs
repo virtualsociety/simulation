@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Vs.Simulation.Core.Probabilities
+namespace Vs.Simulation.Terminal2.Probabilities
 {
     public class MaritalAgePropabilityCollection : List<MaritalAgeProbability>
     { }
