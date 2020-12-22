@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Vs.Simulation.Core;
 using Vs.Simulation.Terminal2.Probabilities;
 
 namespace Vs.Simulation.Terminal2
@@ -36,7 +37,7 @@ namespace Vs.Simulation.Terminal2
         /// Unmarried Persons by Gender
         /// </summary>
         public static Stack<Person>[] Unmarried = new Stack<Person>[2];
-        
+        public static List<Person> Persons = new List<Person>();
         public Process Process { get; private set; }
 
         public People(SimSharp.Simulation environment) : base(environment)
@@ -85,6 +86,7 @@ namespace Vs.Simulation.Terminal2
 
             public Person(SimSharp.Simulation environment, List<Person> parents = null) : base(environment)
             {
+                Persons.Add(this);
                 if (parents != null)
                 {
                     _data.parents = parents;
