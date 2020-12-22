@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Vs.Simulation.Terminal2.Probabilities;
 
 namespace Vs.Simulation.Terminal2
@@ -104,6 +103,13 @@ namespace Vs.Simulation.Terminal2
                 Process = environment.Process(LifeCycle());
             }
 
+            private IEnumerable<Event> Death()
+            {
+                yield return Environment.Timeout(_data.End);
+                Statistics.Deaths++;
+                //TODO: Children orphans / Widow / End Marriage Partner list end date etc.
+            }
+
             private IEnumerable<Event> LifeCycle()
             {
                 var idx = Convert.ToByte(_data.Flags[Constants.idx_gender]);
@@ -112,6 +118,7 @@ namespace Vs.Simulation.Terminal2
                     Age.Weights[idx, 0]) * 365);
                 _data.Dod = _data.Dob + _data.End;
                 Global._totalAge[idx] += _data.End.Days/365;
+                Environment.Process(Death());
                 // Only Schedule the next process chain if the person is expected to reach maturity.
                 if (_data.End.Days > 18 * 365)
                 {

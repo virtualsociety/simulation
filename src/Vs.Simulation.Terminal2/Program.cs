@@ -1,11 +1,8 @@
 ﻿using Deedle;
-using Deedle.Internal;
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Threading;
-using Vs.Simulation.Core.Probabilities;
 
 namespace Vs.Simulation.Terminal2
 {
@@ -179,7 +176,9 @@ namespace Vs.Simulation.Terminal2
             Console.SetCursorPosition(28, 7);
             Console.WriteLine($" Avg.age   Male: {Statistics.AvgAgeMale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Constants.idx_gender_male]}");
             Console.SetCursorPosition(28, 8);
-            Console.WriteLine($"      Ratio F/M: 100/{(int)(((double)Statistics.People[Constants.idx_gender_male] / Statistics.People[Constants.idx_gender_female])*100)}");
+            Console.WriteLine($"      Ratio F/M: 100/{(int)(((double)Statistics.People[Constants.idx_gender_male] / Statistics.People[Constants.idx_gender_female]) * 100)}");
+            Console.SetCursorPosition(28, 9);
+            Console.WriteLine($"         Deaths: {Statistics.Deaths}");
         }
     }
 }
