@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Vs.Simulation.Terminal2
 {
@@ -168,12 +169,13 @@ namespace Vs.Simulation.Terminal2
                 Console.SetCursorPosition(0, 26);
                 Console.Write($"Export {i}");
                 var e = from p in People.Persons where p._data.Dob.Year <= i && p._data.Dod.Year > i select p;
-                for (int j = 0; j <= 99; j++)
-                {
-                    Console.SetCursorPosition(12, 26);
-                    Console.Write($"Age {j} ");
-                    var f = (from p in e where p._data.Dob.Year == (j + i) select p).Count();
-                }
+                // Use all CPU Core's in Parallel.
+                Parallel.For(0, 99, j =>
+                  {
+                      //Console.SetCursorPosition(12, 26);
+                      //Console.Write($"Age {j} ");
+                      var f = (from p in e where p._data.Dob.Year == (j + i) select p).Count();
+                  });
             }
             // TODO: Check query on validity and Save to Data Frame and CSV.
         }
