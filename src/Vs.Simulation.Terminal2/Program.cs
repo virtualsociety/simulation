@@ -144,10 +144,10 @@ namespace Vs.Simulation.Terminal2
             Reporter(env);
             Console.SetCursorPosition(0, 26);
             Console.CursorSize = 100;
-            Console.CursorVisible = true;
             //Console.Write("Saving Triple Event Store...");
             //Frame.FromRecords(People.Events._events).SaveCsv(@"./events.csv");
             Exports();
+            Console.CursorVisible = true;
             var msg = "Done.. press any key to exit.";
             for (int i = 0; i < msg.Length; i++)
             {
@@ -163,15 +163,19 @@ namespace Vs.Simulation.Terminal2
             var born = from p in People.Events._events where (p.Predicate == Constants.triple_predicate_child_of) select p;
 
             // population per year, per age group
-            for (int i = 1950; i < 2019; i++)
+            for (int i = 2018; i <= 2019; i++)
             {
+                Console.SetCursorPosition(0, 26);
+                Console.Write($"Export {i}");
                 var e = from p in People.Persons where p._data.Dob.Year <= i && p._data.Dod.Year > i select p;
-                for (int j = 0; j < 99; j++)
+                for (int j = 0; j <= 99; j++)
                 {
-                    var f = (from p in e where i - p._data.Dob.Year == j select p).Count();
+                    Console.SetCursorPosition(12, 26);
+                    Console.Write($"Age {j} ");
+                    var f = e.Select(p=>p._data.Dob.Year == j+i).Count();
                 }
             }
-            // TODO: Save to Data Frame and CSV.
+            // TODO: Check query on validity and Save to Data Frame and CSV.
         }
 
         private static void Reporter(object state)

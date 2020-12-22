@@ -57,7 +57,7 @@ namespace Vs.Simulation.Terminal2
             while (true)
             {
                 // average 1 per person hour creation.
-                yield return Environment.Timeout(TimeSpan.FromMinutes(Environment.RandNormal(220, 0)));
+                yield return Environment.Timeout(TimeSpan.FromMinutes(Environment.RandNormal(120, 0)));
                 new Person(Environment);
             }
         }
