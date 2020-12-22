@@ -6,6 +6,7 @@
         public static long Children { get; set; }
         public static long ReachMaturity { get; set; }
         public static long Couples { get; set; }
+        public static long Parents { get; set; }
         public static long StackErrors { get; set; }
     }
 }

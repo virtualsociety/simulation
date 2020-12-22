@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Vs.Simulation.Terminal2.Probabilities;
 
 namespace Vs.Simulation.Terminal2
@@ -72,18 +73,22 @@ namespace Vs.Simulation.Terminal2
                 public long Id;
                 public DateTime Dob;
                 public TimeSpan End;
-             // public List<Person> children;
-             // public List<Person> parents;
+                public List<Person> children;
+                public List<Person> parents;
                 public List<DateRange<Person>> partners;
+                public DateTime Dod;
             }
 
-            private static readonly TimeSpan PtMean = TimeSpan.FromDays(45*365); // Avg. age in days
-            private static readonly TimeSpan PtSigma = TimeSpan.FromDays(9*365); // Sigma of age.
             public Data _data = new Data();
             public Process Process;
 
-            public Person(SimSharp.Simulation environment) : base(environment)
+            public Person(SimSharp.Simulation environment, List<Person> parents = null) : base(environment)
             {
+                if (parents != null)
+                {
+                    _data.parents = parents;
+                    Statistics.Children++;
+                }
                 _data.Flags = new BitArray(2);
 
                 _data.Id = Global._counter++;
@@ -102,6 +107,7 @@ namespace Vs.Simulation.Terminal2
                 _data.End = TimeSpan.FromDays(Environment.RandChoice(
                     Age.Source[Convert.ToByte(_data.Flags[Constants.idx_gender]),0],
                     Age.Weights[Convert.ToByte(_data.Flags[Constants.idx_gender]), 0]) * 365);
+                _data.Dod = _data.Dob + _data.End;
 
                 // Only Schedule the next process chain if the person is expected to reach maturity.
                 if (_data.End.Days > 18 * 365)
@@ -120,13 +126,12 @@ namespace Vs.Simulation.Terminal2
                         // only people who do not stay single in their life cycle will be scheduled to marry.
                         var maritalAge = TimeSpan.FromDays(Environment.RandChoice(MaritalStatus.MaritalAgeSource,
                             MaritalStatus.MaritalAgeWeights[Convert.ToByte(_data.Flags[Constants.idx_gender])])) * 365;
+                        // only people who do not die before the marital age are scheduled to marry.
                         if (maritalAge < _data.End)
                             Environment.Process(Marry(maritalAge));
                     }
                 }
             }
-
-            
 
             private IEnumerable<Event> Marry(TimeSpan when)
             {
@@ -156,48 +161,67 @@ namespace Vs.Simulation.Terminal2
                         Object = partner._data.Id 
                     });
                     Statistics.Couples++;
-
-                    
-
-
-                    double hasChildren = 0;
+                    IEnumerable<TimeSpan> children = null;
                     if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 49)
                     {
-                        hasChildren = Environment.RandChoice(Children.MotherChildSource, Children.MotherWeights[(int)SimulationAge-18]);
-                        if (hasChildren == 1)
+                        if (Environment.RandChoice(
+                            Children.MotherChildSource, Children.MotherWeights[(int)SimulationAge - 18]) == 1)
                         {
-                            //ChildBirth();
+                            DetermineNumberOfChildren();
                         }
                     }
                     else if((int)partner.SimulationAge < 49)
                     {
-                        hasChildren = Environment.RandChoice(Children.MotherChildSource, Children.MotherWeights[(int)partner.SimulationAge-18]);
-                        if (hasChildren == 1)
+                        if (Environment.RandChoice(
+                            Children.MotherChildSource, Children.MotherWeights[(int)partner.SimulationAge - 18]) == 1)
                         {
-                            //partner.ChildBirth();
+                            partner.DetermineNumberOfChildren();
                         }
                     }
+                }
+            }
 
-                    
-                    
+            private void DetermineNumberOfChildren()
+            {
+                List<TimeSpan> birthSchedules = new List<TimeSpan>();
+                for (int i = 0;i< Environment.RandChoice(Children.SourceAmountChildren, Children.WeightsAmountChildren); i++)
+                {
+                    // Todo: get actual timespan from probabilities labor
+                    // Todo: timespan within marriage duration?
+                    var labourSchedule = TimeSpan.FromDays((1+i) * 2 * 365);
+                    if (Environment.Now.Add(labourSchedule) > _data.Dod) // todo: also within timespan marriage duration.
+                        break;
+                    birthSchedules.Add(labourSchedule);
                 }
 
+                if (birthSchedules.Count > 0)
+                {
+                    Statistics.Parents++;
+                    Environment.Process(ChildBirth(birthSchedules));
+                }
+            }
+
+            public IEnumerable<Event> ChildBirth(List<TimeSpan> birthSchedules) 
+            {
+                foreach (var schedule in birthSchedules)
+                {
+                    yield return Environment.Timeout(schedule);
+                    /* create new person and assign parents */
+                    var child = new Person(Environment, new List<Person>() { this, this._data.partners[0].Object });
+                    // TODO: assign child to father
+                }
             }
 
             private IEnumerable<Event> Divorcing()
             {
+                yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandChoice(MaritalDuration.Source,
+                           MaritalDuration.Weights)) * 365);
 
-                yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandChoice(Divorce.DivorceRateSource,
-                           Divorce.DivorceRateWeights)) * 365);
-
-                if(_data.Flags == )
+            //    if(_data.Flags == )
 
             }
 
-            //public IEnumerable<Event> ChildBirth() 
-            //{
-            //    
-            //}
+
 
             public double SimulationAge
             {

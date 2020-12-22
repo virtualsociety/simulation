@@ -79,16 +79,16 @@ namespace Vs.Simulation.Terminal2
             Console.WriteLine("Loading the Central Bureau of Statistics");
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(71, 12);
-            Console.Write("Age Probabilities...");
-            Probabilities.Age.Init();
+            Console.Write("Marriage Probabilities...");
+            Probabilities.MaritalStatus.Init();
             Console.WriteLine("Loaded");
             Console.SetCursorPosition(71, 13);
             Console.Write("ChildBirth Probabilities...");
             Probabilities.Children.Init();
             Console.WriteLine("Loaded");
             Console.SetCursorPosition(71, 14);
-            Console.Write("Marriage Probabilities...");
-            Probabilities.MaritalStatus.Init();
+            Console.Write("Age Probabilities...");
+            Probabilities.Age.Init();
             Console.WriteLine("Loaded");
 
             Console.CursorVisible = false;
@@ -164,7 +164,8 @@ namespace Vs.Simulation.Terminal2
             Console.WriteLine($"         People: {Statistics.People.ToString("#,#", CultureInfo.InvariantCulture)}");
             Console.WriteLine($" Reach Maturity: {((double)Statistics.ReachMaturity / (double)Statistics.People).ToString("P")}");
             Console.WriteLine($"        Couples: {Statistics.Couples}");
-            Console.WriteLine($"        Couples: {Statistics.Children}");
+            Console.WriteLine($"        Parents: {((double)Statistics.Parents / (double)Statistics.Couples).ToString("P")}");
+            Console.WriteLine($"       Children: {Statistics.Children}");
             Console.WriteLine($"   Stack Errors: {Statistics.StackErrors}");
             Console.WriteLine($"     Events/sec: {((int)(env.ProcessedEvents / perf.TotalSeconds)).ToString("#,#", CultureInfo.InvariantCulture)}");
             Console.WriteLine($"   Total Events: {env.ProcessedEvents.ToString("#,#", CultureInfo.InvariantCulture)}");
@@ -172,6 +173,11 @@ namespace Vs.Simulation.Terminal2
             Console.WriteLine($"   Current Time: {env.StartDate} - {env.Now}");
             Process proc = Process.GetCurrentProcess();
             Console.WriteLine($"   Memory Usage: {((float)proc.PrivateMemorySize64)/1024/1024/1024} GB  ");
+
+            Console.SetCursorPosition(28, 6);
+            Console.WriteLine($"Avg. Age Female: {Statistics.People.ToString("#,#", CultureInfo.InvariantCulture)}");
+            Console.SetCursorPosition(28, 7);
+            Console.WriteLine($"Avg. Age   Male: {Statistics.People.ToString("#,#", CultureInfo.InvariantCulture)}");
         }
     }
 }

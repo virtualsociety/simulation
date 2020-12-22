@@ -12,6 +12,9 @@ namespace Vs.Simulation.Terminal2.Probabilities
         public static IList<double>[] MotherWeights;
         public static List<double> MotherChildSource { get; set; } = new List<double>{ 0, 1 };
 
+        //These are the weights for the amount of children a women can have
+        public static List<double> WeightsAmountChildren { get; set; } = new List<double> { 567014, 710251, 304442 };
+        public static List<double> SourceAmountChildren { get; set; } = new List<double> { 1, 2, 3 };
 
         public static int StartAge { get; private set; }
         public static int EndAge { get; private set; }
