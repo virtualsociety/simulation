@@ -1,4 +1,5 @@
-﻿using SimSharp;
+﻿using Microsoft.VisualBasic;
+using SimSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -79,6 +80,8 @@ namespace Vs.Simulation.Terminal2
                 public List<Person> parents;
                 public List<DateRange<Person>> partners;
                 public DateTime Dod;
+                public int Year;      // for performance
+                public int YearDod;   // for performance
             }
 
             public Data _data = new Data();
@@ -98,6 +101,7 @@ namespace Vs.Simulation.Terminal2
                 _data.Id = Global._counter++;
 
                 _data.Dob = Environment.Now;
+                _data.Year = _data.Dob.Year;
                 Events.Write(new Triple() { Subject = _data.Id, Predicate = Constants.triple_predicate_child_of, Time=Environment.Now, Object = 0 });
                 // Determine Gender
                 _data.Flags[Constants.idx_gender] = Environment.RandChoice(Gender.Source, Gender.Weights);
@@ -126,6 +130,7 @@ namespace Vs.Simulation.Terminal2
                     Age.Source[idx,0],
                     Age.Weights[idx, 0]) * 365);
                 _data.Dod = _data.Dob + _data.End;
+                _data.YearDod = _data.Dod.Year;
                 Global._totalAge[idx] += _data.End.Days/365;
                 Environment.Process(Death());
                 // Only Schedule the next process chain if the person is expected to reach maturity.

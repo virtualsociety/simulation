@@ -163,20 +163,24 @@ namespace Vs.Simulation.Terminal2
             // Get number of people from 1950-2019 per age group.
             var born = from p in People.Events._events where (p.Predicate == Constants.triple_predicate_child_of) select p;
 
+            Stopwatch s = new Stopwatch();
+            s.Start();
             // population per year, per age group
-            for (int i = 2018; i <= 2019; i++)
+            for (int i = 2011; i <= 2019; i++)
             {
                 Console.SetCursorPosition(0, 26);
                 Console.Write($"Export {i}");
-                var e = from p in People.Persons where p._data.Dob.Year <= i && p._data.Dod.Year > i select p;
+                var e = from p in People.Persons where p._data.Year <= i && p._data.YearDod > i select p;
                 // Use all CPU Core's in Parallel.
                 Parallel.For(0, 99, j =>
                   {
                       //Console.SetCursorPosition(12, 26);
                       //Console.Write($"Age {j} ");
-                      var f = (from p in e where p._data.Dob.Year == (j + i) select p).Count();
+                      var f = (from p in e where p._data.Year == (j + i) select p).Count();
                   });
             }
+            s.Stop();
+            Console.Write($" time: {s.ElapsedMilliseconds} ");
             // TODO: Check query on validity and Save to Data Frame and CSV.
         }
 
