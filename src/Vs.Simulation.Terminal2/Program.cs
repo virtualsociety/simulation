@@ -161,8 +161,8 @@ namespace Vs.Simulation.Terminal2
             var env = (SimSharp.Simulation)state;
             perf = DateTime.UtcNow.AddYears(-1) - startPerf;
             Console.SetCursorPosition(0,6);
-            Console.WriteLine($"         People: {Statistics.People.ToString("#,#", CultureInfo.InvariantCulture)}");
-            Console.WriteLine($" Reach Maturity: {((double)Statistics.ReachMaturity / (double)Statistics.People).ToString("P")}");
+            Console.WriteLine($"         People: {(Statistics.People[0] + Statistics.People[1]).ToString("#,#", CultureInfo.InvariantCulture)}");
+            Console.WriteLine($" Reach Maturity: {((double)Statistics.ReachMaturity / (double)(Statistics.People[0] + Statistics.People[1])).ToString("P")}");
             Console.WriteLine($"        Couples: {Statistics.Couples}");
             Console.WriteLine($"        Parents: {((double)Statistics.Parents / (double)Statistics.Couples).ToString("P")}");
             Console.WriteLine($"       Children: {Statistics.Children}");
@@ -175,9 +175,11 @@ namespace Vs.Simulation.Terminal2
             Console.WriteLine($"   Memory Usage: {((float)proc.PrivateMemorySize64)/1024/1024/1024} GB  ");
 
             Console.SetCursorPosition(28, 6);
-            Console.WriteLine($"Avg. Age Female: {Statistics.People.ToString("#,#", CultureInfo.InvariantCulture)}");
+            Console.WriteLine($" Avg.age Female: {Statistics.AvgAgeFemale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Constants.idx_gender_female]}");
             Console.SetCursorPosition(28, 7);
-            Console.WriteLine($"Avg. Age   Male: {Statistics.People.ToString("#,#", CultureInfo.InvariantCulture)}");
+            Console.WriteLine($" Avg.age   Male: {Statistics.AvgAgeMale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Constants.idx_gender_male]}");
+            Console.SetCursorPosition(28, 8);
+            Console.WriteLine($"      Ratio F/M: 100/{(int)(((double)Statistics.People[Constants.idx_gender_male] / Statistics.People[Constants.idx_gender_female])*100)}");
         }
     }
 }

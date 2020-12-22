@@ -23,6 +23,7 @@ namespace Vs.Simulation.Terminal2
     public static class Global
     {
         public static int _counter;
+        public static long[] _totalAge = new long[2];
     }
 
     /// <summary>
@@ -92,11 +93,12 @@ namespace Vs.Simulation.Terminal2
                 _data.Flags = new BitArray(2);
 
                 _data.Id = Global._counter++;
-                Statistics.People++;
+
                 _data.Dob = Environment.Now;
                 Events.Write(new Triple() { Subject = _data.Id, Predicate = Constants.triple_predicate_child_of, Time=Environment.Now, Object = 0 });
                 // Determine Gender
                 _data.Flags[Constants.idx_gender] = Environment.RandChoice(Gender.Source, Gender.Weights);
+                Statistics.People[Convert.ToByte(_data.Flags[Constants.idx_gender])]++;
                 //Persons[Gender].Push(this);
                 // Start the "LifeCycle"
                 Process = environment.Process(LifeCycle());
@@ -104,11 +106,12 @@ namespace Vs.Simulation.Terminal2
 
             private IEnumerable<Event> LifeCycle()
             {
+                var idx = Convert.ToByte(_data.Flags[Constants.idx_gender]);
                 _data.End = TimeSpan.FromDays(Environment.RandChoice(
-                    Age.Source[Convert.ToByte(_data.Flags[Constants.idx_gender]),0],
-                    Age.Weights[Convert.ToByte(_data.Flags[Constants.idx_gender]), 0]) * 365);
+                    Age.Source[idx,0],
+                    Age.Weights[idx, 0]) * 365);
                 _data.Dod = _data.Dob + _data.End;
-
+                Global._totalAge[idx] += _data.End.Days/365;
                 // Only Schedule the next process chain if the person is expected to reach maturity.
                 if (_data.End.Days > 18 * 365)
                 {
@@ -125,7 +128,7 @@ namespace Vs.Simulation.Terminal2
                     {
                         // only people who do not stay single in their life cycle will be scheduled to marry.
                         var maritalAge = TimeSpan.FromDays(Environment.RandChoice(MaritalStatus.MaritalAgeSource,
-                            MaritalStatus.MaritalAgeWeights[Convert.ToByte(_data.Flags[Constants.idx_gender])])) * 365;
+                            MaritalStatus.MaritalAgeWeights[idx])) * 365;
                         // only people who do not die before the marital age are scheduled to marry.
                         if (maritalAge < _data.End)
                             Environment.Process(Marry(maritalAge));
