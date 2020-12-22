@@ -179,6 +179,8 @@ namespace Vs.Simulation.Terminal2
             Console.WriteLine($"      Ratio F/M: 100/{(int)(((double)Statistics.People[Constants.idx_gender_male] / Statistics.People[Constants.idx_gender_female]) * 100)}");
             Console.SetCursorPosition(28, 9);
             Console.WriteLine($"         Deaths: {Statistics.Deaths}");
+            Console.SetCursorPosition(28, 10);
+            Console.WriteLine($"People (Living): {(Statistics.People[0] + Statistics.People[1] - Statistics.Deaths).ToString("#,#", CultureInfo.InvariantCulture)}");
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Vs.Simulation.Terminal2
             while (true)
             {
                 // average 1 per person hour creation.
-                yield return Environment.Timeout(TimeSpan.FromMinutes(Environment.RandNormal(10, 0)));
+                yield return Environment.Timeout(TimeSpan.FromMinutes(Environment.RandNormal(220, 0)));
                 new Person(Environment);
             }
         }
@@ -108,6 +108,11 @@ namespace Vs.Simulation.Terminal2
             private IEnumerable<Event> Death()
             {
                 yield return Environment.Timeout(_data.End);
+                People.Events.Write(new Triple() { 
+                    Subject = _data.Id, 
+                    Predicate = Constants.triple_predicate_died_of, 
+                    Object = _data.Id, Time = Environment.Now 
+                });
                 Statistics.Deaths++;
                 //TODO: Children orphans / Widow / End Marriage Partner list end date etc.
             }
