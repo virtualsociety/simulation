@@ -140,7 +140,7 @@ namespace Vs.Simulation.Terminal2
                 });
                 Statistics.Deaths++;
 
-                //TODO: Widow / End Marriage Partner list end date etc.
+                //If the person was married, make the partner a widow and avaiable for marriage again.
                 if (_data.Flags[Constants.idx_married] == true) {
 
                     _data.Flags[Constants.idx_married] = false;
@@ -148,6 +148,14 @@ namespace Vs.Simulation.Terminal2
                     _data.partners.Last().Object._data.partners.Last().End = Environment.Now;
                     _data.partners.Last().End = Environment.Now;
                     Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(_data.partners.Last().Object);
+
+                    People.Events.Write(new Triple()
+                    {
+                        Subject = _data.partners.Last().Object._data.Id,
+                        Predicate = Constants.triple_predicate_widow_of,
+                        Object = _data.Id,
+                        Time = Environment.Now
+                    });
                 }
             }
 
@@ -213,11 +221,12 @@ namespace Vs.Simulation.Terminal2
                     });
                     Statistics.Couples++;
 
-                    //ToDo: Check divorce date naming,
+                    //Chooses the marriageDuration and the marriage eding date
                     var marriageDuration = new TimeSpan((long)Environment.RandChoice(MaritalDuration.Source,
                            MaritalDuration.Weights) * 365);
                     var marriageEndDate = Environment.Now.Add(marriageDuration);
 
+                    //Checks if they will get children
                     if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 49)
                     {
                         if (Environment.RandChoice(
@@ -246,7 +255,8 @@ namespace Vs.Simulation.Terminal2
             private void DetermineNumberOfChildren(DateTime marriageDuration)
             {
                 List<TimeSpan> birthSchedules = new List<TimeSpan>();
-                for (int i = 0;i< Environment.RandChoice(Children.SourceAmountChildren, Children.WeightsAmountChildren); i++)
+                int year = Environment.Now.Year - 1950;
+                for (int i = 0;i< Environment.RandChoice(Children.SourceAmountChildren, Children.ChildAmountWeights[year]); i++)
                 {
                     // ToDo: get actual timespan from probabilities labor
                     var labourSchedule = TimeSpan.FromDays((1 + i) * 2 * 365);
@@ -264,7 +274,7 @@ namespace Vs.Simulation.Terminal2
                 }
             }
 
-            //ToDo: Write Events away in triple
+            
             public IEnumerable<Event> ChildBirth(List<TimeSpan> birthSchedules) 
             {
                 foreach (var schedule in birthSchedules)

@@ -13,12 +13,17 @@ namespace Vs.Simulation.Terminal2.Probabilities
         public static List<double> MotherChildSource { get; set; } = new List<double>{ 0, 1 };
 
         //These are the weights for the amount of children a women can have
-        public static List<double> WeightsAmountChildren { get; set; } = new List<double> { 567014, 710251, 304442 };
-        public static List<double> SourceAmountChildren { get; set; } = new List<double> { 1, 2, 3 };
+        private static Frame<int, string> ChildData;
+        public static List<double>[] ChildAmountWeights;
+        public static List<double> SourceAmountChildren { get; set; } = new List<double> { 1, 2, 3, 4 };
 
         public static int StartAge { get; private set; }
         public static int EndAge { get; private set; }
 
+        public static int StartYear { get; private set; }
+        public static int EndYear { get; private set; }
+
+        
         public static void Init() 
         {
             StartAge = 18;
@@ -33,6 +38,20 @@ namespace Vs.Simulation.Terminal2.Probabilities
                 MotherWeights[i] = new List<double>() { noChildren[i], children[i] };
                 
             }
+
+            StartYear = 1950;
+            EndYear = 2020;
+            ChildAmountWeights = new List<double>[EndYear - StartYear];
+            ChildData = Frame.ReadCsv("../../../../../doc/data/motherAmountChildren.csv");
+
+            for (int i = 0; i < (EndYear - StartYear); i++) 
+            {
+                var childAmount = ChildData.GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();
+                ChildAmountWeights[i] = new List<double>() { childAmount[0], childAmount[1], childAmount[2], childAmount[3] };
+
+            }
+
+
         }
     }  
 }
