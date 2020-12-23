@@ -8,7 +8,6 @@
         public const int marital_single = 0;
         public const int marital_married = 1;
         public const int marital_partner = 2;
-        public const int marital_divorced = 3;
 
         public const byte idx_gender_female = 1;
         public const byte idx_gender_male = 0; 
@@ -29,5 +28,6 @@
         public static long triple_predicate_parent_of = 4;
         public static long triple_predicate_adult = 5;
         public static long triple_predicate_created = 6;
+        public static long triple_predicate_widow_of = 7;
     }
 }

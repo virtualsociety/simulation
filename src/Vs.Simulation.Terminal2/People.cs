@@ -94,6 +94,25 @@ namespace Vs.Simulation.Terminal2
                 {
                     _data.parents = parents;
                     Statistics.Children++;
+                    _data.parents[0]._data.children.Add(this);
+                    _data.parents[1]._data.children.Add(this);
+
+                    Events.Write(new Triple()
+                    {
+                        Subject = _data.Id,
+                        Predicate = Constants.triple_predicate_child_of,
+                        InvPredicate = Constants.triple_predicate_parent_of,
+                        Time = Environment.Now,
+                        Object = _data.parents[0]._data.Id
+                    });
+                    Events.Write(new Triple()
+                    {
+                        Subject = _data.Id,
+                        Predicate = Constants.triple_predicate_child_of,
+                        InvPredicate = Constants.triple_predicate_parent_of,
+                        Time = Environment.Now,
+                        Object = _data.parents[1]._data.Id
+                    });
                 }
                 _data.children = new List<Person>();
                 _data.Flags = new BitArray(2);
@@ -120,7 +139,16 @@ namespace Vs.Simulation.Terminal2
                     Object = _data.Id, Time = Environment.Now 
                 });
                 Statistics.Deaths++;
-                //TODO: Children orphans / Widow / End Marriage Partner list end date etc.
+
+                //TODO: Widow / End Marriage Partner list end date etc.
+                if (_data.Flags[Constants.idx_married] == true) {
+
+                    _data.Flags[Constants.idx_married] = false;
+                    _data.partners.Last().Object._data.Flags[Constants.idx_married] = false;
+                    _data.partners.Last().Object._data.partners.Last().End = Environment.Now;
+                    _data.partners.Last().End = Environment.Now;
+                    Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(_data.partners.Last().Object);
+                }
             }
 
             private IEnumerable<Event> LifeCycle()
@@ -169,7 +197,6 @@ namespace Vs.Simulation.Terminal2
                     {
                         partner = Unmarried[Convert.ToByte(!_data.Flags[Constants.idx_gender])].Pop();
                     }
-
                     partner._data.Flags[Constants.idx_married] = true;
                     if (_data.partners == null)
                         _data.partners = new List<DateRange<Person>>();
@@ -187,15 +214,16 @@ namespace Vs.Simulation.Terminal2
                     Statistics.Couples++;
 
                     //ToDo: Check divorce date naming,
-                    var marriageDuration = Environment.Now + new TimeSpan((long)Environment.RandChoice(MaritalDuration.Source,
+                    var marriageDuration = new TimeSpan((long)Environment.RandChoice(MaritalDuration.Source,
                            MaritalDuration.Weights) * 365);
+                    var marriageEndDate = Environment.Now.Add(marriageDuration);
 
                     if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 49)
                     {
                         if (Environment.RandChoice(
                             Children.MotherChildSource, Children.MotherWeights[(int)SimulationAge - 18]) == 1)
                         {
-                            DetermineNumberOfChildren(marriageDuration);
+                            DetermineNumberOfChildren(marriageEndDate);
                         }
                     }
                     else if((int)partner.SimulationAge < 49)
@@ -203,9 +231,15 @@ namespace Vs.Simulation.Terminal2
                         if (Environment.RandChoice(
                             Children.MotherChildSource, Children.MotherWeights[(int)partner.SimulationAge - 18]) == 1)
                         {
-                            partner.DetermineNumberOfChildren(marriageDuration);
+                            partner.DetermineNumberOfChildren(marriageEndDate);
                         }
                     }
+
+                    if (Environment.Now < _data.Dod && Environment.Now < partner._data.Dod) 
+                    {
+                        Environment.Process(Divorcing(marriageDuration));
+                    }
+
                 }
             }
 
@@ -230,6 +264,7 @@ namespace Vs.Simulation.Terminal2
                 }
             }
 
+            //ToDo: Write Events away in triple
             public IEnumerable<Event> ChildBirth(List<TimeSpan> birthSchedules) 
             {
                 foreach (var schedule in birthSchedules)
@@ -237,23 +272,32 @@ namespace Vs.Simulation.Terminal2
                     yield return Environment.Timeout(schedule);
                     /* create new person and assign parents */
                     var child = new Person(Environment, new List<Person>() { this, this._data.partners.Last().Object });
-
                     //Assigns the child to the parents of the child
-                    var father = this._data.partners.Last().Object;
-                    this._data.children.Add(child);
-                    father._data.children.Add(child);
+                    
+                    
                 }
             }
 
-            private IEnumerable<Event> Divorcing()
+
+            private IEnumerable<Event> Divorcing(TimeSpan marriageDuration)
             {
-                yield return Environment.Timeout(TimeSpan.FromDays(Environment.RandChoice(MaritalDuration.Source,
-                           MaritalDuration.Weights)) * 365);
-
-                if (Environment.Now < _data.Dod) 
+                yield return Environment.Timeout(marriageDuration);
+                //Takes away their married status
+                _data.Flags[Constants.idx_married] = false;
+                _data.partners.Last().Object._data.Flags[Constants.idx_married] = false;
+                _data.partners.Last().Object._data.partners.Last().End = Environment.Now;
+                _data.partners.Last().End = Environment.Now;
+                Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(_data.partners.Last().Object);
+                Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(this);
+                //Writes that the divorce happened
+                Events.Write(new Triple()
                 {
-
-                }
+                    Subject = _data.Id,
+                    Predicate = Constants.triple_predicate_divorced_from,
+                    InvPredicate = Constants.triple_predicate_divorced_from,
+                    Time = Environment.Now,
+                    Object = _data.partners.Last().Object._data.Id
+                });
 
             }
 
