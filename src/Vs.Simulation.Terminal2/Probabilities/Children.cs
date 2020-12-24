@@ -17,6 +17,9 @@ namespace Vs.Simulation.Terminal2.Probabilities
         public static List<double>[] ChildAmountWeights;
         public static List<double> SourceAmountChildren { get; set; } = new List<double> { 1, 2, 3, 4 };
 
+        private static Frame<int, string> LabourData;
+        public static List<double>[] LabourYears;
+
         public static int StartAge { get; private set; }
         public static int EndAge { get; private set; }
 
@@ -44,14 +47,20 @@ namespace Vs.Simulation.Terminal2.Probabilities
             ChildAmountWeights = new List<double>[EndYear - StartYear];
             ChildData = Frame.ReadCsv("../../../../../doc/data/motherAmountChildren.csv");
 
+            LabourData = Frame.ReadCsv("../../../../../doc/data/motherlabour_ages.csv");
+            LabourYears = new List<double>[EndYear - StartYear];
+
             for (int i = 0; i < (EndYear - StartYear); i++) 
             {
                 var childAmount = ChildData.GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();
                 ChildAmountWeights[i] = new List<double>() { childAmount[0], childAmount[1], childAmount[2], childAmount[3] };
-
             }
 
-
+            for (int i = 0; i < (EndYear - StartYear); i++)
+            {
+                var labourYears = LabourData.GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();
+                LabourYears[i] = new List<double>() { labourYears[0], labourYears[1], labourYears[2] };
+            }
         }
     }  
 }

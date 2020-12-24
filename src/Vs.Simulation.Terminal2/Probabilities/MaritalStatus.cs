@@ -20,6 +20,10 @@ namespace Vs.Simulation.Terminal2.Probabilities
         public static List<int> MaritalStatusSource { get; set; } = 
             new List<int> { Constants.marital_single, Constants.marital_married, Constants.marital_partner };
 
+        private static Frame<int, string> RemarriageData;
+        public static List<double>[,] RemarriageWeights;
+        public static List<double> RemarriageSource { get; set; } = new List<double> { 0, 1 };
+
 
         public static int StartYear { get; private set; }
         public static int EndYear { get; private set; }
@@ -45,9 +49,16 @@ namespace Vs.Simulation.Terminal2.Probabilities
             var married = MaritalStatusData.GetColumn<double>("Gehuwden").Values.Select(c => Convert.ToDouble(c)).ToList();
             var partnership = MaritalStatusData.GetColumn<double>("Partnerschappen").Values.Select(c => Convert.ToDouble(c)).ToList();
 
+            RemarriageData = Frame.ReadCsv("../../../../../doc/data/remarriage_weights.csv");
+            RemarriageWeights = new List<double>[2, EndYear - StartYear];
+
             for (int i = 0; i < EndYear - StartYear; i++) 
             {
                 MaritalStatusWeights[i] = new List<double>() { singles[i], married[i], partnership[i] };
+
+                var remarriage = RemarriageData.GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();
+                RemarriageWeights[Constants.idx_gender_male,i] =  new List<double>() { remarriage[0], remarriage[1]};
+                RemarriageWeights[Constants.idx_gender_female, i] = new List<double>() { remarriage[2], remarriage[3] };
             }
         }
     }

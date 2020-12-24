@@ -38,6 +38,7 @@ namespace Vs.Simulation.Terminal2
         /// Unmarried Persons by Gender
         /// </summary>
         public static Stack<Person>[] Unmarried = new Stack<Person>[2];
+        public static Stack<Person>[] Remarry = new Stack<Person>[2];
         public static List<Person> Persons = new List<Person>();
         public Process Process { get; private set; }
 
@@ -49,6 +50,8 @@ namespace Vs.Simulation.Terminal2
             // Persons.Add(GenderType.Female, new Stack<Person>());
             Unmarried[Constants.idx_gender_male] = new Stack<Person>();
             Unmarried[Constants.idx_gender_female] = new Stack<Person>();
+            Remarry[Constants.idx_gender_male] = new Stack<Person>();
+            Remarry[Constants.idx_gender_female] = new Stack<Person>();
 
             Process = environment.Process(Warmup());
         }
@@ -147,7 +150,14 @@ namespace Vs.Simulation.Terminal2
                     _data.partners.Last().Object._data.Flags[Constants.idx_married] = false;
                     _data.partners.Last().Object._data.partners.Last().End = Environment.Now;
                     _data.partners.Last().End = Environment.Now;
-                    Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(_data.partners.Last().Object);
+
+                    //Checks if the widowed partner will remarry
+                    var idx = Convert.ToByte(_data.partners.Last().Object._data.Flags[Constants.idx_gender]);
+                    if (Environment.RandChoice(MaritalStatus.MaritalAgeSource,
+                                MaritalStatus.MaritalAgeWeights[idx]) == 1)
+                    {
+                        Remarry[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(_data.partners.Last().Object);
+                    }
 
                     People.Events.Write(new Triple()
                     {
@@ -199,8 +209,17 @@ namespace Vs.Simulation.Terminal2
                 yield return Environment.Timeout(when);
                 if (!_data.Flags[Constants.idx_married]) // Otherwise married by another person within this timespan.
                 {
+                    //ToDo: Add a check where people can remarry
+                    
                     Person partner = null;
                     _data.Flags[Constants.idx_married] = true;
+
+                    if (_data.partners != null && Remarry[Convert.ToByte(!_data.Flags[Constants.idx_gender])].Count > 0)
+                    {
+                        partner = Remarry[Convert.ToByte(!_data.Flags[Constants.idx_gender])].Pop();
+                        Statistics.Remarried++;
+                    }
+
                     while (partner == null || partner._data.Flags[Constants.idx_married])
                     {
                         partner = Unmarried[Convert.ToByte(!_data.Flags[Constants.idx_gender])].Pop();
@@ -221,7 +240,7 @@ namespace Vs.Simulation.Terminal2
                     });
                     Statistics.Couples++;
 
-                    //Chooses the marriageDuration and the marriage eding date
+                    //Chooses the marriageDuration and the marriage ending date
                     var marriageDuration = new TimeSpan((long)Environment.RandChoice(MaritalDuration.Source,
                            MaritalDuration.Weights) * 365);
                     var marriageEndDate = Environment.Now.Add(marriageDuration);
@@ -256,15 +275,20 @@ namespace Vs.Simulation.Terminal2
             {
                 List<TimeSpan> birthSchedules = new List<TimeSpan>();
                 int year = Environment.Now.Year - 1950;
-                for (int i = 0;i< Environment.RandChoice(Children.SourceAmountChildren, Children.ChildAmountWeights[year]); i++)
+                var labourSchedule = TimeSpan.FromDays((1) * 2 * 365);
+                for (int i = 0; i < Environment.RandChoice(Children.SourceAmountChildren, Children.ChildAmountWeights[year]); i++)
                 {
-                    // ToDo: get actual timespan from probabilities labor
-                    var labourSchedule = TimeSpan.FromDays((1 + i) * 2 * 365);
-
                     // Determines wheter the parents has not died and is within marriage duration
                     if (Environment.Now.Add(labourSchedule) > _data.Dod && Environment.Now.Add(labourSchedule) > marriageDuration)
                         break;
                     birthSchedules.Add(labourSchedule);
+
+                    //Checks the number of the child and get's the correct labour date
+                    if ( i < 3) 
+                    { 
+                        labourSchedule = TimeSpan.FromDays(Children.LabourYears[year][i] * 365); 
+                    }
+                    
                 }
 
                 if (birthSchedules.Count > 0)
@@ -282,23 +306,20 @@ namespace Vs.Simulation.Terminal2
                     yield return Environment.Timeout(schedule);
                     /* create new person and assign parents */
                     var child = new Person(Environment, new List<Person>() { this, this._data.partners.Last().Object });
-                    //Assigns the child to the parents of the child
-                    
-                    
+
                 }
             }
 
 
             private IEnumerable<Event> Divorcing(TimeSpan marriageDuration)
             {
+                
                 yield return Environment.Timeout(marriageDuration);
                 //Takes away their married status
                 _data.Flags[Constants.idx_married] = false;
                 _data.partners.Last().Object._data.Flags[Constants.idx_married] = false;
                 _data.partners.Last().Object._data.partners.Last().End = Environment.Now;
                 _data.partners.Last().End = Environment.Now;
-                Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(_data.partners.Last().Object);
-                Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(this);
                 //Writes that the divorce happened
                 Events.Write(new Triple()
                 {
@@ -309,7 +330,22 @@ namespace Vs.Simulation.Terminal2
                     Object = _data.partners.Last().Object._data.Id
                 });
 
+                //Checks if this person will remarry.
+                CheckRemarriage(this);
+                //Checks if ex partner will remarry.
+                CheckRemarriage(_data.partners.Last().Object);
             }
+
+            public void CheckRemarriage(Person person) 
+            {
+                var idx = Convert.ToByte(person._data.Flags[Constants.idx_gender]);
+                if (Environment.RandChoice(MaritalStatus.RemarriageSource,
+                            MaritalStatus.RemarriageWeights[idx, (Environment.Now.Year - 1950)]) == 1)
+                {
+                    Remarry[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(person);
+                }
+            }
+
 
             public double SimulationAge
             {

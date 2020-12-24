@@ -8,6 +8,8 @@
         public static long Couples { get; set; }
         public static long Parents { get; set; }
         public static long StackErrors { get; set; }
+
+        public static long Remarried { get; set; }
         public static double AvgAgeMale { get {
                 if (People[Constants.idx_gender_male] > 0)
                     return ((double)Global._totalAge[Constants.idx_gender_male] / (double)People[Constants.idx_gender_male]);

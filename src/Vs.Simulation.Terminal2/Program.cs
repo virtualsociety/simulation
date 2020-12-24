@@ -212,6 +212,8 @@ namespace Vs.Simulation.Terminal2
             Console.WriteLine($"         Deaths: {Statistics.Deaths}");
             Console.SetCursorPosition(28, 10);
             Console.WriteLine($"People (Living): {(Statistics.People[0] + Statistics.People[1] - Statistics.Deaths).ToString("#,#", CultureInfo.InvariantCulture)}");
+            Console.SetCursorPosition(28, 11);
+            Console.WriteLine($"      Remarried: {Statistics.Remarried}");
         }
     }
 }
