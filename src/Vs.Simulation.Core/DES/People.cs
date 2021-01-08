@@ -1,32 +1,13 @@
-﻿using Microsoft.VisualBasic;
-using SimSharp;
+﻿using SimSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Vs.Simulation.Core;
-using Vs.Simulation.Terminal2.Probabilities;
+using Vs.Simulation.Core.Probabilities;
 
 namespace Vs.Simulation.Terminal2
 {
-    public class DateRange<T>
-    {
-        public T Object {get;set;}
-        public DateTime Start { get; set; }
-        public DateTime? End { get; set; }
-
-        public DateRange(T @object, DateTime start)
-        {
-            Object = @object;
-            Start = start;
-        }
-    }
-
-    public static class Global
-    {
-        public static int _counter;
-        public static long[] _totalAge = new long[2];
-    }
 
     /// <summary>
     /// People Example

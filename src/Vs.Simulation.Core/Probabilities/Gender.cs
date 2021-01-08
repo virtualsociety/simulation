@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Vs.Simulation.Terminal2.Probabilities
+namespace Vs.Simulation.Core.Probabilities
 {
     public static class Gender
     {

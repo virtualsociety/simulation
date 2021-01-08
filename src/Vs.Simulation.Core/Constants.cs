@@ -1,4 +1,4 @@
-﻿namespace Vs.Simulation.Terminal2
+﻿namespace Vs.Simulation.Core
 {
     public static class Constants
     {
@@ -10,8 +10,8 @@
         public const int marital_partner = 2;
 
         public const byte idx_gender_female = 1;
-        public const byte idx_gender_male = 0; 
-        
+        public const byte idx_gender_male = 0;
+
         public static int idx_gender = 0;
         public static int idx_married = 1;
 

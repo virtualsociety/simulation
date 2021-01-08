@@ -7,26 +7,37 @@ namespace Vs.Simulation.Core.Probabilities
 {
     public static class Age
     {
-        private static Frame<int, string> AgeDataMale;
-        public static IList<double> MaleWeights;
-        public static IList<double> MaleSource;
+        private static Frame<int, string>[] AgeData;
+        public static IList<double>[,] Weights;
+        public static IList<double>[,] Source;
 
-        private static Frame<int, string> AgeDataFemale;
-        public static IList<double> FemaleWeights;
-        public static IList<double> FemaleSource;
+        public static int StartYear { get; private set; }
+        public static int EndYear { get; private set; }
 
-        static Age()
+        public static void Init()
         {
-            // Determine lifespan, TODO: only 2020 is used for weights
-            // No estimates are followed in the 2021-2060 prognosis yet
-            // Compiled from prognosis until the year 2060 
-            // https://www.cbs.nl/nl-nl/visualisaties/bevolkingspiramide
-            AgeDataMale = Frame.ReadCsv("../../../../../doc/data/ages_male.csv");
-            MaleWeights = AgeDataMale.GetColumn<double>("2020").Values.Select(c => Convert.ToDouble(c)).ToList();
-            MaleSource = AgeDataMale.GetColumn<double>("2020").Keys.Select(c => Convert.ToDouble(c)).ToList();
-            AgeDataFemale = Frame.ReadCsv("../../../../../doc/data/ages_female.csv");
-            FemaleWeights = AgeDataFemale.GetColumn<double>("2020").Values.Select(c => Convert.ToDouble(c)).ToList();
-            FemaleSource = AgeDataFemale.GetColumn<double>("2020").Keys.Select(c => Convert.ToDouble(c)).ToList();
+            StartYear = 2020;
+            EndYear = 2060;
+            Weights = new IList<double>[2, EndYear - StartYear];
+            Source = new IList<double>[2, EndYear - StartYear];
+            AgeData = new Frame<int, string>[2];
+
+            for (int i = 0; i < EndYear - StartYear; i++)
+            {
+                // https://www.cbs.nl/nl-nl/visualisaties/bevolkingspiramide
+                AgeData[Constants.idx_gender_male] = Frame.ReadCsv("../../../../../doc/data/ages_male.csv");
+                AgeData[Constants.idx_gender_female] = Frame.ReadCsv("../../../../../doc/data/ages_female.csv");
+
+                Weights[Constants.idx_gender_male, i] = AgeData[Constants.idx_gender_male]
+                    .GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();
+                Source[Constants.idx_gender_male, i] = AgeData[Constants.idx_gender_male]
+                    .GetColumn<double>($"{i + StartYear}").Keys.Select(c => Convert.ToDouble(c)).ToList();
+
+                Weights[Constants.idx_gender_female, i] = AgeData[Constants.idx_gender_female]
+                    .GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();
+                Source[Constants.idx_gender_female, i] = AgeData[Constants.idx_gender_female]
+                    .GetColumn<double>($"{i + StartYear}").Keys.Select(c => Convert.ToDouble(c)).ToList();
+            }
         }
     }
 }

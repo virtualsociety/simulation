@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Vs.Simulation.Core\Vs.Simulation.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="LiveReporting\" />
+  </ItemGroup>
+
 </Project>

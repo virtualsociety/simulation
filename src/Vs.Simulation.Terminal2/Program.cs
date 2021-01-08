@@ -1,12 +1,8 @@
-﻿using Deedle;
-using MathNet.Numerics;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
-using System.Threading.Tasks;
+using Vs.Simulation.Core.Probabilities;
 
 namespace Vs.Simulation.Terminal2
 {
@@ -81,15 +77,15 @@ namespace Vs.Simulation.Terminal2
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(71, 12);
             Console.Write("Marriage Probabilities...");
-            Probabilities.MaritalStatus.Init();
+            MaritalStatus.Init();
             Console.WriteLine("Loaded");
             Console.SetCursorPosition(71, 13);
             Console.Write("ChildBirth Probabilities...");
-            Probabilities.Children.Init();
+            Children.Init();
             Console.WriteLine("Loaded");
             Console.SetCursorPosition(71, 14);
             Console.Write("Age Probabilities...");
-            Probabilities.Age.Init();
+            Age.Init();
             Console.WriteLine("Loaded");
 
             Console.CursorVisible = false;
@@ -182,11 +178,11 @@ namespace Vs.Simulation.Terminal2
             Console.WriteLine($"   Memory Usage: {((float)proc.PrivateMemorySize64)/1024/1024/1024} GB  ");
 
             Console.SetCursorPosition(28, 6);
-            Console.WriteLine($" Avg.age Female: {Statistics.AvgAgeFemale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Constants.idx_gender_female]}");
+            Console.WriteLine($" Avg.age Female: {Statistics.AvgAgeFemale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Core.Constants.idx_gender_female]}");
             Console.SetCursorPosition(28, 7);
-            Console.WriteLine($" Avg.age   Male: {Statistics.AvgAgeMale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Constants.idx_gender_male]}");
+            Console.WriteLine($" Avg.age   Male: {Statistics.AvgAgeMale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Core.Constants.idx_gender_male]}");
             Console.SetCursorPosition(28, 8);
-            Console.WriteLine($"      Ratio F/M: 100/{(int)(((double)Statistics.People[Constants.idx_gender_male] / Statistics.People[Constants.idx_gender_female]) * 100)}");
+            Console.WriteLine($"      Ratio F/M: 100/{(int)(((double)Statistics.People[Core.Constants.idx_gender_male] / Statistics.People[Core.Constants.idx_gender_female]) * 100)}");
             Console.SetCursorPosition(28, 9);
             Console.WriteLine($"         Deaths: {Statistics.Deaths}");
             Console.SetCursorPosition(28, 10);

@@ -1,4 +1,6 @@
-﻿namespace Vs.Simulation.Terminal2
+﻿using Vs.Simulation.Core;
+
+namespace Vs.Simulation.Terminal2
 {
     public static class Statistics
     {
