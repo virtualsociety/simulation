@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vs.Simulation.Core", "Vs.Si
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vs.Simulation.Core.Tests", "Vs.Simulation.Core.Tests\Vs.Simulation.Core.Tests.csproj", "{69E5A413-3EA4-4069-BEE8-97027C0D05E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vs.Simulation.Terminal2", "Vs.Simulation.Terminal2\Vs.Simulation.Terminal2.csproj", "{F8D10479-EBF2-407A-9BFC-63F671D16B6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vs.Simulation.Terminal", "Vs.Simulation.Terminal2\Vs.Simulation.Terminal.csproj", "{F8D10479-EBF2-407A-9BFC-63F671D16B6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

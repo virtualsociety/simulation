@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Vs.Simulation.Terminal2
+namespace Vs.Simulation.Core.Model
 {
     public class DateRange<T>
     {
-        public T Object {get;set;}
+        public T Object { get; set; }
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }
 

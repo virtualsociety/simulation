@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vs.Simulation.Terminal2
+namespace Vs.Simulation.Core.Model
 {
     public struct Triple
     {

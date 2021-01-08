@@ -1,4 +1,4 @@
-﻿namespace Vs.Simulation.Terminal2
+﻿namespace Vs.Simulation.Core
 {
     public static class Global
     {

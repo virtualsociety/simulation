@@ -1,6 +1,4 @@
-﻿using Vs.Simulation.Core;
-
-namespace Vs.Simulation.Terminal2
+﻿namespace Vs.Simulation.Core.Model
 {
     public static class Statistics
     {
@@ -12,17 +10,22 @@ namespace Vs.Simulation.Terminal2
         public static long StackErrors { get; set; }
 
         public static long Remarried { get; set; }
-        public static double AvgAgeMale { get {
+        public static double AvgAgeMale
+        {
+            get
+            {
                 if (People[Constants.idx_gender_male] > 0)
-                    return ((double)Global._totalAge[Constants.idx_gender_male] / (double)People[Constants.idx_gender_male]);
+                    return Global._totalAge[Constants.idx_gender_male] / (double)People[Constants.idx_gender_male];
                 else
                     return 0;
-            } 
+            }
         }
-        public static double AvgAgeFemale { 
-            get {
+        public static double AvgAgeFemale
+        {
+            get
+            {
                 if (People[Constants.idx_gender_female] > 0)
-                    return ((double)Global._totalAge[Constants.idx_gender_female] / (double)People[Constants.idx_gender_female]);
+                    return Global._totalAge[Constants.idx_gender_female] / (double)People[Constants.idx_gender_female];
                 else
                     return 0;
             }

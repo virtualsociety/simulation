@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
-using Vs.Simulation.Core;
 using Vs.Simulation.Core.Probabilities;
 using Deedle;
 using System.Linq;
-using System.IO;
-using System.Globalization;
 
 namespace Vs.Simulation.Core.Tests
 {

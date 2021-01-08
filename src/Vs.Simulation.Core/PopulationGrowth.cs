@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using Vs.Simulation.Core;
-using static Vs.Simulation.Terminal2.People;
 
-namespace Vs.Simulation.Terminal2.LiveReporting
+using static Vs.Simulation.Core.Population;
+
+namespace Vs.Simulation.Core.LiveReporting
 {
     /// <summary>
     /// Real time data collection for population growth.

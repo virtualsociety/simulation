@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Vs.Simulation.Core.Model;
 
-namespace Vs.Simulation.Terminal2
+namespace Vs.Simulation.Core
 {
     public class EventStore
     {
