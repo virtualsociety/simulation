@@ -33,6 +33,7 @@ namespace Vs.Simulation.Terminal2
     /// </summary>
     public class People : ActiveObject<SimSharp.Simulation>
     {
+        public static LiveReporting.PopulationGrowth populationGrowth;
         public static EventStore Events = new EventStore();
         /// <summary>
         /// Unmarried Persons by Gender
@@ -41,9 +42,11 @@ namespace Vs.Simulation.Terminal2
         public static Stack<Person>[] Remarry = new Stack<Person>[2];
         public static List<Person> Persons = new List<Person>();
         public Process Process { get; private set; }
+        public DateTime EndDate { get; }
 
-        public People(SimSharp.Simulation environment) : base(environment)
+        public People(SimSharp.Simulation environment, DateTime endDate) : base(environment)
         {
+            populationGrowth = new LiveReporting.PopulationGrowth(environment.StartDate, endDate);
             Events.Write(new Triple() { Subject =0, Predicate = Constants.triple_predicate_created, Time = Environment.Now, Object = 0 });
 
             //Persons.Add(GenderType.Male, new Stack<Person>());
@@ -54,6 +57,7 @@ namespace Vs.Simulation.Terminal2
             Remarry[Constants.idx_gender_female] = new Stack<Person>();
 
             Process = environment.Process(Warmup());
+            EndDate = endDate;
         }
 
         public IEnumerable<Event> Warmup()
@@ -61,7 +65,7 @@ namespace Vs.Simulation.Terminal2
             while (true)
             {
                 // average 1 per person hour creation.
-                yield return Environment.Timeout(TimeSpan.FromMinutes(Environment.RandNormal(20, 0)));
+                yield return Environment.Timeout(TimeSpan.FromMinutes(Environment.RandNormal(2, 0)));
                 new Person(Environment);
             }
         }
@@ -178,6 +182,9 @@ namespace Vs.Simulation.Terminal2
                 _data.Dod = _data.Dob + _data.End;
                 _data.YearDod = _data.Dod.Year;
                 Global._totalAge[idx] += _data.End.Days/365;
+                if (_data.parents !=null)
+                    populationGrowth.AddPerson(this);
+
                 Environment.Process(Death());
                 // Only Schedule the next process chain if the person is expected to reach maturity.
                 if (_data.End.Days > 18 * 365)

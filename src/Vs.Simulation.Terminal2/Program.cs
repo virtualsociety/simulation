@@ -127,7 +127,7 @@ namespace Vs.Simulation.Terminal2
             endDate = new DateTime(2020, 1, 1).AddDays(-1);
             Console.ForegroundColor = ConsoleColor.White;
             var env = new SimSharp.Simulation(new DateTime(1950,1,1),42);
-            var People = new People(env);
+            var people = new People(env,endDate);
             startPerf = DateTime.UtcNow.AddYears(-1);
             Console.SetCursorPosition(0, 18);
             Console.WriteLine(@"|     .-.
@@ -160,28 +160,7 @@ namespace Vs.Simulation.Terminal2
 
         private static void Exports()
         {
-            // Get number of people from 1950-2019 per age group.
-            var born = from p in People.Events._events where (p.Predicate == Constants.triple_predicate_child_of) select p;
-
-            Stopwatch s = new Stopwatch();
-            s.Start();
-            // population per year, per age group
-            for (int i = 2011; i <= 2019; i++)
-            {
-                Console.SetCursorPosition(0, 26);
-                Console.Write($"Export {i}");
-                var e = from p in People.Persons where p._data.Year <= i && p._data.YearDod > i select p;
-                // Use all CPU Core's in Parallel.
-                Parallel.For(0, 99, j =>
-                  {
-                      //Console.SetCursorPosition(12, 26);
-                      //Console.Write($"Age {j} ");
-                      var f = (from p in e where p._data.Year == (j + i) select p).Count();
-                  });
-            }
-            s.Stop();
-            Console.Write($" time: {s.ElapsedMilliseconds} ");
-            // TODO: Check query on validity and Save to Data Frame and CSV.
+            People.populationGrowth.ToCsv(@"./population-growth.csv");
         }
 
         private static void Reporter(object state)
