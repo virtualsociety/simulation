@@ -26,7 +26,7 @@ namespace Vs.Simulation.Tests.Probabilities
         {
             // Arrange
             var env = new SimSharp.ThreadSafeSimulation(42);
-            for (int y = startYear; y < endYear; y++)
+            for (int y = startYear; y <= endYear; y++)
             {
                 var index = AgeProbability.YearIndex(y);
                 var length = AgeProbability.Source[gender, index].Count;
