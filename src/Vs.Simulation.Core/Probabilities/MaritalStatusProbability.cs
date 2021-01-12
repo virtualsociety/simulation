@@ -7,7 +7,7 @@ using Vs.Simulation.Shared;
 namespace Vs.Simulation.Core.Probabilities
 {
     /// <summary>
-    /// Marriage probabilities, equal weighted distribution for testing purposes, needs statistical analysis for better probability modelling
+    /// Marriage probabilities, equal weighted distribution for testing purposes, needs statistical analysis for better probability modeling
     /// </summary>
     public static class MaritalStatusProbability
     {
