@@ -10,6 +10,7 @@ namespace Vs.Simulation.Shared
         public const int marital_single = 0;
         public const int marital_married = 1;
         public const int marital_partner = 2;
+        public const int idx_empty = int.MinValue;
 
         public const byte idx_gender_female = 1;
         public const byte idx_gender_male = 0;
@@ -20,6 +21,7 @@ namespace Vs.Simulation.Shared
 
         public static Dictionary<int, string> DisplayNames = new Dictionary<int, string>()
         {
+            [idx_empty] = string.Empty,
             [idx_gender_male] = "Male",
             [idx_gender_female] = "Female"
         };

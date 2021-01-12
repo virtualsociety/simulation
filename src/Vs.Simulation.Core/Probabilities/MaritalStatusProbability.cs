@@ -25,12 +25,24 @@ namespace Vs.Simulation.Core.Probabilities
         public static List<double>[,] RemarriageWeights;
         public static List<double> RemarriageSource { get; set; } = new List<double> { 0, 1 };
 
-
-        public static int StartYear { get; private set; }
-        public static int EndYear { get; private set; }
-
         public static int StartAge { get; private set; }
         public static int EndAge { get; private set; }
+
+        /// <summary>
+        /// Start Year of the data set
+        /// </summary>
+        public static int StartYear { get; private set; }
+        /// <summary>
+        /// End Year of the data set
+        /// </summary>
+        public static int EndYear { get; private set; }
+        /// <summary>
+        /// (re)initialize the dataset
+        /// </summary>
+        public static int YearIndex(int year)
+        {
+            return year - StartYear;
+        }
 
         public static void Init()
         {
