@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vs.Simulation.Core.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vs.Simulation.Terminal", "Vs.Simulation.Terminal2\Vs.Simulation.Terminal.csproj", "{F8D10479-EBF2-407A-9BFC-63F671D16B6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vs.Simulation.Host", "Vs.Simulation.Host\Vs.Simulation.Host.csproj", "{7046C431-A7AB-4062-8CFC-79447CD85843}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vs.Simulation.Shared", "Vs.Simulation.Shared\Vs.Simulation.Shared.csproj", "{83F8927F-09A8-48BD-B2E6-893FF2123E94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{F8D10479-EBF2-407A-9BFC-63F671D16B6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8D10479-EBF2-407A-9BFC-63F671D16B6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8D10479-EBF2-407A-9BFC-63F671D16B6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7046C431-A7AB-4062-8CFC-79447CD85843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7046C431-A7AB-4062-8CFC-79447CD85843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7046C431-A7AB-4062-8CFC-79447CD85843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7046C431-A7AB-4062-8CFC-79447CD85843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F8927F-09A8-48BD-B2E6-893FF2123E94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83F8927F-09A8-48BD-B2E6-893FF2123E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83F8927F-09A8-48BD-B2E6-893FF2123E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F8927F-09A8-48BD-B2E6-893FF2123E94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
