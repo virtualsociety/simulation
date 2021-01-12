@@ -34,6 +34,13 @@ namespace Vs.Simulation.Core.Probabilities
         /// <summary>
         /// (re)initialize the dataset
         /// </summary>
+        
+        public static int YearIndex(int year)
+        {
+            return year - StartYear;
+        }
+
+
         public static void Init()
         {
             StartYear = 2020;

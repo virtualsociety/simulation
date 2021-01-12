@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vs.Simulation.Host", "Vs.Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vs.Simulation.Shared", "Vs.Simulation.Shared\Vs.Simulation.Shared.csproj", "{83F8927F-09A8-48BD-B2E6-893FF2123E94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vs.Simulation.Tests", "Vs.Simulation.Tests\Vs.Simulation.Tests.csproj", "{903D679C-122E-4B49-B345-FCD4FFA4F652}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{83F8927F-09A8-48BD-B2E6-893FF2123E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83F8927F-09A8-48BD-B2E6-893FF2123E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83F8927F-09A8-48BD-B2E6-893FF2123E94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{903D679C-122E-4B49-B345-FCD4FFA4F652}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903D679C-122E-4B49-B345-FCD4FFA4F652}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903D679C-122E-4B49-B345-FCD4FFA4F652}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903D679C-122E-4B49-B345-FCD4FFA4F652}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
