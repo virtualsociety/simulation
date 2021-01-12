@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Vs.Simulation.Core.Probabilities
 {
-    public static class Children
+    public static class ChildrenProbability
     {
         private static Frame<int, string> MotherData;
         public static IList<double>[] MotherWeights;

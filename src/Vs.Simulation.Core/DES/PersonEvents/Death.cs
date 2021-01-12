@@ -15,8 +15,8 @@ namespace Vs.Simulation.Core
             {
                 var idx = Convert.ToByte(_data.Flags[Constants.idx_gender]);
                 _data.End = TimeSpan.FromDays(Environment.RandChoice(
-                    Age.Source[idx, 0],
-                    Age.Weights[idx, 0]) * 365);
+                    AgeProbability.Source[idx, 0],
+                    AgeProbability.Weights[idx, 0]) * 365);
                 _data.Dod = _data.Dob + _data.End;
                 _data.YearDod = _data.Dod.Year;
                 Global._totalAge[idx] += _data.End.Days / 365;
@@ -34,13 +34,13 @@ namespace Vs.Simulation.Core
                     // put this person in the unmarried queue
                     Unmarried[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(this);
                     // determine if this person will ever initiate a marriage process.
-                    var status = Environment.RandChoice(MaritalStatus.MaritalStatusSource,
-                        MaritalStatus.MaritalStatusWeights[Environment.Now.Year - 1950]);
+                    var status = Environment.RandChoice(MaritalStatusProbability.MaritalStatusSource,
+                        MaritalStatusProbability.MaritalStatusWeights[Environment.Now.Year - 1950]);
                     if (status != Constants.marital_single)
                     {
                         // only people who do not stay single in their life cycle will be scheduled to marry.
-                        var maritalAge = TimeSpan.FromDays(Environment.RandChoice(MaritalStatus.MaritalAgeSource,
-                            MaritalStatus.MaritalAgeWeights[idx])) * 365;
+                        var maritalAge = TimeSpan.FromDays(Environment.RandChoice(MaritalStatusProbability.MaritalAgeSource,
+                            MaritalStatusProbability.MaritalAgeWeights[idx])) * 365;
                         // only people who do not die before the marital age are scheduled to marry.
                         if (maritalAge < _data.End)
                             Environment.Process(Marry(maritalAge));

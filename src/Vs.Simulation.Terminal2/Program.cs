@@ -36,15 +36,15 @@ namespace Vs.Simulation.Terminal
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(71, 12);
             Console.Write("Marriage Probabilities...");
-            MaritalStatus.Init();
+            MaritalStatusProbability.Init();
             Console.WriteLine("Loaded");
             Console.SetCursorPosition(71, 13);
             Console.Write("ChildBirth Probabilities...");
-            Children.Init();
+            ChildrenProbability.Init();
             Console.WriteLine("Loaded");
             Console.SetCursorPosition(71, 14);
             Console.Write("Age Probabilities...");
-            Age.Init();
+            AgeProbability.Init();
             Console.WriteLine("Loaded");
             Console.CursorVisible = false;
             Console.BackgroundColor = ConsoleColor.DarkBlue;

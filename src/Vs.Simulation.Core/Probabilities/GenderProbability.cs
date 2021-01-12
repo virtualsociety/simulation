@@ -3,7 +3,7 @@ using Vs.Simulation.Shared;
 
 namespace Vs.Simulation.Core.Probabilities
 {
-    public static class Gender
+    public static class GenderProbability
     {
         /// <summary>
         /// Weight distribution of the probability

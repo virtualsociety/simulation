@@ -2,7 +2,7 @@
 
 namespace Vs.Simulation.Core.Probabilities
 {
-    public class MaritalDuration
+    public class MaritalDurationProbability
     {
         //In here you can find the weights for MaritalDuration. With duration we mean duration in years. So each source number represent a year.
         public static IList<double> Source = new List<double>

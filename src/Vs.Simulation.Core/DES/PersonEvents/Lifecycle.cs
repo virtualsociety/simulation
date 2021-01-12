@@ -35,8 +35,8 @@ namespace Vs.Simulation.Core
 
                     //Checks if the widowed partner will remarry
                     var idx = Convert.ToByte(_data.partners.Last().Object._data.Flags[Constants.idx_gender]);
-                    if (Environment.RandChoice(MaritalStatus.MaritalAgeSource,
-                                MaritalStatus.MaritalAgeWeights[idx]) == 1)
+                    if (Environment.RandChoice(MaritalStatusProbability.MaritalAgeSource,
+                                MaritalStatusProbability.MaritalAgeWeights[idx]) == 1)
                     {
                         Remarry[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(_data.partners.Last().Object);
                     }

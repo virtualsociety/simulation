@@ -9,7 +9,7 @@ namespace Vs.Simulation.Core.Probabilities
     /// <summary>
     /// Marriage probabilities, equal weighted distribution for testing purposes, needs statistical analysis for better probability modelling
     /// </summary>
-    public static class MaritalStatus
+    public static class MaritalStatusProbability
     {
         private static Frame<int, string> MaritalAgeData;
         public static List<double>[] MaritalAgeWeights;

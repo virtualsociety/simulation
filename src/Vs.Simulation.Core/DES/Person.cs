@@ -71,7 +71,7 @@ namespace Vs.Simulation.Core
                 _data.Year = _data.Dob.Year;
                 Events.Write(new Triple() { Subject = _data.Id, Predicate = Constants.triple_predicate_child_of, Time=Environment.Now, Object = 0 });
                 // Determine Gender
-                _data.Flags[Constants.idx_gender] = Environment.RandChoice(Gender.Source, Gender.Weights);
+                _data.Flags[Constants.idx_gender] = Environment.RandChoice(GenderProbability.Source, GenderProbability.Weights);
                 Statistics.People[Convert.ToByte(_data.Flags[Constants.idx_gender])]++;
                 //Persons[Gender].Push(this);
                 // Start the "LifeCycle"

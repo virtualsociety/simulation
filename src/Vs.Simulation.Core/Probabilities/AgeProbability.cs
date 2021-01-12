@@ -9,7 +9,7 @@ namespace Vs.Simulation.Core.Probabilities
     /// <summary>
     /// Age probability weighted list distributions per year, for males and females.
     /// </summary>
-    public static class Age
+    public static class AgeProbability
     {
         /// <summary>
         /// Data frames for reading csv, where int indicates the gender.

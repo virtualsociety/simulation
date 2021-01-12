@@ -56,15 +56,15 @@ namespace Vs.Simulation.Core
                     Statistics.Couples++;
 
                     //Chooses the marriageDuration and the marriage ending date
-                    var marriageDuration = new TimeSpan((long)Environment.RandChoice(MaritalDuration.Source,
-                           MaritalDuration.Weights) * 365);
+                    var marriageDuration = new TimeSpan((long)Environment.RandChoice(MaritalDurationProbability.Source,
+                           MaritalDurationProbability.Weights) * 365);
                     var marriageEndDate = Environment.Now.Add(marriageDuration);
 
                     //Checks if they will get children
                     if (_data.Flags[Constants.idx_gender] == Constants.gender_female && (int)SimulationAge < 49)
                     {
                         if (Environment.RandChoice(
-                            Children.MotherChildSource, Children.MotherWeights[(int)SimulationAge - 18]) == 1)
+                            ChildrenProbability.MotherChildSource, ChildrenProbability.MotherWeights[(int)SimulationAge - 18]) == 1)
                         {
                             List<TimeSpan> birthSchedules;
                             DetermineNumberOfChildren(marriageEndDate, out birthSchedules);
@@ -74,7 +74,7 @@ namespace Vs.Simulation.Core
                     else if ((int)partner.SimulationAge < 49)
                     {
                         if (Environment.RandChoice(
-                            Children.MotherChildSource, Children.MotherWeights[(int)partner.SimulationAge - 18]) == 1)
+                            ChildrenProbability.MotherChildSource, ChildrenProbability.MotherWeights[(int)partner.SimulationAge - 18]) == 1)
                         {
                             List<TimeSpan> birthSchedules;
                             DetermineNumberOfChildren(marriageEndDate, out birthSchedules);
@@ -128,7 +128,7 @@ namespace Vs.Simulation.Core
                 birthSchedules = new List<TimeSpan>();
                 int year = Environment.Now.Year - 1950;
                 var labourSchedule = TimeSpan.FromDays((1) * 2 * 365);
-                for (int i = 0; i < Environment.RandChoice(Children.SourceAmountChildren, Children.ChildAmountWeights[year]); i++)
+                for (int i = 0; i < Environment.RandChoice(ChildrenProbability.SourceAmountChildren, ChildrenProbability.ChildAmountWeights[year]); i++)
                 {
                     // Determines whether the parents has not died and is within marriage duration
                     if (Environment.Now.Add(labourSchedule) > _data.Dod && Environment.Now.Add(labourSchedule) > marriageDuration)
@@ -137,7 +137,7 @@ namespace Vs.Simulation.Core
                     //Checks the number of the child and get's the correct labor date
                     if (i < 3)
                     {
-                        labourSchedule = TimeSpan.FromDays(Children.LabourYears[year][i] * 365);
+                        labourSchedule = TimeSpan.FromDays(ChildrenProbability.LabourYears[year][i] * 365);
                     }
                 }
             }
@@ -149,8 +149,8 @@ namespace Vs.Simulation.Core
             public void CheckRemarriage(Person person)
             {
                 var idx = Convert.ToByte(person._data.Flags[Constants.idx_gender]);
-                if (Environment.RandChoice(MaritalStatus.RemarriageSource,
-                            MaritalStatus.RemarriageWeights[idx, (Environment.Now.Year - 1950)]) == 1)
+                if (Environment.RandChoice(MaritalStatusProbability.RemarriageSource,
+                            MaritalStatusProbability.RemarriageWeights[idx, (Environment.Now.Year - 1950)]) == 1)
                 {
                     Remarry[Convert.ToByte(_data.Flags[Constants.idx_gender])].Push(person);
                 }
