@@ -89,7 +89,7 @@ namespace Vs.Simulation.Core
                 });
                 Statistics.Deaths++;
 
-                //If the person was married, make the partner a widow and avaiable for marriage again.
+                //If the person was married, make the partner a widow and available for marriage again.
                 if (_data.Flags[Constants.idx_married] == true) {
 
                     _data.Flags[Constants.idx_married] = false;
