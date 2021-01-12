@@ -1,4 +1,4 @@
-﻿namespace Vs.Simulation.Core
+﻿namespace Vs.Simulation.Shared
 {
     public static class Constants
     {

@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Threading;
 using Vs.Simulation.Core.Probabilities;
 using Vs.Simulation.Core;
-using Vs.Simulation.Core.Model;
+using Vs.Simulation.Shared.Model;
+using Vs.Simulation.Shared;
+using System.Threading.Tasks;
 
 namespace Vs.Simulation.Terminal
 {
@@ -13,10 +15,13 @@ namespace Vs.Simulation.Terminal
         private static TimeSpan perf;
         private static DateTime startPerf;
         private static DateTime endDate;
+        private static Statistics Statistics = new Statistics();
+
         // private static ProgressBar progressBar = new ProgressBar();
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            Host.Program.RunServer(args);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Clear();
@@ -54,7 +59,7 @@ namespace Vs.Simulation.Terminal
             endDate = new DateTime(2020, 1, 1).AddDays(-1);
             Console.ForegroundColor = ConsoleColor.White;
             var env = new SimSharp.Simulation(new DateTime(1950, 1, 1), 42);
-            var people = new Population(env, endDate);
+            var people = new Population(env, endDate, Statistics);
             startPerf = DateTime.UtcNow.AddYears(-1);
             Console.SetCursorPosition(0, 18);
             Console.WriteLine(AsciiLogo.Heartbeat);
@@ -104,11 +109,11 @@ namespace Vs.Simulation.Terminal
             Console.WriteLine($"   Memory Usage: {(float)proc.PrivateMemorySize64 / 1024 / 1024 / 1024} GB  ");
 
             Console.SetCursorPosition(28, 6);
-            Console.WriteLine($" Avg.age Female: {Statistics.AvgAgeFemale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Core.Constants.idx_gender_female]}");
+            Console.WriteLine($" Avg.age Female: {Statistics.AvgAgeFemale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Constants.idx_gender_female]}");
             Console.SetCursorPosition(28, 7);
-            Console.WriteLine($" Avg.age   Male: {Statistics.AvgAgeMale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Core.Constants.idx_gender_male]}");
+            Console.WriteLine($" Avg.age   Male: {Statistics.AvgAgeMale.ToString("0.00", CultureInfo.InvariantCulture)} / {Statistics.People[Constants.idx_gender_male]}");
             Console.SetCursorPosition(28, 8);
-            Console.WriteLine($"      Ratio F/M: 100/{(int)((double)Statistics.People[Core.Constants.idx_gender_male] / Statistics.People[Core.Constants.idx_gender_female] * 100)}");
+            Console.WriteLine($"      Ratio F/M: 100/{(int)((double)Statistics.People[Constants.idx_gender_male] / Statistics.People[Constants.idx_gender_female] * 100)}");
             Console.SetCursorPosition(28, 9);
             Console.WriteLine($"         Deaths: {Statistics.Deaths}");
             Console.SetCursorPosition(28, 10);

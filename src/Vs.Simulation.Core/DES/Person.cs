@@ -3,8 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Vs.Simulation.Core.Model;
 using Vs.Simulation.Core.Probabilities;
+using Vs.Simulation.Shared;
+using Vs.Simulation.Shared.Model;
 
 namespace Vs.Simulation.Core
 {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Vs.Simulation.Core.Model;
+using Vs.Simulation.Shared.Model;
 
 namespace Vs.Simulation.Core
 {

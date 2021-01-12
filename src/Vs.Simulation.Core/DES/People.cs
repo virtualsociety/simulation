@@ -1,7 +1,8 @@
 ﻿using SimSharp;
 using System;
 using System.Collections.Generic;
-using Vs.Simulation.Core.Model;
+using Vs.Simulation.Shared;
+using Vs.Simulation.Shared.Model;
 
 namespace Vs.Simulation.Core
 {
@@ -11,6 +12,7 @@ namespace Vs.Simulation.Core
     /// </summary>
     public partial class Population : ActiveObject<SimSharp.Simulation>
     {
+        public static Statistics Statistics;
         public static LiveReporting.PopulationGrowth populationGrowth;
         public static EventStore Events = new EventStore();
         /// <summary>
@@ -22,7 +24,7 @@ namespace Vs.Simulation.Core
         public Process Process { get; private set; }
         public DateTime EndDate { get; }
 
-        public Population(SimSharp.Simulation environment, DateTime endDate) : base(environment)
+        public Population(SimSharp.Simulation environment, DateTime endDate, Statistics statistics) : base(environment)
         {
             populationGrowth = new LiveReporting.PopulationGrowth(environment.StartDate, endDate);
             Events.Write(new Triple() { Subject =0, Predicate = Constants.triple_predicate_created, Time = Environment.Now, Object = 0 });
@@ -36,6 +38,7 @@ namespace Vs.Simulation.Core
 
             Process = environment.Process(Warmup());
             EndDate = endDate;
+            Statistics = statistics;
         }
 
         public IEnumerable<Event> Warmup()

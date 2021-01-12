@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-
+using Vs.Simulation.Shared;
 using static Vs.Simulation.Core.Population;
 
 namespace Vs.Simulation.Core.LiveReporting

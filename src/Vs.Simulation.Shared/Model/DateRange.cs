@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vs.Simulation.Core.Model
+namespace Vs.Simulation.Shared.Model
 {
     public class DateRange<T>
     {

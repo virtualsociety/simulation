@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Vs.Simulation.Shared;
 
 namespace Vs.Simulation.Core.Probabilities
 {

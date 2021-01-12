@@ -8,9 +8,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vs.Simulation.Core\Vs.Simulation.Core.csproj" />
+    <ProjectReference Include="..\Vs.Simulation.Host\Vs.Simulation.Host.csproj" />
   </ItemGroup>
 
 </Project>

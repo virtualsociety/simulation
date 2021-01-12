@@ -1,16 +1,16 @@
-﻿namespace Vs.Simulation.Core.Model
+﻿namespace Vs.Simulation.Shared.Model
 {
-    public static class Statistics
+    public class Statistics
     {
-        public static long[] People { get; set; } = new long[2];
-        public static long Children { get; set; }
-        public static long ReachMaturity { get; set; }
-        public static long Couples { get; set; }
-        public static long Parents { get; set; }
-        public static long StackErrors { get; set; }
+        public long[] People { get; set; } = new long[2];
+        public long Children { get; set; }
+        public long ReachMaturity { get; set; }
+        public long Couples { get; set; }
+        public long Parents { get; set; }
+        public long StackErrors { get; set; }
 
-        public static long Remarried { get; set; }
-        public static double AvgAgeMale
+        public long Remarried { get; set; }
+        public double AvgAgeMale
         {
             get
             {
@@ -20,7 +20,7 @@
                     return 0;
             }
         }
-        public static double AvgAgeFemale
+        public double AvgAgeFemale
         {
             get
             {
@@ -31,6 +31,6 @@
             }
         }
 
-        public static int Deaths { get; set; }
+        public int Deaths { get; set; }
     }
 }

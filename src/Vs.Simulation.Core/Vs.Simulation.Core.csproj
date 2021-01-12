@@ -23,4 +23,8 @@
     <PackageReference Include="Vs.Graph" Version="0.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Vs.Simulation.Shared\Vs.Simulation.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
