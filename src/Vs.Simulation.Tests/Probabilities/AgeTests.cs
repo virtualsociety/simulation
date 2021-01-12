@@ -11,9 +11,9 @@ namespace Vs.Simulation.Tests.Probabilities
     /// <summary>
     /// Next to Assertion, unit tests will also generate plots, for visual inspection.
     /// </summary>
-    public class Age
+    public class AgeTests
     {
-        static Age()
+        static AgeTests()
         {
             AgeProbability.Init();
         }
