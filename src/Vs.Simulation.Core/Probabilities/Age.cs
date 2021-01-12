@@ -6,15 +6,34 @@ using Vs.Simulation.Shared;
 
 namespace Vs.Simulation.Core.Probabilities
 {
+    /// <summary>
+    /// Age probability weighted list distributions per year, for males and females.
+    /// </summary>
     public static class Age
     {
+        /// <summary>
+        /// Data frames for reading csv, where int indicates the gender.
+        /// </summary>
         private static Frame<int, string>[] AgeData;
+        /// <summary>
+        /// Compiled list for usage with SimSharp weight distribution choices (contains number of people)
+        /// </summary>
         public static IList<double>[,] Weights;
+        /// <summary>
+        /// Compiled list for usage with SimSharp weight distribution choices (contains age categories)
+        /// </summary>
         public static IList<double>[,] Source;
-
+        /// <summary>
+        /// Start Year of the data set
+        /// </summary>
         public static int StartYear { get; private set; }
+        /// <summary>
+        /// End Year of the data set
+        /// </summary>
         public static int EndYear { get; private set; }
-
+        /// <summary>
+        /// (re)initialize the dataset
+        /// </summary>
         public static void Init()
         {
             StartYear = 2020;
