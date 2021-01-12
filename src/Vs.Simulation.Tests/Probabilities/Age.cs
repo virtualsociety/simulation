@@ -2,7 +2,6 @@
 using Xunit;
 using System.Collections.Generic;
 using OxyPlot.Series;
-using System;
 using Vs.Simulation.Shared;
 using Vs.Simulation.Core.Probabilities;
 using OxyPlot.Axes;
@@ -38,7 +37,7 @@ namespace Vs.Simulation.Tests.Probabilities
                 {
                     actualPopulationSize += (int)AgeProbability.Weights[gender, index][i];
                     simulatedPopulationSize += AgeProbability.Weights[gender, index][i] * scale;
-                    cbsPoints.Add(new DataPoint(i, AgeProbability.Weights[gender, index][i] * scale));
+                    cbsPoints.Add(new DataPoint(i, (int)(AgeProbability.Weights[gender, index][i] * scale)));
                 }
                 simulatedPopulationSize = (int)simulatedPopulationSize;
                 // Act
@@ -62,7 +61,7 @@ namespace Vs.Simulation.Tests.Probabilities
                 model.Series.Add(new LineSeries { ItemsSource = cbsPoints });
                 model.Series[0].Title = "simulated";
                 model.Series[1].Title = "actual";
-                Helpers.SvgWriter(model, this, $"{y}-{actualPopulationSize}-{Constants.DisplayNames[gender]}-scale-{scale}");
+                Helpers.SvgWriter(model, this, $"{y}-{actualPopulationSize}-{Constants.DisplayNames[gender]}-scale-{scale}", new[]{ points, cbsPoints });
             }
         }
     }
