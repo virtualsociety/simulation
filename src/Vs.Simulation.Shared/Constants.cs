@@ -1,4 +1,6 @@
-﻿namespace Vs.Simulation.Shared
+﻿using System.Collections.Generic;
+
+namespace Vs.Simulation.Shared
 {
     public static class Constants
     {
@@ -14,6 +16,14 @@
 
         public static int idx_gender = 0;
         public static int idx_married = 1;
+
+
+        public static Dictionary<int, string> DisplayNames = new Dictionary<int, string>()
+        {
+            [idx_gender_male] = "Male",
+            [idx_gender_female] = "Female"
+        };
+
 
         /// <summary>
         /// Triple Store Predicates
