@@ -15,8 +15,8 @@ namespace Vs.Simulation.Tests.Probabilities
         }
 
         [Theory]
-        [InlineData(0.1,2020,2025, Constants.idx_gender_male)]
-        [InlineData(0.1,2020,2025, Constants.idx_gender_female)]
+        [InlineData(0.1,1950,1950, Constants.idx_gender_male)]
+        [InlineData(0.1,1950,1950, Constants.idx_gender_female)]
         public void DefaultTest(float scale, int startYear, int endYear, int gender)
         {
             // Arrange
