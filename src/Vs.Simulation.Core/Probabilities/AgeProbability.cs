@@ -43,7 +43,7 @@ namespace Vs.Simulation.Core.Probabilities
 
         public static void Init()
         {
-            StartYear = 2020;
+            StartYear = 1950;
             EndYear = 2060;
             Weights = new IList<double>[2, EndYear - StartYear];
             Source = new IList<double>[2, EndYear - StartYear];
