@@ -58,7 +58,7 @@ namespace Vs.Simulation.Tests
                 points.Add(new DataPoint(j, data[j]));
             }
             // Assert (through visual inspection)
-            var model = new PlotModel { Title = $"{title} - {total} citizens {Constants.DisplayNames[gender]} scale {100 * scale}% " };
+            var model = new PlotModel { Title = $"{title} {year} - {total} citizens {Constants.DisplayNames[gender]} scale {100 * scale}% " };
             model.DefaultColors = new List<OxyColor> { OxyColors.Silver, OxyColors.Black };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = xlabel });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = ylabel });
