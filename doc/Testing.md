@@ -87,5 +87,4 @@ Some examples from what the theory test produces:
 ![chart_2](./testing/age-output-example/AgeDistribution-2021-8828351-Female-scale-0.1.svg)
 ![chart_3](./testing/age-output-example/AgeDistribution-2040-9527678-Female-scale-0.1.svg)
 
-To inspect the point data you can open a example CSV from this repo: 
-[chart_3](./testing/age-output-example/)
+To inspect the point data you can open a example CSV from this [location](./testing/age-output-example/)
