@@ -35,46 +35,59 @@ namespace Vs.Simulation.Core
             public Data _data = new Data();
             public Process Process;
 
-            public Person(SimSharp.Simulation environment, List<Person> parents = null) : base(environment)
+            /// <summary>
+            /// For warm up procedure create a person of a certain start age, instead of being born at simulation time.
+            /// This person will not have parents. This is where the history ends.
+            /// </summary>
+            /// <param name="environment"></param>
+            /// <param name="age"></param>
+            public Person(SimSharp.Simulation environment, int age) : base(environment)
             {
+                CreatePersonInitialData(environment.Now.AddYears(-age));
                 Persons.Add(this);
-                if (parents != null)
-                {
-                    _data.parents = parents;
-                    Statistics.Children++;
-                    _data.parents[0]._data.children.Add(this);
-                    _data.parents[1]._data.children.Add(this);
+                // Person is born with no parents (before the simulation time)
+                Events.Write(new Triple() { Subject = _data.Id, Predicate = Constants.triple_predicate_child_of, Time = Environment.Now.AddYears(-age), Object = 0 });
+                Process = environment.Process(LifeCycle());
+            }
 
-                    Events.Write(new Triple()
-                    {
-                        Subject = _data.Id,
-                        Predicate = Constants.triple_predicate_child_of,
-                        InvPredicate = Constants.triple_predicate_parent_of,
-                        Time = Environment.Now,
-                        Object = _data.parents[0]._data.Id
-                    });
-                    Events.Write(new Triple()
-                    {
-                        Subject = _data.Id,
-                        Predicate = Constants.triple_predicate_child_of,
-                        InvPredicate = Constants.triple_predicate_parent_of,
-                        Time = Environment.Now,
-                        Object = _data.parents[1]._data.Id
-                    });
-                }
+            private void CreatePersonInitialData(DateTime dateOfBirth)
+            {
                 _data.children = new List<Person>();
                 _data.Flags = new BitArray(2);
-
                 _data.Id = Global._counter++;
-
-                _data.Dob = Environment.Now;
+                _data.Dob = dateOfBirth;
                 _data.Year = _data.Dob.Year;
-                Events.Write(new Triple() { Subject = _data.Id, Predicate = Constants.triple_predicate_child_of, Time=Environment.Now, Object = 0 });
                 // Determine Gender
                 _data.Flags[Constants.idx_gender] = Environment.RandChoice(GenderProbability.Source, GenderProbability.Weights);
                 Statistics.People[Convert.ToByte(_data.Flags[Constants.idx_gender])]++;
-                //Persons[Gender].Push(this);
-                // Start the "LifeCycle"
+            }
+
+            public Person(SimSharp.Simulation environment, List<Person> parents) : base(environment)
+            {
+                Persons.Add(this);
+                _data.parents = parents;
+                Statistics.Children++;
+                _data.parents[0]._data.children.Add(this);
+                _data.parents[1]._data.children.Add(this);
+
+                Events.Write(new Triple()
+                {
+                    Subject = _data.Id,
+                    Predicate = Constants.triple_predicate_child_of,
+                    InvPredicate = Constants.triple_predicate_parent_of,
+                    Time = Environment.Now,
+                    Object = _data.parents[0]._data.Id
+                });
+                Events.Write(new Triple()
+                {
+                    Subject = _data.Id,
+                    Predicate = Constants.triple_predicate_child_of,
+                    InvPredicate = Constants.triple_predicate_parent_of,
+                    Time = Environment.Now,
+                    Object = _data.parents[1]._data.Id
+                });
+
+                CreatePersonInitialData(Environment.Now);
                 Process = environment.Process(LifeCycle());
             }
 

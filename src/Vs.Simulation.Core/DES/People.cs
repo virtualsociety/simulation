@@ -26,6 +26,7 @@ namespace Vs.Simulation.Core
 
         public Population(SimSharp.Simulation environment, DateTime endDate, Statistics statistics) : base(environment)
         {
+            Statistics = statistics;
             populationGrowth = new LiveReporting.PopulationGrowth(environment.StartDate, endDate);
             Events.Write(new Triple() { Subject =0, Predicate = Constants.triple_predicate_created, Time = Environment.Now, Object = 0 });
 
@@ -35,20 +36,8 @@ namespace Vs.Simulation.Core
             Unmarried[Constants.idx_gender_female] = new Stack<Person>();
             Remarry[Constants.idx_gender_male] = new Stack<Person>();
             Remarry[Constants.idx_gender_female] = new Stack<Person>();
-
-            Process = environment.Process(Warmup());
+            Warmup(0.5f);
             EndDate = endDate;
-            Statistics = statistics;
-        }
-
-        public IEnumerable<Event> Warmup()
-        {
-            while (true)
-            {
-                // average 1 per person hour creation.
-                yield return Environment.Timeout(TimeSpan.FromMinutes(Environment.RandNormal(2, 0)));
-                new Person(Environment);
-            }
         }
     }
 }
