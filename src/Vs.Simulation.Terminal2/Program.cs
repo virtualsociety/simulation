@@ -16,6 +16,8 @@ namespace Vs.Simulation.Terminal
         private static DateTime startPerf;
         private static DateTime endDate;
         private static Statistics Statistics = new Statistics();
+        static Timer t;
+        static SimSharp.Simulation env;
 
         // private static ProgressBar progressBar = new ProgressBar();
 
@@ -58,13 +60,19 @@ namespace Vs.Simulation.Terminal
             var startDate = new DateTime(1950, 1, 1);
             endDate = new DateTime(2020, 1, 1).AddDays(-1);
             Console.ForegroundColor = ConsoleColor.White;
-            var env = new SimSharp.Simulation(new DateTime(1950, 1, 1), 42);
+            env = new SimSharp.Simulation(new DateTime(1950, 1, 1), 42);
             var people = new Population(env, endDate, Statistics);
             startPerf = DateTime.UtcNow.AddYears(-1);
             Console.SetCursorPosition(0, 18);
             Console.WriteLine(AsciiLogo.Heartbeat);
-            Timer t = new Timer(Reporter, env, 1000, 250);
+            t = new Timer(Reporter, env, 1000, 250);
+            env.RunFinished += Env_RunFinished;
             env.Run(endDate);
+           // Console.Read();
+        }
+
+        private static void Env_RunFinished(object sender, EventArgs e)
+        {
             perf = DateTime.UtcNow.AddYears(-1) - startPerf;
             //  var q = from p in People.Persons[GenderType.Male] where p.IsMarried select p;
             // Console.WriteLine();
