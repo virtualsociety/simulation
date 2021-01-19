@@ -40,7 +40,7 @@ namespace Vs.Simulation.Core
                     {
                         // only people who do not stay single in their life cycle will be scheduled to marry.
                         var maritalAge = TimeSpan.FromDays(Environment.RandChoice(MaritalStatusProbability.MaritalAgeSource,
-                            MaritalStatusProbability.MaritalAgeWeights[idx])) * 365;
+                            MaritalStatusProbability.MaritalAgeWeights[idx, (Environment.Now.Year - 1950)])) * 365;
                         // only people who do not die before the marital age are scheduled to marry.
                         if (maritalAge < _data.End)
                             Environment.Process(Marry(maritalAge));

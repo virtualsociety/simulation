@@ -11,8 +11,9 @@ namespace Vs.Simulation.Core.Probabilities
     /// </summary>
     public static class MaritalStatusProbability
     {
-        private static Frame<int, string> MaritalAgeData;
-        public static List<double>[] MaritalAgeWeights;
+        private static Frame<int, string> MaritalAgeMaleData;
+        private static Frame<int, string> MaritalAgeFemaleData;
+        public static List<double>[,] MaritalAgeWeights;
         public static List<double> MaritalAgeSource;
 
 
@@ -48,11 +49,12 @@ namespace Vs.Simulation.Core.Probabilities
         {
             StartAge = 18;
             EndAge = 100;
-            MaritalAgeData = Frame.ReadCsv("../../../../../doc/data/NewMaritalAgeWeights.csv");
-            MaritalAgeWeights = new List<double>[2];
-            MaritalAgeSource = MaritalAgeData.GetColumn<double>("MarriedWomen").Keys.Select(c => Convert.ToDouble(c)).ToList();
-            MaritalAgeWeights[Constants.idx_gender_male] = MaritalAgeData.GetColumn<double>("MarriedMen").Values.Select(c => Convert.ToDouble(c)).ToList();
-            MaritalAgeWeights[Constants.idx_gender_female] = MaritalAgeData.GetColumn<double>("MarriedWomen").Values.Select(c => Convert.ToDouble(c)).ToList();
+            MaritalAgeMaleData = Frame.ReadCsv("../../../../../doc/data/marital_age_male.csv");
+            MaritalAgeFemaleData = Frame.ReadCsv("../../../../../doc/data/marital_age_female.csv");
+
+            MaritalAgeWeights = new List<double>[2, EndYear - StartYear];
+            MaritalAgeSource = MaritalAgeMaleData.GetColumn<double>($"{1950}").Keys.Select(c => Convert.ToDouble(c)).ToList();
+            
 
             StartYear = 1950;
             EndYear = 2020;
@@ -67,6 +69,9 @@ namespace Vs.Simulation.Core.Probabilities
 
             for (int i = 0; i < EndYear - StartYear; i++)
             {
+                MaritalAgeWeights[Constants.idx_gender_male, i] = MaritalAgeMaleData.GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();
+                MaritalAgeWeights[Constants.idx_gender_female, i] = MaritalAgeFemaleData.GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();
+
                 MaritalStatusWeights[i] = new List<double>() { singles[i], married[i], partnership[i] };
 
                 var remarriage = RemarriageData.GetColumn<double>($"{i + StartYear}").Values.Select(c => Convert.ToDouble(c)).ToList();

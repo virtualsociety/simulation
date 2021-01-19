@@ -13,16 +13,25 @@ namespace Vs.Simulation.Tests.Probabilities
         }
 
         [Theory]
-        [InlineData(0.1, 0, 0, Constants.idx_gender_male)]
-        [InlineData(0.1, 0, 0, Constants.idx_gender_female)]
+        [InlineData(0.1, 1950, 1950, Constants.idx_gender_male)]
+        [InlineData(0.1, 1950, 1950, Constants.idx_gender_female)]
+        [InlineData(0.1, 1980, 1980, Constants.idx_gender_male)]
+        [InlineData(0.1, 1980, 1980, Constants.idx_gender_female)]
+        [InlineData(0.1, 2019, 2019, Constants.idx_gender_male)]
+        [InlineData(0.1, 2019, 2019, Constants.idx_gender_female)]
         // TODO: This probability data set does not contain years. Year not specified.
         public void MaritalAge(float scale, int startDate, int endDate, int gender)
         {
-            Helpers.Sample(this, scale, "0000", gender, 
-                MaritalStatusProbability.MaritalAgeSource,
-                MaritalStatusProbability.MaritalAgeWeights[gender], 
-                "Marital Age distribution"
-            );
+            var env = new SimSharp.ThreadSafeSimulation(42);
+            for (int y = startDate; y <= endDate; y++) 
+            { 
+                var index = MaritalStatusProbability.YearIndex(y);
+                Helpers.Sample(this, scale, y.ToString(), gender,
+                    MaritalStatusProbability.MaritalAgeSource,
+                    MaritalStatusProbability.MaritalAgeWeights[gender, index],
+                    "Marital Age distribution"
+                );
+            }
         }
         /*
         [Theory]
