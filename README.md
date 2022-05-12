@@ -15,7 +15,7 @@ Simulations are a replication (digital twin) of reality. Simulation is a dynamic
 we achieve the aforementioned based on life events. This simulation model determines through the use of rules derived from
 algorithms how the simulation progresses.
 
-## Status (in active development)
+## Status (Study Project Completed)
  
 * An initial whitepaper (in Dutch) about Simulation Driven Development (SDD) within the government has been published
 
